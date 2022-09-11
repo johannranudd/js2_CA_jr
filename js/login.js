@@ -1,4 +1,8 @@
 const baseURL = 'https://nf-api.onrender.com';
+const loginForm = document.querySelector('.login-form');
+const emailInput = document.querySelector('#email');
+const passwordInput = document.querySelector('#password');
+const header = document.querySelector('h1');
 
 const loginDetails = {
   name: 'Johann_Ranudd',
@@ -20,43 +24,71 @@ async function registerFn(loginDetails) {
 }
 // registerFn(loginDetails);
 
-function loginForm() {
-  const loginForm = document.querySelector('.login-form');
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    console.log('you have submitted');
-  });
-}
-loginForm();
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const emailValue = emailInput.value;
+  const passwordValue = passwordInput.value;
 
-async function loginFn() {
-  const res = await fetch(`${baseURL}/api/v1/social/auth/login`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: 'JohRan33976@stud.noroff.no',
-      password: 'canBePublic12345@',
-    }),
-  });
-  const data = await res.json();
-  //   console.log(data);
-  return data;
-}
+  if (emailValue && passwordValue.length >= 6) {
+    if (
+      emailValue.includes('@noroff.no') ||
+      emailValue.includes('@stud.noroff.no')
+    ) {
+      // success
+      console.log('does include, continue login');
+      loginFn(emailValue, passwordValue);
+    } else {
+      // missing @noroff.no or @stud.noroff.no
+      console.log('warning: Email must include @noroff.no or @stud.noroff.no');
+    }
+  } else {
+    // wrongly typed input error here
+    console.log('Email must include @noroff.no or @stud.noroff.no');
+    console.log('Password must be atleast 6 characters');
+  }
+});
 
-// loginFn();
+// function loginForm() {
 
-async function getAllPosts() {
-  const res = await fetch(`${baseURL}/api/v1/social/posts`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsIm5hbWUiOiJKb2hhbm5fUmFudWRkIiwiZW1haWwiOiJKb2hSYW4zMzk3NkBzdHVkLm5vcm9mZi5ubyIsImF2YXRhciI6bnVsbCwiYmFubmVyIjpudWxsLCJpYXQiOjE2NjI4MzU1Mzd9.Y-FFBEN-vvEd_2gYGEHX1zwzsI2P85OXkG42WNKWjik`,
-    },
-  });
-  const data = await res.json();
-  console.log(data);
+// }
+// loginForm();
+
+async function loginFn(email, password) {
+  try {
+    const res = await fetch(`${baseURL}/api/v1/social/auth/login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      sessionStorage.setItem(
+        'isLoggedIn',
+        JSON.stringify({
+          isLoggedIn: true,
+          token: data.accessToken,
+        })
+      );
+      window.location.href = '/index.html';
+    } else {
+      sessionStorage.setItem(
+        'isLoggedIn',
+        JSON.stringify({
+          isLoggedIn: false,
+          token: data.accessToken,
+        })
+      );
+    }
+
+    return data;
+  } catch (e) {
+    console.log(e, 'error happened in loginFn()');
+  }
 }
-// getAllPosts(baseURL);
