@@ -20,19 +20,14 @@ async function registerFn(loginDetails) {
 }
 // registerFn(loginDetails);
 
-function checkIfLoggedIn() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
-    : null;
-
-  // if (!sStorage) {
-  //   window.location.href = '../login.html';
-  //   // console.log(sStorage);
-  // } else {
-  //   console.log('you are already logged in as');
-  // }
+function loginForm() {
+  const loginForm = document.querySelector('.login-form');
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('you have submitted');
+  });
 }
-window.addEventListener('load', checkIfLoggedIn);
+loginForm();
 
 async function loginFn() {
   const res = await fetch(`${baseURL}/api/v1/social/auth/login`, {
@@ -53,8 +48,8 @@ async function loginFn() {
 
 // loginFn();
 
-async function getAllPosts(url) {
-  const res = await fetch(`${url}/api/v1/social/posts`, {
+async function getAllPosts() {
+  const res = await fetch(`${baseURL}/api/v1/social/posts`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
