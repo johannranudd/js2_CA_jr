@@ -69,26 +69,24 @@ async function loginFn(email, password) {
     const data = await res.json();
 
     if (res.ok) {
-      sessionStorage.setItem(
-        'isLoggedIn',
-        JSON.stringify({
-          isLoggedIn: true,
-          token: data.accessToken,
-        })
-      );
+      setSessionStorage(true, data.accessToken);
       window.location.href = '/index.html';
     } else {
-      sessionStorage.setItem(
-        'isLoggedIn',
-        JSON.stringify({
-          isLoggedIn: false,
-          token: data.accessToken,
-        })
-      );
+      setSessionStorage(false, null);
     }
 
     return data;
   } catch (e) {
     console.log(e, 'error happened in loginFn()');
   }
+}
+
+function setSessionStorage(isLoggedIn, token) {
+  sessionStorage.setItem(
+    'isLoggedIn',
+    JSON.stringify({
+      isLoggedIn: isLoggedIn,
+      token: token,
+    })
+  );
 }

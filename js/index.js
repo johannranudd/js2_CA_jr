@@ -1,9 +1,8 @@
 const baseURL = 'https://nf-api.onrender.com';
+const allPosts = document.querySelector('.all-posts');
 
 function checkIfLoggedIn() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
-    : null;
+  const sStorage = getSessionStorage();
 
   if (!sStorage || !sStorage.isLoggedIn) {
     window.location.href = '../login.html';
@@ -22,6 +21,29 @@ async function getAllPosts(token) {
     },
   });
   const data = await res.json();
-  console.log(data);
+  return data;
 }
 // getAllPosts(baseURL);
+
+async function displayPosts() {
+  const sStorage = getSessionStorage();
+  const data = await getAllPosts(sStorage.token);
+  console.log('data in displayPosts', data);
+  const list = data.map((post) => {
+    const { id, title, body } = post;
+    const listItem = `
+    <li>
+    <h4><strong>TITLE: ${title}</strong></h4>
+    <p>${body}</p>
+    </li>`;
+    allPosts.innerHTML += listItem;
+  });
+}
+displayPosts();
+
+function getSessionStorage() {
+  const sStorage = sessionStorage.getItem('isLoggedIn')
+    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+    : null;
+  return sStorage;
+}
