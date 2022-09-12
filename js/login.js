@@ -1,17 +1,17 @@
-const baseURL = 'https://nf-api.onrender.com';
+const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const loginForm = document.querySelector('.login-form');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
 
-const loginDetails = {
-  name: 'Johann_Ranudd',
-  email: 'JohRan33976@stud.noroff.no',
-  password: 'canBePublic12345@',
-};
+// const loginDetails = {
+//   name: 'Johann_Ranudd',
+//   email: 'JohRan33976@stud.noroff.no',
+//   password: 'canBePublic12345@',
+// };
 
 async function registerFn(loginDetails) {
-  fetch(`${baseURL}/api/v1/social/auth/register`, {
+  fetch(`${baseURL}/auth/register`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -55,7 +55,7 @@ loginForm.addEventListener('submit', (e) => {
 
 async function loginFn(email, password) {
   try {
-    const res = await fetch(`${baseURL}/api/v1/social/auth/login`, {
+    const res = await fetch(`${baseURL}/auth/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -81,7 +81,7 @@ async function loginFn(email, password) {
   }
 }
 
-function setSessionStorage(isLoggedIn, token) {
+export function setSessionStorage(isLoggedIn, token) {
   sessionStorage.setItem(
     'isLoggedIn',
     JSON.stringify({

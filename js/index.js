@@ -1,7 +1,14 @@
-const baseURL = 'https://nf-api.onrender.com';
+const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const allPosts = document.querySelector('.all-posts');
 
-function checkIfLoggedIn() {
+export function getSessionStorage() {
+  const sStorage = sessionStorage.getItem('isLoggedIn')
+    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+    : null;
+  return sStorage;
+}
+
+export function checkIfLoggedIn() {
   const sStorage = getSessionStorage();
 
   if (!sStorage || !sStorage.isLoggedIn) {
@@ -10,10 +17,10 @@ function checkIfLoggedIn() {
     console.log('you are already logged in as');
   }
 }
-window.addEventListener('DOMContentLoaded', checkIfLoggedIn);
+window.addEventListener('load', checkIfLoggedIn);
 
-async function getAllPosts(token) {
-  const res = await fetch(`${baseURL}/api/v1/social/posts`, {
+async function getAllPosts(token, searchParams = '') {
+  const res = await fetch(`${baseURL}/posts/${searchParams}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -25,11 +32,12 @@ async function getAllPosts(token) {
 }
 // getAllPosts(baseURL);
 
-async function displayPosts() {
+async function displayAllPosts() {
   const sStorage = getSessionStorage();
-  const data = await getAllPosts(sStorage.token);
+  const data = await getAllPosts(sStorage.token, '');
+  // 40?_author=true&_comments=true&reactions=true
   console.log('data in displayPosts', data);
-  const list = data.map((post) => {
+  data.map((post) => {
     const { id, title, body } = post;
     const listItem = `
     <li>
@@ -39,11 +47,4 @@ async function displayPosts() {
     allPosts.innerHTML += listItem;
   });
 }
-displayPosts();
-
-function getSessionStorage() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
-    : null;
-  return sStorage;
-}
+displayAllPosts();
