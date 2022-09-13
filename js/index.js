@@ -37,12 +37,14 @@ async function displayAllPosts() {
   const data = await getAllPosts(sStorage.token, '');
   // 40?_author=true&_comments=true&reactions=true
   console.log('data in displayPosts', data);
+
   data.map((post) => {
-    const { id, title, body } = post;
+    const { id, title, body, media } = post;
     const listItem = `
     <li>
     <h4><strong>TITLE: ${title}</strong></h4>
-    <p>${body}</p>
+    <p>body: ${body}</p>
+    ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
     </li>`;
     allPosts.innerHTML += listItem;
   });

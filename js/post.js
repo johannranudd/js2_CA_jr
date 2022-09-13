@@ -1,27 +1,22 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 import { getSessionStorage } from './index.js';
 
-const ss = getSessionStorage();
-console.log(ss.token);
-function post() {
-  const res = fetch(`${baseURL}/posts`, {
+export function post() {
+  const ss = getSessionStorage();
+  fetch(`${baseURL}/posts`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${ss.token}`,
     },
     body: JSON.stringify({
-      id: 0,
-      owner: 'string',
-      created: '2022-09-04T16:21:02.042Z',
-      updated: '2022-09-04T16:21:02.042Z',
-      title: 'string',
-      body: 'string',
-      tags: ['string'],
-      media: 'string',
+      title: 'njbr test_1 title',
+      body: 'njbr body',
+      tags: ['njbr tag1', 'tag2'],
+      media:
+        'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
     }),
   });
-  const data = res.json();
-  console.log('ssfsefr:::::', data);
 }
 // post();
