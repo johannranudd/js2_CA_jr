@@ -19,7 +19,7 @@ export function checkIfLoggedIn() {
 }
 window.addEventListener('load', checkIfLoggedIn);
 
-async function getAllPosts(token, searchParams = '') {
+async function getPosts(token, searchParams = '') {
   const res = await fetch(`${baseURL}/posts/${searchParams}`, {
     headers: {
       Accept: 'application/json',
@@ -34,7 +34,7 @@ async function getAllPosts(token, searchParams = '') {
 
 async function displayAllPosts() {
   const sStorage = getSessionStorage();
-  const data = await getAllPosts(sStorage.token, '');
+  const data = await getPosts(sStorage.token, '');
   // 40?_author=true&_comments=true&reactions=true
   console.log('data in displayPosts', data);
 
