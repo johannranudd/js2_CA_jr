@@ -1,0 +1,14 @@
+input {
+  background-color: red;
+  color: green;
+}
+
+label {
+  color: green;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}/*# sourceMappingURL=globals.css.map */

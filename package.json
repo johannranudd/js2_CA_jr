@@ -1,0 +1,27 @@
+{
+  "name": "js2_ca_jr",
+  "version": "1.0.0",
+  "description": "Course assignment, javascript 2, Noroff.",
+  "main": "index.js",
+  "devDependencies": {
+    "sass": "^1.54.9"
+  },
+  "scripts": {
+    "build": "sass src/scss:dist/css",
+    "watch": "sass --watch src/scss:dist/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johannranudd/js2_CA_jr.git"
+  },
+  "keywords": [
+    "social",
+    "media"
+  ],
+  "author": "johann ranudd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johannranudd/js2_CA_jr/issues"
+  },
+  "homepage": "https://github.com/johannranudd/js2_CA_jr#readme"
+}
