@@ -36,7 +36,7 @@ async function displayAllPosts() {
   const sStorage = getSessionStorage();
   const data = await getPosts(sStorage.token, '');
   // 40?_author=true&_comments=true&reactions=true
-  console.log('data in displayPosts', data);
+  // console.log('data in displayPosts', data);
 
   data.map((post) => {
     const { id, title, body, media } = post;
@@ -50,3 +50,25 @@ async function displayAllPosts() {
   });
 }
 displayAllPosts();
+
+async function changePostById(id) {
+  const sStorage = getSessionStorage();
+  const res = await fetch(`${baseURL}/posts/${id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+    body: JSON.stringify({
+      title: 'njbr test_3 title',
+      body: 'njbr test_body_3',
+      tags: ['test2'],
+    }),
+  });
+  // console.log(res.json());
+  const data = await res.json();
+  console.log(data);
+}
+
+// changePostById(57);
