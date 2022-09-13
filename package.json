@@ -7,8 +7,8 @@
     "sass": "^1.54.9"
   },
   "scripts": {
-    "build": "sass src/scss:dist/css",
-    "watch": "sass --watch src/scss:dist/css"
+    "build": "sass src/scss:src/dist/css",
+    "watch": "sass --watch src/scss:src/dist/css"
   },
   "repository": {
     "type": "git",
