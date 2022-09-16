@@ -1,3 +1,15 @@
+@import 'variables';
+
 .contacts {
+  //   position: absolute;
+  //   right: -200px;
   background: #fed;
+  @media (min-width: $mobile-500) {
+    // position: static;
+    // right: 0;
+  }
+}
+
+.show-contacts {
+  //   right: 0%;
 }

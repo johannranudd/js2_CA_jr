@@ -2,6 +2,10 @@
 .main-container {
   .feed-and-contacts-container {
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 100% 0%;
+    @media (min-width: $mobile-500) {
+      // grid-template-columns: 100% 15rem;
+      display: flex;
+    }
   }
 }

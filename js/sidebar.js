@@ -3,11 +3,16 @@ const feedAndContactsContaier = document.querySelector(
 );
 const sidebar = document.querySelector('.sidebar');
 const menuBtn = document.querySelector('.menu-btn');
+const contactsBtn = document.querySelector('.contacts-btn');
+const contacts = document.querySelector('.contacts');
 
 // MOBILE
 
 menuBtn.addEventListener('click', () => {
   sidebar.classList.toggle('show-sidebar');
+});
+contactsBtn.addEventListener('click', () => {
+  contacts.classList.toggle('show-contacts');
 });
 
 // > 500

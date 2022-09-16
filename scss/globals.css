@@ -1,12 +1,18 @@
 .main-container .feed-and-contacts-container {
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 100% 0%;
+}
+@media (min-width: 500px) {
+  .main-container .feed-and-contacts-container {
+    display: flex;
+  }
 }
 
 .sidebar {
   position: fixed;
   height: 100vh;
-  transform: translateX(-200%);
+  width: 95%;
+  transform: translateX(-120%);
   background: #def;
   transition: 0.3s;
 }
@@ -22,14 +28,22 @@
   }
 }
 .show-sidebar {
+  transition: 0.3s;
   transform: translateX(0%);
-  width: 100%;
+}
+
+.feed {
+  background: rgb(234, 159, 159);
+}
+@media (min-width: 500px) {
+  .feed {
+    flex-grow: 1;
+  }
 }
 
 .contacts {
   background: #fed;
 }
-
 .mobilebar {
   position: fixed;
   left: 0;
@@ -61,6 +75,11 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 a {
