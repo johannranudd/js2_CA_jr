@@ -1,0 +1,23 @@
+@import '../utils/variables';
+.main-container {
+  .sidebar {
+    position: fixed;
+    height: 100vh;
+    width: 5rem;
+    background: #def;
+    @media (min-width: 768px) {
+      width: 15rem;
+    }
+  }
+
+  .feed-and-contacts-container {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    .feed {
+    }
+
+    .contacts {
+      background: #fed;
+    }
+  }
+}

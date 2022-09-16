@@ -1,13 +1,38 @@
-.profile-h1 {
-  color: red;
+.main-container .sidebar {
+  position: fixed;
+  height: 100vh;
+  width: 5rem;
+  background: #def;
 }
-
-.login-h1 {
-  color: #b14984;
+@media (min-width: 768px) {
+  .main-container .sidebar {
+    width: 15rem;
+  }
+}
+.main-container .feed-and-contacts-container {
+  display: grid;
+  grid-template-columns: 75% 25%;
+}
+.main-container .feed-and-contacts-container .contacts {
+  background: #fed;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.container-1280 {
+  width: 95%;
+  max-width: 1280px;
+  margin: auto;
 }/*# sourceMappingURL=globals.css.map */

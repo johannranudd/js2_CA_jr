@@ -1,8 +1,24 @@
-@import './pages/profile';
-@import './pages/login';
+@import './pages/index';
+@import './utils/sidebar';
+@import './utils/feed';
+@import './utils/contacts';
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.container-1280 {
+  width: 95%;
+  max-width: 1280px;
+  margin: auto;
 }
