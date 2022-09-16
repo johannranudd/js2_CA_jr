@@ -1,5 +1,22 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { getSessionStorage } from './index.js';
+// import { getSessionStorage } from './index.js';
+
+export function getSessionStorage() {
+  const sStorage = sessionStorage.getItem('isLoggedIn')
+    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+    : null;
+  return sStorage;
+}
+
+export function setSessionStorage(isLoggedIn, token) {
+  sessionStorage.setItem(
+    'isLoggedIn',
+    JSON.stringify({
+      isLoggedIn: isLoggedIn,
+      token: token,
+    })
+  );
+}
 
 export function post() {
   const ss = getSessionStorage();

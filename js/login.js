@@ -3,6 +3,7 @@ const loginForm = document.querySelector('.login-form');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
+import { getSessionStorage, setSessionStorage } from './post.js';
 
 // const loginDetails = {
 //   name: 'Johann_Ranudd',
@@ -79,14 +80,4 @@ async function loginFn(email, password) {
   } catch (e) {
     console.log(e, 'error happened in loginFn()');
   }
-}
-
-export function setSessionStorage(isLoggedIn, token) {
-  sessionStorage.setItem(
-    'isLoggedIn',
-    JSON.stringify({
-      isLoggedIn: isLoggedIn,
-      token: token,
-    })
-  );
 }

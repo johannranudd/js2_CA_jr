@@ -1,12 +1,6 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const allPosts = document.querySelector('.all-posts');
-
-export function getSessionStorage() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
-    : null;
-  return sStorage;
-}
+import { getSessionStorage, setSessionStorage } from './post.js';
 
 export function checkIfLoggedIn() {
   const sStorage = getSessionStorage();
@@ -70,5 +64,24 @@ async function changePostById(id) {
   const data = await res.json();
   console.log(data);
 }
-
 // changePostById(57);
+
+// !test
+
+// async function getAllUsers() {
+//   const sStorage = getSessionStorage();
+//   const res = await fetch(
+//     `${baseURL}/profiles/?_posts=true&_following=true&_followers=true`,
+//     {
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${sStorage.token}`,
+//       },
+//     }
+//   );
+//   const data = await res.json();
+//   console.log(data);
+// }
+
+// getAllUsers();
