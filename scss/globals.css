@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 100% 0%;
 }
-@media (min-width: 500px) {
+@media (min-width: 1024px) {
   .main-container .feed-and-contacts-container {
     display: flex;
   }
@@ -42,8 +42,30 @@
 }
 
 .contacts {
+  position: absolute;
+  right: -110%;
+  height: 100vh;
+  width: 15rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background: #fed;
+  transition: 0.3s;
+  padding-bottom: 10rem;
 }
+@media (min-width: 1024px) {
+  .contacts {
+    position: fixed;
+    right: 2.5%;
+  }
+}
+
+.show-contacts {
+  width: 15rem;
+  position: fixed;
+  right: 2.5%;
+  transition: 0.3s;
+}
+
 .mobilebar {
   position: fixed;
   left: 0;

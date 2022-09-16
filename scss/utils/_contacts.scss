@@ -1,15 +1,24 @@
 @import 'variables';
 
 .contacts {
-  //   position: absolute;
-  //   right: -200px;
+  position: absolute;
+  right: -110%;
+  height: 100vh;
+  width: 15rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background: #fed;
-  @media (min-width: $mobile-500) {
-    // position: static;
-    // right: 0;
+  transition: 0.3s;
+  padding-bottom: 10rem;
+  @media (min-width: $laptop-s) {
+    position: fixed;
+    right: 2.5%;
   }
 }
 
 .show-contacts {
-  //   right: 0%;
+  width: 15rem;
+  position: fixed;
+  right: 2.5%;
+  transition: 0.3s;
 }
