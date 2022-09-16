@@ -1,14 +1,13 @@
-input {
-  background-color: red;
-  color: green;
+.profile-h1 {
+  color: red;
 }
 
-label {
+.login-h1 {
   color: green;
 }
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }/*# sourceMappingURL=globals.css.map */

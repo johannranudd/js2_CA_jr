@@ -1,8 +1,12 @@
-@import './login.scss';
-@import './profile.scss';
+@import './profile';
+@import './login';
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  //   color: red;
 }
