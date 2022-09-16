@@ -1,38 +1,7 @@
 @import '../utils/variables';
 .main-container {
-  .mobilebar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2.2rem;
-    background: rgb(147, 53, 133);
-    @media (min-width: $mobile-500) {
-      display: none;
-    }
-  }
-  .sidebar {
-    position: fixed;
-    height: 100vh;
-    translate: -100vw;
-    background: #def;
-    @media (min-width: $mobile-500) {
-      translate: 0;
-      width: 5rem;
-    }
-    @media (min-width: $tablet) {
-      width: 15rem;
-    }
-  }
-
   .feed-and-contacts-container {
     display: grid;
     grid-template-columns: 75% 25%;
-    .feed {
-    }
-
-    .contacts {
-      background: #fed;
-    }
   }
 }

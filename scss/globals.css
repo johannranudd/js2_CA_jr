@@ -1,39 +1,60 @@
-.main-container .mobilebar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2.2rem;
-  background: rgb(147, 53, 133);
-}
-@media (min-width: 500px) {
-  .main-container .mobilebar {
-    display: none;
-  }
-}
-.main-container .sidebar {
-  position: fixed;
-  height: 100vh;
-  translate: -100vw;
-  background: #def;
-}
-@media (min-width: 500px) {
-  .main-container .sidebar {
-    translate: 0;
-    width: 5rem;
-  }
-}
-@media (min-width: 768px) {
-  .main-container .sidebar {
-    width: 15rem;
-  }
-}
 .main-container .feed-and-contacts-container {
   display: grid;
   grid-template-columns: 75% 25%;
 }
-.main-container .feed-and-contacts-container .contacts {
+
+.sidebar {
+  position: fixed;
+  height: 100vh;
+  transform: translateX(-200%);
+  background: #def;
+  transition: 0.3s;
+}
+@media (min-width: 500px) {
+  .sidebar {
+    transform: translateX(0%);
+    width: 5rem;
+  }
+}
+@media (min-width: 768px) {
+  .sidebar {
+    width: 15rem;
+  }
+}
+.show-sidebar {
+  transform: translateX(0%);
+  width: 100%;
+}
+
+.contacts {
   background: #fed;
+}
+
+.mobilebar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgb(147, 53, 133);
+}
+@media (min-width: 500px) {
+  .mobilebar {
+    display: none;
+  }
+}
+.mobilebar .menu-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.mobilebar .menu-btn .line {
+  height: 3px;
+  width: 2rem;
+  margin-bottom: 7px;
+  background: #000000;
 }
 
 * {
