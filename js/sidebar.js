@@ -7,6 +7,12 @@ window.addEventListener('resize', adjustForSidebar);
 
 function adjustForSidebar() {
   const sidebarWidth = sidebar.getBoundingClientRect().width;
-  feedAndContactsContaier.style.marginLeft = `${sidebarWidth}px`;
+  if (window.innerWidth >= 500) {
+    feedAndContactsContaier.style.marginLeft = `${sidebarWidth}px`;
+    console.log('removing');
+  } else {
+    feedAndContactsContaier.style.marginLeft = `0px`;
+    console.log('NOOOOt removing');
+  }
 }
 adjustForSidebar();

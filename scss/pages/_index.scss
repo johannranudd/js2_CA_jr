@@ -1,11 +1,26 @@
 @import '../utils/variables';
 .main-container {
+  .mobilebar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2.2rem;
+    background: rgb(147, 53, 133);
+    @media (min-width: $mobile-500) {
+      display: none;
+    }
+  }
   .sidebar {
     position: fixed;
     height: 100vh;
-    width: 5rem;
+    translate: -100vw;
     background: #def;
-    @media (min-width: 768px) {
+    @media (min-width: $mobile-500) {
+      translate: 0;
+      width: 5rem;
+    }
+    @media (min-width: $tablet) {
       width: 15rem;
     }
   }
