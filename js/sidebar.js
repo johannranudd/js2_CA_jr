@@ -15,8 +15,6 @@ menuBtn.addEventListener('click', () => {
   sidebar.classList.toggle('show-sidebar');
 });
 contactBtns.forEach((btn) => {
-  // if (window.innerWidth < 1024) {
-  // }
   btn.addEventListener('click', () => {
     contacts.classList.toggle('show-contacts');
     adjustForSidebar();
