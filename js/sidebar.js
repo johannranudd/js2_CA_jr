@@ -14,12 +14,13 @@ import { adjustForSidebar } from './utils.js';
 // MOBILE
 
 menuBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('show-sidebar');
+  // sidebar.classList.toggle('show-sidebar');
+  // keepOlyOneSidebarOpen();
 });
 contactBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    contacts.classList.toggle('show-contacts');
-
+    // contacts.classList.toggle('show-contacts');
+    keepOlyOneSidebarOpen();
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
   });
 });
@@ -27,7 +28,14 @@ contactBtns.forEach((btn) => {
 // !test
 // function keepOlyOneSidebarOpen() {
 //   if (contacts.className.includes('show-contacts')) {
+//     contacts.classList.add('show-contacts');
 //     sidebar.classList.remove('show-sidebar');
+//     console.log('SIDEBAR REMOVED');
+//   }
+//   if (sidebar.className.includes('show-sidebar')) {
+//     sidebar.classList.remove('show-sidebar');
+//     contacts.classList.remove('show-contacts');
+//     console.log('REMOVE CONTACTS');
 //   }
 // }
 // !test

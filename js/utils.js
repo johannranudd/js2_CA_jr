@@ -1,5 +1,22 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 
+export function getSessionStorage() {
+  const sStorage = sessionStorage.getItem('isLoggedIn')
+    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+    : null;
+  return sStorage;
+}
+
+export function setSessionStorage(isLoggedIn, token) {
+  sessionStorage.setItem(
+    'isLoggedIn',
+    JSON.stringify({
+      isLoggedIn: isLoggedIn,
+      token: token,
+    })
+  );
+}
+
 export async function displayAllPosts(list) {
   const sStorage = getSessionStorage();
   const data = await getPosts(sStorage.token, '');
@@ -38,23 +55,6 @@ export function checkIfLoggedIn() {
   } else {
     console.log('you are already logged in as');
   }
-}
-
-export function getSessionStorage() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
-    : null;
-  return sStorage;
-}
-
-export function setSessionStorage(isLoggedIn, token) {
-  sessionStorage.setItem(
-    'isLoggedIn',
-    JSON.stringify({
-      isLoggedIn: isLoggedIn,
-      token: token,
-    })
-  );
 }
 
 export function post() {
