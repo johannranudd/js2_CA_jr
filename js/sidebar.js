@@ -37,13 +37,7 @@ function adjustForSidebar() {
     feedAndContactsContaier.style.marginLeft = `0px`;
   }
   adjustForContacts();
-  // !test
-  // const mainContainerRect = mainContainer.getBoundingClientRect();
-  // console.log(mainContainerRect.width);
-  // if (mainContainerRect.width >= 1280){
-
-  // }
-  // !test
+  contactsElementPositioning();
 }
 adjustForSidebar();
 
@@ -57,26 +51,19 @@ function adjustForContacts() {
   }
 }
 
-// let lastScroll = 0;
-// window.addEventListener('scroll', (e) => {
-//   const listRect = contacts.getBoundingClientRect();
-//   const mobilebarHeight = mobilebar.getBoundingClientRect().height;
-
-//   if (window.pageYOffset > lastScroll) {
-//     console.log('down');
-//     if (listRect.bottom > window.pageYOffset * 2) {
-//     } else {
-//       contacts.style.position = 'fixed';
-//       contacts.style.bottom = `${mobilebarHeight}px`;
-//     }
-//     lastScroll = window.pageYOffset;
-//   } else if (window.pageYOffset < lastScroll) {
-//     if (
-//       listRect.height > window.pageYOffset &&
-//       contacts.className.includes('show-contacts')
-//     ) {
-//       // console.log('erdgrf');
-//     }
-//     lastScroll = window.pageYOffset;
-//   }
-// });
+function contactsElementPositioning() {
+  const mainContainerRect = mainContainer.getBoundingClientRect();
+  if (contacts.className.includes('show-contact') && window.innerWidth < 1024) {
+    contacts.style.right = `2.5%`;
+  } else if (
+    !contacts.className.includes('show-contact') &&
+    window.innerWidth < 1024
+  ) {
+    contacts.style.right = `-110%`;
+  } else if (window.innerWidth > 1024) {
+    contacts.style.right = `2.5%`;
+  }
+  if (mainContainerRect.width >= 1280) {
+    contacts.style.right = `${mainContainerRect.left}px`;
+  }
+}

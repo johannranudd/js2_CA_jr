@@ -42,8 +42,7 @@
 }
 
 .contacts {
-  position: absolute;
-  right: -110%;
+  position: fixed;
   height: 100vh;
   width: 15rem;
   overflow-y: scroll;
@@ -52,17 +51,7 @@
   transition: 0.3s;
   padding-bottom: 10rem;
 }
-@media (min-width: 1024px) {
-  .contacts {
-    position: fixed;
-    right: 2.5%;
-  }
-}
-
 .show-contacts {
-  width: 15rem;
-  position: fixed;
-  right: 2.5%;
   transition: 0.3s;
 }
 

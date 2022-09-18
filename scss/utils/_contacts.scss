@@ -1,8 +1,8 @@
 @import 'variables';
 
 .contacts {
-  position: absolute;
-  right: -110%;
+  position: fixed;
+  // right: -110%;
   height: 100vh;
   width: 15rem;
   overflow-y: scroll;
@@ -11,14 +11,16 @@
   transition: 0.3s;
   padding-bottom: 10rem;
   @media (min-width: $laptop-s) {
-    position: fixed;
-    right: 2.5%;
+    // position: fixed;
+    // right: 2.5%;
+    // left: 97.5%;
+    // right: 0%;
   }
 }
 
 .show-contacts {
-  width: 15rem;
-  position: fixed;
-  right: 2.5%;
+  // width: 15rem;
+  // position: fixed;
+  // right: 2.5%;
   transition: 0.3s;
 }
