@@ -2,12 +2,6 @@
   display: grid;
   grid-template-columns: 100% 0%;
 }
-@media (min-width: 1024px) {
-  .main-container .feed-and-contacts-container {
-    display: flex;
-  }
-}
-
 .sidebar {
   position: fixed;
   height: 100vh;

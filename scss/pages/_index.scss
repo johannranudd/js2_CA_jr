@@ -6,7 +6,7 @@
     display: grid;
     grid-template-columns: 100% 0%;
     @media (min-width: $laptop-s) {
-      display: flex;
+      // display: flex;
       // grid-template-columns: 70% 30%;
     }
   }
