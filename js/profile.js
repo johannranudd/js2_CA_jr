@@ -1,5 +1,5 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-const allPosts = document.querySelectorAll('.all-posts');
+const allPosts = document.querySelector('.all-posts');
 
 import {
   getSessionStorage,

@@ -4,10 +4,14 @@
   // grid-template-columns: repeat(3, 1fr);
   .feed-and-contacts-container {
     display: grid;
-    grid-template-columns: 100% 0%;
+    // grid-template-columns: 100% 0%;
     @media (min-width: $laptop-s) {
-      display: flex;
+      // display: flex;
+      // flex-direction: column;
       // grid-template-columns: 70% 30%;
     }
   }
+  // .feed-and-contacts-container-profile-page {
+  //   background: red;
+  // }
 }

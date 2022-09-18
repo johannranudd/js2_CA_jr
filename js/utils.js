@@ -1,5 +1,4 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-// import { getSessionStorage } from './index.js';
 
 export async function displayAllPosts(list) {
   const sStorage = getSessionStorage();
@@ -77,3 +76,48 @@ export function post() {
   });
 }
 // post();
+
+export function contactsElementPositioning(contacts, mainContainer) {
+  const mainContainerRect = mainContainer.getBoundingClientRect();
+  if (contacts.className.includes('show-contact') && window.innerWidth < 1024) {
+    contacts.style.right = `2.5%`;
+  } else if (
+    !contacts.className.includes('show-contact') &&
+    window.innerWidth < 1024
+  ) {
+    contacts.style.right = `-110%`;
+  } else if (window.innerWidth > 1024) {
+    contacts.style.right = `2.5%`;
+  }
+  if (mainContainerRect.width >= 1280) {
+    contacts.style.right = `${mainContainerRect.left}px`;
+  }
+}
+
+export function adjustForContacts(feedAndContactsContaier, contacts) {
+  // contacts.className.includes('show-contacts') &&
+  const contactWidth = contacts.getBoundingClientRect().width;
+  if (window.innerWidth >= 1024) {
+    feedAndContactsContaier.style.marginRight = `${contactWidth}px`;
+  } else {
+    feedAndContactsContaier.style.marginRight = `0px`;
+  }
+}
+
+export function adjustForSidebar(
+  sidebar,
+  feedAndContactsContaier,
+  contacts,
+  mainContainer
+) {
+  const sidebarWidth = sidebar.getBoundingClientRect().width;
+
+  if (window.innerWidth >= 500) {
+    feedAndContactsContaier.style.marginLeft = `${sidebarWidth}px`;
+    sidebar.classList.remove('show-sidebar');
+  } else {
+    feedAndContactsContaier.style.marginLeft = `0px`;
+  }
+  adjustForContacts(feedAndContactsContaier, contacts);
+  contactsElementPositioning(contacts, mainContainer);
+}
