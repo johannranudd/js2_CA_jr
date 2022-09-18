@@ -1,3 +1,12 @@
-// import { getPosts, displayAllPosts } from './index';
+const baseURL = 'https://nf-api.onrender.com/api/v1/social';
+const allPosts = document.querySelectorAll('.all-posts');
 
-// displayAllPosts();
+import {
+  getSessionStorage,
+  setSessionStorage,
+  checkIfLoggedIn,
+  getPosts,
+  displayAllPosts,
+} from './utils.js';
+
+displayAllPosts(allPosts);
