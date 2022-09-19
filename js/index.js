@@ -10,8 +10,6 @@ import {
 
 window.addEventListener('load', checkIfLoggedIn);
 
-displayAllPosts(allPosts);
-
 async function changePostById(id) {
   const sStorage = getSessionStorage();
   const res = await fetch(`${baseURL}/posts/${id}`, {

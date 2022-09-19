@@ -17,9 +17,10 @@ export function setSessionStorage(isLoggedIn, token) {
   );
 }
 
-export async function displayAllPosts(list) {
-  const sStorage = getSessionStorage();
-  const data = await getPosts(sStorage.token, '');
+export async function displayAllPosts(list, fetchMethod) {
+  // const sStorage = getSessionStorage();
+  list.innerHTML = '';
+  const data = await fetchMethod;
   // 40?_author=true&_comments=true&reactions=true
   // console.log('data in displayPosts', data);
   data.map((post) => {
@@ -35,17 +36,35 @@ export async function displayAllPosts(list) {
 }
 
 export async function getPosts(token, searchParams = '') {
-  const res = await fetch(`${baseURL}/posts/${searchParams}`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const res = await fetch(
+    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   const data = await res.json();
   return data;
 }
 // getAllPosts(baseURL);
+
+export async function getSortedPosts(token, sort, sortOrder) {
+  const res = await fetch(
+    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
 
 export function checkIfLoggedIn() {
   const sStorage = getSessionStorage();
