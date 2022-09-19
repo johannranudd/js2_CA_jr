@@ -3,13 +3,9 @@ const loginForm = document.querySelector('.login-form');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
-import { getSessionStorage, setSessionStorage } from './post.js';
+import { getSessionStorage, setSessionStorage } from './utils.js';
 
-// const loginDetails = {
-//   name: 'Johann_Ranudd',
-//   email: 'JohRan33976@stud.noroff.no',
-//   password: 'canBePublic12345@',
-// };
+// new changes made utils.js
 
 async function registerFn(loginDetails) {
   fetch(`${baseURL}/auth/register`, {
