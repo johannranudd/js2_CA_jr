@@ -9,36 +9,40 @@ const contacts = document.querySelector('.contacts');
 const listOfContacts = document.querySelector('.list-of-contacts');
 const mobilebar = document.querySelector('.mobilebar');
 const mainContainer = document.querySelector('.main-container');
-import { adjustForSidebar } from './utils.js';
+import { adjustForSidebar, contactsElementPositioning } from './utils.js';
 
 // MOBILE
 
-menuBtn.addEventListener('click', () => {
+menuBtn.addEventListener('click', (e) => {
   // sidebar.classList.toggle('show-sidebar');
-  // keepOlyOneSidebarOpen();
+  keepOlyOneSidebarOpen(e);
 });
 contactBtns.forEach((btn) => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', (e) => {
     // contacts.classList.toggle('show-contacts');
-    keepOlyOneSidebarOpen();
+    keepOlyOneSidebarOpen(e);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
   });
 });
 
-// !test
-// function keepOlyOneSidebarOpen() {
-//   if (contacts.className.includes('show-contacts')) {
-//     contacts.classList.add('show-contacts');
-//     sidebar.classList.remove('show-sidebar');
-//     console.log('SIDEBAR REMOVED');
-//   }
-//   if (sidebar.className.includes('show-sidebar')) {
-//     sidebar.classList.remove('show-sidebar');
-//     contacts.classList.remove('show-contacts');
-//     console.log('REMOVE CONTACTS');
-//   }
-// }
-// !test
+function keepOlyOneSidebarOpen(e) {
+  if (e.target.className === 'contacts-btn') {
+    if (!contacts.className.includes('show-contacts')) {
+      contacts.classList.add('show-contacts');
+    } else {
+      contacts.classList.remove('show-contacts');
+    }
+    sidebar.classList.remove('show-sidebar');
+  } else if (e.target.className === 'menu-btn') {
+    if (!sidebar.className.includes('show-sidebar')) {
+      sidebar.classList.add('show-sidebar');
+    } else {
+      sidebar.classList.remove('show-sidebar');
+    }
+    contacts.classList.remove('show-contacts');
+  }
+  contactsElementPositioning(contacts, mainContainer);
+}
 // > 500
 
 // adjustForSidebar();
