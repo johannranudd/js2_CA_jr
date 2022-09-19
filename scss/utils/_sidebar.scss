@@ -1,0 +1,24 @@
+@import 'variables';
+
+.sidebar {
+  position: fixed;
+  height: 100vh;
+  width: 95%;
+  transform: translateX(-120%);
+  background: #def;
+  transition: 0.3s;
+  @media (min-width: $mobile-500) {
+    transform: translateX(0%);
+    width: 5rem;
+  }
+  @media (min-width: $tablet) {
+    width: 15rem;
+  }
+  .logo {
+  }
+}
+
+.show-sidebar {
+  transition: 0.3s;
+  transform: translateX(0%);
+}

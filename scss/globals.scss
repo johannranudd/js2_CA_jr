@@ -2,11 +2,17 @@
 @import './utils/sidebar';
 @import './utils/feed';
 @import './utils/contacts';
+@import './utils/mobilebar';
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 a {
@@ -15,6 +21,10 @@ a {
 
 ul {
   list-style-type: none;
+}
+
+img {
+  width: 100%;
 }
 
 .container-1280 {

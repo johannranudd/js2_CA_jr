@@ -1,23 +1,17 @@
 @import '../utils/variables';
 .main-container {
-  .sidebar {
-    position: fixed;
-    height: 100vh;
-    width: 5rem;
-    background: #def;
-    @media (min-width: 768px) {
-      width: 15rem;
-    }
-  }
-
+  // display: grid;
+  // grid-template-columns: repeat(3, 1fr);
   .feed-and-contacts-container {
     display: grid;
-    grid-template-columns: 75% 25%;
-    .feed {
-    }
-
-    .contacts {
-      background: #fed;
+    // grid-template-columns: 100% 0%;
+    @media (min-width: $laptop-s) {
+      // display: flex;
+      // flex-direction: column;
+      // grid-template-columns: 70% 30%;
     }
   }
+  // .feed-and-contacts-container-profile-page {
+  //   background: red;
+  // }
 }

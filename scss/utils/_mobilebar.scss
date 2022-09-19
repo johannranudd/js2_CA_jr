@@ -1,0 +1,28 @@
+@import 'variables';
+.mobilebar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgb(147, 53, 133);
+  @media (min-width: $mobile-500) {
+    display: none;
+  }
+  .logo {
+  }
+  .menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    .line {
+      height: 3px;
+      width: 2rem;
+      margin-bottom: 7px;
+      background: $black;
+    }
+    // line-1
+  }
+}
