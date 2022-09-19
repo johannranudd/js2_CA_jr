@@ -121,3 +121,23 @@ export function adjustForSidebar(
   adjustForContacts(feedAndContactsContaier, contacts);
   contactsElementPositioning(contacts, mainContainer);
 }
+
+export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
+  if (e.target.className === 'contacts-btn') {
+    if (!contacts.className.includes('show-contacts')) {
+      contacts.classList.add('show-contacts');
+    } else {
+      contacts.classList.remove('show-contacts');
+    }
+    sidebar.classList.remove('show-sidebar');
+  }
+  if (e.target.className === 'menu-btn') {
+    if (!sidebar.className.includes('show-sidebar')) {
+      sidebar.classList.add('show-sidebar');
+    } else {
+      sidebar.classList.remove('show-sidebar');
+    }
+    contacts.classList.remove('show-contacts');
+  }
+  contactsElementPositioning(contacts, mainContainer);
+}
