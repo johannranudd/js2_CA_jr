@@ -47,7 +47,7 @@ searchFormPosts.addEventListener('submit', async (e) => {
   const sStorage = getSessionStorage();
   const searchValue = searchPostsInput.value;
   if (searchValue) {
-    const data = await getPosts(sStorage.token, '', Infinity);
+    const data = await getPosts(sStorage.token, '');
     const filteredData = data.filter((item) => {
       if (
         item.title.includes(searchValue) ||

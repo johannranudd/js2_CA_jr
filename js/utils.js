@@ -28,7 +28,7 @@ export async function displayAllPosts(list, fetchMethod) {
 
     const listItem = `
     <li>
-    <h4>author: ${author.name}</h4>
+    <h4>author: ${author.name && author.name}</h4>
     <p>title: ${title}</p>
     <p>body: ${body}</p>
     ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
@@ -36,10 +36,23 @@ export async function displayAllPosts(list, fetchMethod) {
     list.innerHTML += listItem;
   });
 }
+// `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
 
-export async function getPosts(token, searchParams = '', limit = 20) {
+function setFetchLimitURL(limit) {
+  if (!limit) {
+    return;
+  } else {
+    let limitQuery;
+    console.log('limit:::', limit);
+    limitQuery = `&limit=${limit}`;
+    return limitQuery;
+  }
+}
+
+export async function getPosts(token, searchParams = '', limit = '') {
+  const limitQuery = setFetchLimitURL(limit);
   const res = await fetch(
-    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`,
+    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`,
     {
       headers: {
         Accept: 'application/json',
@@ -50,13 +63,18 @@ export async function getPosts(token, searchParams = '', limit = 20) {
   );
 
   const data = await res.json();
+  // console.log(data);
   return data;
 }
 // getAllPosts(baseURL);
 
-export async function getSortedPosts(token, sort, sortOrder) {
+// `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
+
+export async function getSortedPosts(token, sort, sortOrder, limit) {
+  const limitQuery = setFetchLimitURL(limit);
+  console.log('limitQuery in getSortedPosts():::', limitQuery);
   const res = await fetch(
-    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
+    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true${limitQuery}`,
     {
       headers: {
         Accept: 'application/json',
@@ -66,6 +84,7 @@ export async function getSortedPosts(token, sort, sortOrder) {
     }
   );
   const data = await res.json();
+  console.log(data);
   return data;
 }
 
