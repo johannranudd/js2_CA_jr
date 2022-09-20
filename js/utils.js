@@ -24,10 +24,12 @@ export async function displayAllPosts(list, fetchMethod) {
   // 40?_author=true&_comments=true&reactions=true
   // console.log('data in displayPosts', data);
   data.map((post) => {
-    const { id, title, body, media } = post;
+    const { id, title, body, media, author } = post;
+
     const listItem = `
     <li>
-    <h4><strong>TITLE: ${title}</strong></h4>
+    <h4>author: ${author.name}</h4>
+    <p>title: ${title}</p>
     <p>body: ${body}</p>
     ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
     </li>`;
@@ -35,9 +37,9 @@ export async function displayAllPosts(list, fetchMethod) {
   });
 }
 
-export async function getPosts(token, searchParams = '') {
+export async function getPosts(token, searchParams = '', limit = 20) {
   const res = await fetch(
-    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true`,
+    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`,
     {
       headers: {
         Accept: 'application/json',
@@ -46,6 +48,7 @@ export async function getPosts(token, searchParams = '') {
       },
     }
   );
+
   const data = await res.json();
   return data;
 }
