@@ -48,13 +48,9 @@ adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
 
 sortByOldestBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
-  // const data = await getSortedPosts(sStorage.token, 'created', 'asc');
-  // console.log(data);
   displayAllPosts(allPosts, getSortedPosts(sStorage.token, 'created', 'asc'));
 });
 sortByNewestBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
-  const tes = await getSortedPosts(sStorage.token, 'created', 'desc');
-  console.log(tes);
   displayAllPosts(allPosts, getSortedPosts(sStorage.token, 'created', 'desc'));
 });

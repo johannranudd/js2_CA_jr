@@ -98,10 +98,13 @@ export function post() {
 
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();
-  if (contacts.className.includes('show-contact') && window.innerWidth < 1024) {
+  if (
+    contacts.className.includes('show-contacts') &&
+    window.innerWidth < 1024
+  ) {
     contacts.style.right = `2.5%`;
   } else if (
-    !contacts.className.includes('show-contact') &&
+    !contacts.className.includes('show-contacts') &&
     window.innerWidth < 1024
   ) {
     contacts.style.right = `-110%`;
