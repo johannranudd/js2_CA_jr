@@ -77,15 +77,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 window.addEventListener('DOMContentLoaded', () => {
   const sStorage = getSessionStorage();
   displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-  // setTimeout(() => {
-
-  // }, 1000);
-  // if (allPosts.children) {
-  //   console.log('have children');
-
-  // } else {
-  //   console.log('no children');
-  // }
 });
 
 menuBtn.addEventListener('click', (e) => {

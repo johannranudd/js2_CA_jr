@@ -1,0 +1,38 @@
+.post-component {
+  .home-component {
+    position: fixed;
+    width: 100%;
+    background: white;
+    height: 2.3rem;
+    border-bottom: 1px solid black;
+  }
+  .profile-img-text-input {
+    display: flex;
+    margin-top: 2.3rem;
+    .profile-image {
+      width: 70px;
+      height: 70px;
+    }
+    .post-title-and-body-container {
+      width: 100%;
+      .post-title {
+      }
+      .post-textarea {
+        width: 100%;
+        max-width: 400px;
+        height: 60px;
+        font-size: 1rem;
+        border: none;
+        border-bottom: 1px solid black;
+        max-height: 330px;
+        padding: 0.5rem;
+        &:focus {
+          outline: none;
+          border-bottom: 2px solid black;
+        }
+      }
+    }
+  }
+  .add-image-container {
+  }
+}

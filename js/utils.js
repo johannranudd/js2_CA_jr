@@ -145,7 +145,7 @@ export function adjustForSidebar(
 }
 
 export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
-  if (e.target.className === 'contacts-btn') {
+  if (e.currentTarget.className === 'contacts-btn') {
     if (!contacts.className.includes('show-contacts')) {
       contacts.classList.add('show-contacts');
     } else {
@@ -153,7 +153,7 @@ export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
     }
     sidebar.classList.remove('show-sidebar');
   }
-  if (e.target.className === 'menu-btn') {
+  if (e.currentTarget.className === 'menu-btn') {
     if (!sidebar.className.includes('show-sidebar')) {
       sidebar.classList.add('show-sidebar');
     } else {
