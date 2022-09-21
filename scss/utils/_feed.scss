@@ -1,12 +1,21 @@
 @import 'variables';
 .feed {
-  background: rgb(234, 159, 159);
   .filter-and-search-posts {
     button {
       color: red;
     }
   }
-  @media (min-width: $mobile-500) {
-    // flex-grow: 1;
+  .all-posts {
+    background: rgb(234, 159, 159);
+    // margin-bottom: 4rem;
+  }
+  .load-more-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4rem;
+    .load-more-btn {
+      padding: 0.5rem 1rem;
+    }
   }
 }

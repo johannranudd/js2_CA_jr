@@ -17,33 +17,36 @@ export function setSessionStorage(isLoggedIn, token) {
   );
 }
 
-export async function displayAllPosts(list, fetchMethod) {
-  // const sStorage = getSessionStorage();
-  list.innerHTML = '';
+export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
+  if (!isAddingToPrevList) {
+    list.innerHTML = '';
+  }
   const data = await fetchMethod;
   // 40?_author=true&_comments=true&reactions=true
   // console.log('data in displayPosts', data);
-  data.map((post) => {
-    const { id, title, body, media, author } = post;
+  if (data) {
+    data.map((post) => {
+      const { id, title, body, media, author } = post;
 
-    const listItem = `
+      const listItem = `
     <li>
     <h4>author: ${author.name && author.name}</h4>
     <p>title: ${title}</p>
     <p>body: ${body}</p>
     ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
     </li>`;
-    list.innerHTML += listItem;
-  });
+      list.innerHTML += listItem;
+    });
+  }
 }
 // `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
 
 function setFetchLimitURL(limit) {
   if (!limit) {
-    return;
+    return '';
   } else {
     let limitQuery;
-    console.log('limit:::', limit);
+    // console.log('limit:::', limit);
     limitQuery = `&limit=${limit}`;
     return limitQuery;
   }
@@ -70,11 +73,14 @@ export async function getPosts(token, searchParams = '', limit = '') {
 
 // `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
 
-export async function getSortedPosts(token, sort, sortOrder, limit) {
+export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
   const limitQuery = setFetchLimitURL(limit);
-  console.log('limitQuery in getSortedPosts():::', limitQuery);
+  // console.log('limitQuery in getSortedPosts():::', limitQuery);
+  // hvis offset er 0
+  // hvis offsett er mer en 0
+
   const res = await fetch(
-    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true${limitQuery}`,
+    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
     {
       headers: {
         Accept: 'application/json',
@@ -84,7 +90,7 @@ export async function getSortedPosts(token, sort, sortOrder, limit) {
     }
   );
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
   return data;
 }
 

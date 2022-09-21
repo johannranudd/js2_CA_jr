@@ -25,12 +25,22 @@
   transform: translateX(0%);
 }
 
-.feed {
-  background: rgb(234, 159, 159);
-}
 .feed .filter-and-search-posts button {
   color: red;
 }
+.feed .all-posts {
+  background: rgb(234, 159, 159);
+}
+.feed .load-more-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+.feed .load-more-btn-container .load-more-btn {
+  padding: 0.5rem 1rem;
+}
+
 .contacts {
   position: fixed;
   height: 100vh;
