@@ -17,22 +17,75 @@ const searchBtn = document.querySelector('.search-btn');
 const searchFormPosts = document.querySelector('.search-form-posts');
 const allPosts = document.querySelector('.all-posts');
 const loadMoreBtn = document.querySelector('.load-more-btn');
+// const singlePostFeed = document.querySelectorAll('.single-post-feed');
+
 import {
   adjustForSidebar,
   keepOlyOneSidebarOpen,
   getPosts,
   getSessionStorage,
   getSortedPosts,
-  displayAllPosts,
 } from './utils.js';
 
 let currentOffset = 0;
 let limit = 20;
+
+export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
+  if (!isAddingToPrevList) {
+    list.innerHTML = '';
+  }
+  const data = await fetchMethod;
+  // console.log('data in displayPosts', data);
+  if (data) {
+    data.map((post) => {
+      const { id, title, body, media, author } = post;
+
+      const listItem = `
+    <li class="single-post-feed" data-id="${id}">
+    <h4>author: ${author.name && author.name}</h4>
+    <p>title: ${title}</p>
+    <p>body: ${body}</p>
+    ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
+    </li>`;
+      list.innerHTML += listItem;
+
+      // listen for click to open modal with post/id
+      const singlePostFeed = document.querySelectorAll('.single-post-feed');
+      singlePostFeed.forEach((post) => {
+        post.addEventListener('click', async (e) => {
+          const sStorage = getSessionStorage();
+          const postID = Number(e.currentTarget.dataset.id);
+          const singleData = await getPosts(sStorage.token, postID, '');
+          const { id, title, body, media, author } = singleData;
+          const singleListItem = `
+              <li class="single-post-feed" data-id="${id}">
+              <h4>author: ${author.name && author.name}</h4>
+              <p>title: ${title}</p>
+              <p>body: ${body}</p>
+              ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
+              </li>`;
+          list.innerHTML = singleListItem;
+          // ** remove load more btn
+        });
+      });
+    });
+  }
+}
+
 // eventListeners
 
 window.addEventListener('DOMContentLoaded', () => {
   const sStorage = getSessionStorage();
   displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+  // setTimeout(() => {
+
+  // }, 1000);
+  // if (allPosts.children) {
+  //   console.log('have children');
+
+  // } else {
+  //   console.log('no children');
+  // }
 });
 
 menuBtn.addEventListener('click', (e) => {
@@ -131,3 +184,5 @@ loadMoreBtn.addEventListener('click', async () => {
     console.log('wanring: there are no mote posts lodamore eventlistener');
   }
 });
+
+// press post

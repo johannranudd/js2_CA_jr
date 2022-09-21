@@ -8,6 +8,12 @@
   .all-posts {
     background: rgb(234, 159, 159);
     // margin-bottom: 4rem;
+    .single-post-feed {
+      cursor: pointer;
+      &:hover {
+        background: #fed;
+      }
+    }
   }
   .load-more-btn-container {
     display: flex;

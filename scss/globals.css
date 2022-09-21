@@ -31,6 +31,12 @@
 .feed .all-posts {
   background: rgb(234, 159, 159);
 }
+.feed .all-posts .single-post-feed {
+  cursor: pointer;
+}
+.feed .all-posts .single-post-feed:hover {
+  background: #fed;
+}
 .feed .load-more-btn-container {
   display: flex;
   justify-content: center;

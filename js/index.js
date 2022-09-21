@@ -5,7 +5,6 @@ import {
   setSessionStorage,
   checkIfLoggedIn,
   getPosts,
-  displayAllPosts,
 } from './utils.js';
 
 window.addEventListener('load', checkIfLoggedIn);
