@@ -32,8 +32,7 @@ let limit = 20;
 
 window.addEventListener('DOMContentLoaded', () => {
   const sStorage = getSessionStorage();
-  currentOffset = 20;
-  displayAllPosts(allPosts, getPosts(sStorage.token, '', currentOffset), false);
+  displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
 });
 
 menuBtn.addEventListener('click', (e) => {
@@ -63,15 +62,16 @@ searchFormPosts.addEventListener('submit', async (e) => {
     });
     if (filteredData.length > 0) {
       // remove load more btn here
-      displayAllPosts(allPosts, filteredData, false);
       currentOffset = 0;
+      displayAllPosts(allPosts, filteredData, false);
     }
   } else {
-    displayAllPosts(
-      allPosts,
-      getPosts(sStorage.token, '', currentOffset),
-      false
-    );
+    //**  display a warning here
+    // displayAllPosts(
+    //   allPosts,
+    //   getPosts(sStorage.token, '', currentOffset),
+    //   false
+    // );
   }
 });
 
@@ -84,7 +84,7 @@ adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
 
 // sort by ascending
 
-// let isDescending = true;
+let isDescending = true;
 
 sortByOldestBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
@@ -94,6 +94,7 @@ sortByOldestBtn.addEventListener('click', async () => {
     getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
     false
   );
+  isDescending = false;
 });
 // sort by descending
 sortByNewestBtn.addEventListener('click', async () => {
@@ -104,20 +105,28 @@ sortByNewestBtn.addEventListener('click', async () => {
     getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
     false
   );
+  isDescending = true;
 });
 
 // load more
 loadMoreBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
   const data = await getPosts(sStorage.token, '', '');
-  console.log(currentOffset);
   if (currentOffset < data.length) {
-    displayAllPosts(
-      allPosts,
-      getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
-      true
-    );
     currentOffset += 20;
+    if (isDescending) {
+      displayAllPosts(
+        allPosts,
+        getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
+        true
+      );
+    } else {
+      displayAllPosts(
+        allPosts,
+        getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
+        true
+      );
+    }
   } else {
     console.log('wanring: there are no mote posts lodamore eventlistener');
   }
