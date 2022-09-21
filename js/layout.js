@@ -32,8 +32,8 @@ let limit = 20;
 
 window.addEventListener('DOMContentLoaded', () => {
   const sStorage = getSessionStorage();
-  displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
   currentOffset = 20;
+  displayAllPosts(allPosts, getPosts(sStorage.token, '', currentOffset), false);
 });
 
 menuBtn.addEventListener('click', (e) => {
@@ -64,10 +64,14 @@ searchFormPosts.addEventListener('submit', async (e) => {
     if (filteredData.length > 0) {
       // remove load more btn here
       displayAllPosts(allPosts, filteredData, false);
+      currentOffset = 0;
     }
   } else {
-    displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-    currentOffset = 20;
+    displayAllPosts(
+      allPosts,
+      getPosts(sStorage.token, '', currentOffset),
+      false
+    );
   }
 });
 
@@ -80,11 +84,10 @@ adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
 
 // sort by ascending
 
-let isDescending = true;
+// let isDescending = true;
 
 sortByOldestBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
-  // isDescending = false;
   currentOffset = 0;
   displayAllPosts(
     allPosts,
@@ -94,7 +97,6 @@ sortByOldestBtn.addEventListener('click', async () => {
 });
 // sort by descending
 sortByNewestBtn.addEventListener('click', async () => {
-  // isDescending = true;
   const sStorage = getSessionStorage();
   currentOffset = 0;
   displayAllPosts(
@@ -108,13 +110,14 @@ sortByNewestBtn.addEventListener('click', async () => {
 loadMoreBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();
   const data = await getPosts(sStorage.token, '', '');
+  console.log(currentOffset);
   if (currentOffset < data.length) {
-    currentOffset += 20;
     displayAllPosts(
       allPosts,
       getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
       true
     );
+    currentOffset += 20;
   } else {
     console.log('wanring: there are no mote posts lodamore eventlistener');
   }

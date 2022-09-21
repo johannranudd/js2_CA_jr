@@ -45,9 +45,7 @@ function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
   } else {
-    let limitQuery;
-    // console.log('limit:::', limit);
-    limitQuery = `&limit=${limit}`;
+    let limitQuery = `&limit=${limit}`;
     return limitQuery;
   }
 }
