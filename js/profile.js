@@ -6,7 +6,7 @@ import {
   setSessionStorage,
   checkIfLoggedIn,
   getPosts,
-  displayAllPosts,
 } from './utils.js';
+import { displayAllPosts } from './layout';
 
 displayAllPosts(allPosts);

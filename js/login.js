@@ -5,8 +5,6 @@ const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.js';
 
-// new changes made utils.js
-
 async function registerFn(loginDetails) {
   fetch(`${baseURL}/auth/register`, {
     method: 'POST',
