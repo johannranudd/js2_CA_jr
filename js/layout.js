@@ -36,16 +36,25 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
+  /*
+  <div class="post-image-container">
+      ${
+        media.length > 10
+          ? `<img class="post-image" src=${media} alt="test" />`
+          : ''
+      }
+      </div>
+  */
   if (data) {
     data.map((post) => {
       const { id, title, body, media, author } = post;
 
       const listItem = `
     <li class="single-post-feed" data-id="${id}">
-    <h4>author: ${author.name && author.name}</h4>
-    <p>title: ${title}</p>
-    <p>body: ${body}</p>
-    ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
+      <p class="post-author">author: ${author.name && author.name}</p>
+      <p class="post-title">title: ${title}</p>
+      <p class="post-body">body: ${body}</p>
+      
     </li>`;
       list.innerHTML += listItem;
 
@@ -59,10 +68,16 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
               <li class="single-post-feed" data-id="${id}">
-              <h4>author: ${author.name && author.name}</h4>
-              <p>title: ${title}</p>
-              <p>body: ${body}</p>
-              ${media.length > 10 ? `<img src=${media} alt="test" />` : ''}
+                <h4>author: ${author.name && author.name}</h4>
+                <p>title: ${title}</p>
+                <p>body: ${body}</p>
+                <div class="post-image-container">
+                    ${
+                      media.length > 10
+                        ? `<img class="post-image" src=${media} alt="test" />`
+                        : ''
+                    }
+                </div>
               </li>`;
           list.innerHTML = singleListItem;
           // ** remove load more btn

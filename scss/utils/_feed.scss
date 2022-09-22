@@ -1,5 +1,6 @@
 @import 'variables';
 .feed {
+  flex: 1 1 0;
   .filter-and-search-posts {
     button {
       color: red;
@@ -10,6 +11,21 @@
     // margin-bottom: 4rem;
     .single-post-feed {
       cursor: pointer;
+      .post-author {
+      }
+      .post-title {
+      }
+      .post-body {
+      }
+      .post-image-container {
+        // min-width: 200px;
+        .post-image {
+          // object-fit: contain;
+          max-width: 100%;
+          // max-height: 100%;
+        }
+      }
+
       &:hover {
         background: #fed;
       }

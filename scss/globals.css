@@ -25,6 +25,9 @@
   transform: translateX(0%);
 }
 
+.feed {
+  flex: 1 1 0;
+}
 .feed .filter-and-search-posts button {
   color: red;
 }
@@ -33,6 +36,9 @@
 }
 .feed .all-posts .single-post-feed {
   cursor: pointer;
+}
+.feed .all-posts .single-post-feed .post-image-container .post-image {
+  max-width: 100%;
 }
 .feed .all-posts .single-post-feed:hover {
   background: #fed;
@@ -138,10 +144,6 @@ a {
 
 ul {
   list-style-type: none;
-}
-
-img {
-  width: 100%;
 }
 
 .container-1280 {
