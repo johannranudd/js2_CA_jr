@@ -36,15 +36,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
-  /*
-  <div class="post-image-container">
-      ${
-        media.length > 10
-          ? `<img class="post-image" src=${media} alt="test" />`
-          : ''
-      }
-      </div>
-  */
   if (data) {
     data.map((post) => {
       const { id, title, body, media, author } = post;
@@ -71,6 +62,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
+          // console.log(postID);
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
               <li class="single-post-feed" data-id="${id}">

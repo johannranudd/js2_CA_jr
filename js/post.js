@@ -1,3 +1,5 @@
+import { post } from './utils.js';
+
 const postForm = document.querySelector('.post-form');
 const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
@@ -9,9 +11,15 @@ const uploadImgeInput = document.querySelector('.upload-img-input');
 const homeComponent = document.querySelector('.home-component');
 const feedContainer = document.querySelector('.feed');
 
-window.addEventListener('resize', () => {
+function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
   homeComponent.style.width = `${feedRect.width}px`;
+}
+window.addEventListener('DOMContentLoaded', () => {
+  adjustHomeComponent();
+});
+window.addEventListener('resize', () => {
+  adjustHomeComponent();
 });
 
 // eventlistener for textarea
@@ -32,8 +40,9 @@ uploadImgeInput.addEventListener('change', () => {
     alt.value = 'Your uploaded image';
     img.setAttributeNode(alt);
     displayImageContainer.appendChild(img);
-    console.log(displayImageContainer);
+    // console.log(displayImageContainer);
   };
+  // console.log(uploadImgeInput.files[0]);
   reader.readAsDataURL(uploadImgeInput.files[0]);
 });
 
@@ -44,14 +53,19 @@ postForm.addEventListener('submit', (e) => {
   const titleInputValue = postTitleInput.value;
   const textareaValue = textareaPost.value;
   const image = displayImageContainer.querySelector('img');
-  console.log('sub');
-  console.log(image.src);
-  console.log(textareaValue);
-  console.log(titleInputValue);
+  // console.log(image.src);
+  // console.log(textareaValue);
+  // console.log(titleInputValue);
   const submitObject = {
-    // organize submitted values above
-    // make sure its JSON
-    // submit to a POST req, look in docs
-    // look in feed to see if works
+    title: titleInputValue, // Required
+    body: textareaValue, // Required
+    media: image.src, // Optional
   };
+  // console.log(submitObject);
+  post(submitObject);
+
+  // organize submitted values above
+  // make sure its JSON
+  // submit to a POST req, look in docs
+  // look in feed to see if works
 });

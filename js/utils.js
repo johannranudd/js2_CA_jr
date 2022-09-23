@@ -76,8 +76,15 @@ export function checkIfLoggedIn() {
   }
 }
 
-export function post() {
+export function post(req) {
   const ss = getSessionStorage();
+  const test = {
+    title: 'njbr test_1 title',
+    body: 'njbr body',
+    tags: ['njbr tag1', 'tag2'],
+    media:
+      'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
+  };
   fetch(`${baseURL}/posts`, {
     method: 'POST',
     headers: {
@@ -85,16 +92,17 @@ export function post() {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${ss.token}`,
     },
-    body: JSON.stringify({
-      title: 'njbr test_1 title',
-      body: 'njbr body',
-      tags: ['njbr tag1', 'tag2'],
-      media:
-        'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
-    }),
+    body: JSON.stringify(req),
   });
 }
 // post();
+// body: JSON.stringify({
+//       title: 'njbr test_1 title',
+//       body: 'njbr body',
+//       tags: ['njbr tag1', 'tag2'],
+//       media:
+//         'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
+//     }),
 
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();
