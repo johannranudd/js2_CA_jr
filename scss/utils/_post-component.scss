@@ -50,7 +50,7 @@
           border-radius: 100px;
         }
       }
-      .add-image-container {
+      .display-image-container {
       }
       .add-items-and-submit-btn-contianer {
         display: flex;
@@ -58,9 +58,17 @@
         align-items: center;
         max-width: 400px;
         .add-items-btns {
-          button {
+          .custom-file-upload {
+            cursor: pointer;
+            input[type='file'] {
+              display: none;
+            }
+            .fa-image {
+              font-size: 1.5rem;
+            }
           }
         }
+
         .submit-post-btn {
         }
       }

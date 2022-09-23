@@ -150,6 +150,15 @@
   align-items: center;
   max-width: 400px;
 }
+.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload {
+  cursor: pointer;
+}
+.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload input[type=file] {
+  display: none;
+}
+.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
+  font-size: 1.5rem;
+}
 * {
   padding: 0;
   margin: 0;
