@@ -41,5 +41,17 @@ uploadImgeInput.addEventListener('change', () => {
 
 postForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  const titleInputValue = postTitleInput.value;
+  const textareaValue = textareaPost.value;
+  const image = displayImageContainer.querySelector('img');
   console.log('sub');
+  console.log(image.src);
+  console.log(textareaValue);
+  console.log(titleInputValue);
+  const submitObject = {
+    // organize submitted values above
+    // make sure its JSON
+    // submit to a POST req, look in docs
+    // look in feed to see if works
+  };
 });

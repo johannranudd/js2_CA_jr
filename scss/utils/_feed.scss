@@ -1,5 +1,9 @@
 @import 'variables';
 .feed {
+  // display: flex;
+  // flex-direction: column;
+  // flex: 1 1 0;
+  overflow-x: hidden;
   .filter-and-search-posts {
     button {
       // color: red;
@@ -13,7 +17,7 @@
       p {
         // white-space: 'word-wrap';
         // overflow-wrap: break-word;
-        word-wrap: break-word;
+        // word-wrap: break-word;
         hyphens: auto;
       }
       // .post-author {

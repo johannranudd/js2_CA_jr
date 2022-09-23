@@ -25,6 +25,9 @@
   transform: translateX(0%);
 }
 
+.feed {
+  overflow-x: hidden;
+}
 .feed .all-posts {
   background: rgb(234, 159, 159);
 }
@@ -32,7 +35,6 @@
   cursor: pointer;
 }
 .feed .all-posts .single-post-feed p {
-  word-wrap: break-word;
   -webkit-hyphens: auto;
       -ms-hyphens: auto;
           hyphens: auto;
