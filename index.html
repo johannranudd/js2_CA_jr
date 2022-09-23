@@ -34,15 +34,25 @@
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
               alt="profile-image"
             />
-            <div class="post-title-and-body-container">
-              <input class="post-title" type="text" aria-label="post-title" />
+            <form class="post-title-and-body-container post-form">
+              <input
+                class="post-title-input"
+                type="text"
+                aria-label="post-title"
+              />
               <textarea
                 class="post-textarea"
                 placeholder="Post something!"
               ></textarea>
-            </div>
+              <div class="add-image-container"></div>
+              <div class="add-items-and-submit-btn-contianer">
+                <div class="add-items-btns">
+                  <button>add image btn here</button>
+                </div>
+                <button class="submit-post-btn" type="submit">post</button>
+              </div>
+            </form>
           </div>
-          <div class="add-image-container"></div>
         </div>
         <!-- feed -->
         <div class="feed">

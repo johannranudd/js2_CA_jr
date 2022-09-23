@@ -20,7 +20,9 @@
     }
     .post-title-and-body-container {
       width: 100%;
-      .post-title {
+      .post-title-input {
+        width: 100%;
+        max-width: 400px;
       }
       .post-textarea {
         width: 100%;
@@ -37,8 +39,22 @@
           border-bottom: 2px solid black;
         }
       }
+      .add-image-container {
+      }
+      .add-items-and-submit-btn-contianer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 400px;
+        .add-items-btns {
+          button {
+          }
+        }
+        .submit-post-btn {
+        }
+      }
     }
-  }
-  .add-image-container {
+    .post-form {
+    }
   }
 }

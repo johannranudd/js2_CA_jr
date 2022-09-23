@@ -1,6 +1,6 @@
 @import 'variables';
 .feed {
-  flex: 1 1 0;
+  // flex: 1 1 0;
   .filter-and-search-posts {
     button {
       color: red;
@@ -11,12 +11,18 @@
     // margin-bottom: 4rem;
     .single-post-feed {
       cursor: pointer;
-      .post-author {
+      p {
+        // white-space: 'word-wrap';
+        // overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
       }
-      .post-title {
-      }
-      .post-body {
-      }
+      // .post-author {
+      // }
+      // .post-title {
+      // }
+      // .post-body {
+      // }
       .post-image-container {
         // min-width: 200px;
         .post-image {

@@ -107,7 +107,7 @@ export function contactsElementPositioning(contacts, mainContainer) {
     !contacts.className.includes('show-contacts') &&
     window.innerWidth < 1024
   ) {
-    contacts.style.right = `-110%`;
+    contacts.style.right = `-200%`;
   } else if (window.innerWidth > 1024) {
     contacts.style.right = `2.5%`;
   }

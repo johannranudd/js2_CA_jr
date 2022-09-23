@@ -54,7 +54,13 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       <p class="post-author">author: ${author.name && author.name}</p>
       <p class="post-title">title: ${title}</p>
       <p class="post-body">body: ${body}</p>
-      
+      <div class="post-image-container">
+      ${
+        media.length > 10
+          ? `<img class="post-image" src=${media} alt="test" />`
+          : ''
+      }
+      </div>
     </li>`;
       list.innerHTML += listItem;
 
