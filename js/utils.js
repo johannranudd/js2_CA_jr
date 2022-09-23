@@ -7,12 +7,15 @@ export function getSessionStorage() {
   return sStorage;
 }
 
-export function setSessionStorage(isLoggedIn, token) {
+export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
   sessionStorage.setItem(
     'isLoggedIn',
     JSON.stringify({
       isLoggedIn: isLoggedIn,
       token: token,
+      name: name,
+      email: email,
+      avatar: avatar,
     })
   );
 }
@@ -78,13 +81,6 @@ export function checkIfLoggedIn() {
 
 export function post(req) {
   const ss = getSessionStorage();
-  const test = {
-    title: 'njbr test_1 title',
-    body: 'njbr body',
-    tags: ['njbr tag1', 'tag2'],
-    media:
-      'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
-  };
   fetch(`${baseURL}/posts`, {
     method: 'POST',
     headers: {
@@ -96,13 +92,6 @@ export function post(req) {
   });
 }
 // post();
-// body: JSON.stringify({
-//       title: 'njbr test_1 title',
-//       body: 'njbr body',
-//       tags: ['njbr tag1', 'tag2'],
-//       media:
-//         'https://www.awesomealpharetta.com/wp-content/uploads/2020/06/ice_cream_cones_blog.jpg',
-//     }),
 
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();

@@ -39,7 +39,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   if (data) {
     data.map((post) => {
       const { id, title, body, media, author } = post;
-
       const listItem = `
     <li class="single-post-feed" data-id="${id}">
       <p class="post-author">author: ${author.name && author.name}</p>

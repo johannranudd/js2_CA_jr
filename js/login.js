@@ -64,10 +64,11 @@ async function loginFn(email, password) {
     const data = await res.json();
 
     if (res.ok) {
-      setSessionStorage(true, data.accessToken);
+      const { accessToken, name, email, avatar } = data;
+      setSessionStorage(true, accessToken, name, email, avatar);
       window.location.href = '/index.html';
     } else {
-      setSessionStorage(false, null);
+      sessionStorage.clear();
     }
 
     return data;
