@@ -122,7 +122,6 @@
 .post-component .profile-img-text-input .post-title-and-body-container .post-textarea {
   width: 100%;
   max-width: 400px;
-  height: 60px;
   font-size: 1rem;
   border: none;
   border-bottom: 1px solid black;
@@ -133,6 +132,16 @@
 .post-component .profile-img-text-input .post-title-and-body-container .post-textarea:focus {
   outline: none;
   border-bottom: 2px solid black;
+}
+.post-component .profile-img-text-input .post-title-and-body-container .post-textarea::-webkit-scrollbar {
+  width: 3px;
+  background: transparent;
+}
+.post-component .profile-img-text-input .post-title-and-body-container .post-textarea::-webkit-scrollbar-thumb {
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 100px;
 }
 .post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer {
   display: flex;

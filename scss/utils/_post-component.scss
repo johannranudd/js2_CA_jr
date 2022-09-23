@@ -27,7 +27,8 @@
       .post-textarea {
         width: 100%;
         max-width: 400px;
-        height: 60px;
+        // max-height: 100px;
+        // height: 60px;
         font-size: 1rem;
         border: none;
         border-bottom: 1px solid black;
@@ -37,6 +38,16 @@
         &:focus {
           outline: none;
           border-bottom: 2px solid black;
+        }
+        &::-webkit-scrollbar {
+          width: 3px;
+          background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+          width: 10px;
+          height: 10px;
+          background: black;
+          border-radius: 100px;
         }
       }
       .add-image-container {
