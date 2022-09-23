@@ -11,6 +11,8 @@ const uploadImgeInput = document.querySelector('.upload-img-input');
 const homeComponent = document.querySelector('.home-component');
 const feedContainer = document.querySelector('.feed');
 
+const deletePostBtn = document.querySelectorAll('.delete-post-btn');
+
 function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
   homeComponent.style.width = `${feedRect.width}px`;
@@ -69,3 +71,5 @@ postForm.addEventListener('submit', (e) => {
   // submit to a POST req, look in docs
   // look in feed to see if works
 });
+
+// delete post

@@ -36,23 +36,39 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
+  const sStorage = getSessionStorage();
   if (data) {
     data.map((post) => {
       const { id, title, body, media, author } = post;
+
       const listItem = `
-    <li class="single-post-feed" data-id="${id}">
+    <li class="single-post-feed" data-id="${id}" data-user="${author.name}">
+    ${
+      sStorage.name === author.name
+        ? '<button class="delete-post-btn" type="button">delete</button>'
+        : ''
+    }
+      
       <p class="post-author">author: ${author.name && author.name}</p>
-      <p class="post-title">title: ${title}</p>
-      <p class="post-body">body: ${body}</p>
+      <p class="post-title">title: ${title && title}</p>
+      <p class="post-body">body: ${body && body}</p>
       <div class="post-image-container">
-      ${
-        media.length > 10
-          ? `<img class="post-image" src=${media} alt="test" />`
-          : ''
-      }
+        ${
+          media &&
+          `<img class="post-image" src=${media} alt="image posted by ${
+            author.name && author.name
+          }" onerror="this.style.display='none'" />`
+        }
       </div>
     </li>`;
       list.innerHTML += listItem;
+      const deletePostBtn = document.querySelector('.delete-post-btn');
+      if (deletePostBtn) {
+        deletePostBtn.addEventListener('click', () => {
+          deletePost(id);
+          // console.log('hello');
+        });
+      }
 
       // listen for click to open modal with post/id
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
@@ -61,19 +77,29 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
-          // console.log(postID);
+
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
-              <li class="single-post-feed" data-id="${id}">
-                <h4>author: ${author.name && author.name}</h4>
-                <p>title: ${title}</p>
-                <p>body: ${body}</p>
+              <li class="single-post-feed" data-id="${id}" data-user="${
+            author.name
+          }">
+          ${
+            sStorage.name === author.name
+              ? '<button class="delete-post-btn" type="button">delete</button>'
+              : ''
+          }
+                <p class="post-author">author: ${author.name && author.name}</p>
+                <p class="post-title">title: ${title && title}</p>
+                <p class="post-body">body: ${body && body}</p>
                 <div class="post-image-container">
+                    
                     ${
-                      media.length > 10
-                        ? `<img class="post-image" src=${media} alt="test" />`
-                        : ''
+                      media &&
+                      `<img class="post-image" src=${media} alt="image posted by ${
+                        author.name && author.name
+                      }" onerror="this.style.display='none'" />`
                     }
+                    
                 </div>
               </li>`;
           list.innerHTML = singleListItem;
@@ -82,6 +108,35 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       });
     });
   }
+}
+
+async function deletePost(id) {
+  console.log(id);
+  const sStorage = getSessionStorage();
+  fetch(`${baseURL}/posts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+  }).then((response) => {
+    console.log(response);
+  });
+
+  // .catch((err) => console.log(err));
+  // try {
+  //   fetch(`${baseURL}/posts/${id}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${sStorage.token}`,
+  //     },
+  //   });
+  // } catch (e) {
+  //   console.log(e, 'error in delePost()');
+  // }
 }
 
 // eventListeners
