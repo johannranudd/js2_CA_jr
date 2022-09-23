@@ -1,10 +1,13 @@
+const postForm = document.querySelector('.post-form');
+const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
-const feedContainer = document.querySelector('.feed');
-const homeComponent = document.querySelector('.home-component');
 const displayImageContainer = document.querySelector(
   '.display-image-container'
 );
 const uploadImgeInput = document.querySelector('.upload-img-input');
+
+const homeComponent = document.querySelector('.home-component');
+const feedContainer = document.querySelector('.feed');
 
 window.addEventListener('resize', () => {
   const feedRect = feedContainer.getBoundingClientRect();
@@ -32,4 +35,11 @@ uploadImgeInput.addEventListener('change', () => {
     console.log(displayImageContainer);
   };
   reader.readAsDataURL(uploadImgeInput.files[0]);
+});
+
+// postForm
+
+postForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log('sub');
 });

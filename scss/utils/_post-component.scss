@@ -18,21 +18,21 @@
       width: 70px;
       height: 70px;
     }
-    .post-title-and-body-container {
+    .post-form {
       width: 100%;
       .post-title-input {
         width: 100%;
         max-width: 400px;
+        padding: 0.5rem;
+        font-weight: bold;
       }
       .post-textarea {
         width: 100%;
         max-width: 400px;
-        max-height: 100px;
-        // height: 60px;
+        max-height: 350px;
         font-size: 1rem;
         border: none;
         border-bottom: 1px solid black;
-        max-height: 330px;
         padding: 0.5rem;
         resize: none;
         &:focus {
@@ -51,6 +51,9 @@
         }
       }
       .display-image-container {
+        img {
+          max-width: 400px;
+        }
       }
       .add-items-and-submit-btn-contianer {
         display: flex;
@@ -72,8 +75,6 @@
         .submit-post-btn {
         }
       }
-    }
-    .post-form {
     }
   }
 }

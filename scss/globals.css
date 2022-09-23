@@ -25,9 +25,6 @@
   transform: translateX(0%);
 }
 
-.feed .filter-and-search-posts button {
-  color: red;
-}
 .feed .all-posts {
   background: rgb(234, 159, 159);
 }
@@ -112,51 +109,55 @@
   width: 70px;
   height: 70px;
 }
-.post-component .profile-img-text-input .post-title-and-body-container {
+.post-component .profile-img-text-input .post-form {
   width: 100%;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .post-title-input {
+.post-component .profile-img-text-input .post-form .post-title-input {
   width: 100%;
   max-width: 400px;
+  padding: 0.5rem;
+  font-weight: bold;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .post-textarea {
+.post-component .profile-img-text-input .post-form .post-textarea {
   width: 100%;
   max-width: 400px;
-  max-height: 100px;
+  max-height: 350px;
   font-size: 1rem;
   border: none;
   border-bottom: 1px solid black;
-  max-height: 330px;
   padding: 0.5rem;
   resize: none;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .post-textarea:focus {
+.post-component .profile-img-text-input .post-form .post-textarea:focus {
   outline: none;
   border-bottom: 2px solid black;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .post-textarea::-webkit-scrollbar {
+.post-component .profile-img-text-input .post-form .post-textarea::-webkit-scrollbar {
   width: 3px;
   background: transparent;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .post-textarea::-webkit-scrollbar-thumb {
+.post-component .profile-img-text-input .post-form .post-textarea::-webkit-scrollbar-thumb {
   width: 10px;
   height: 10px;
   background: black;
   border-radius: 100px;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer {
+.post-component .profile-img-text-input .post-form .display-image-container img {
+  max-width: 400px;
+}
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   max-width: 400px;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload {
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload {
   cursor: pointer;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload input[type=file] {
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload input[type=file] {
   display: none;
 }
-.post-component .profile-img-text-input .post-title-and-body-container .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
   font-size: 1.5rem;
 }
 * {
