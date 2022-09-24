@@ -74,10 +74,11 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
+          console.log(e.currentTarget);
+
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
-          console.log(e.currentTarget);
 
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
@@ -112,7 +113,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   }
 }
 
-async function deletePost(id) {
+function deletePost(id) {
   // console.log(id);
   // console.log(`${baseURL}/posts/${id}`);
   // console.log(sStorage.token);
