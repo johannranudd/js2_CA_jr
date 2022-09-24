@@ -1,4 +1,5 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
+import { allPosts, displayAllPosts } from './layout.js';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -80,15 +81,19 @@ export function checkIfLoggedIn() {
 }
 
 export function post(req) {
-  const ss = getSessionStorage();
+  const sStorage = getSessionStorage();
   fetch(`${baseURL}/posts`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${ss.token}`,
+      Authorization: `Bearer ${sStorage.token}`,
     },
     body: JSON.stringify(req),
+  }).then((res) => {
+    if (res.ok) {
+      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    }
   });
 }
 // post();

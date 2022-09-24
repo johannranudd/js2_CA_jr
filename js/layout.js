@@ -15,7 +15,7 @@ const sortByNewestBtn = document.querySelector('.newest');
 const searchPostsInput = document.querySelector('.search-posts-input');
 const searchBtn = document.querySelector('.search-btn');
 const searchFormPosts = document.querySelector('.search-form-posts');
-const allPosts = document.querySelector('.all-posts');
+export const allPosts = document.querySelector('.all-posts');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
@@ -43,6 +43,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 
       const listItem = `
     <li class="single-post-feed" data-id="${id}" data-user="${author.name}">
+    <p><strong>${id}</strong></p>
     ${
       sStorage.name === author.name
         ? '<button class="delete-post-btn" type="button">delete</button>'
@@ -62,13 +63,12 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       </div>
     </li>`;
       list.innerHTML += listItem;
-      const deletePostBtn = document.querySelector('.delete-post-btn');
-      if (deletePostBtn) {
-        deletePostBtn.addEventListener('click', () => {
-          deletePost(id);
-          // console.log('hello');
+      const deletePostBtns = document.querySelectorAll('.delete-post-btn');
+      deletePostBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          deletePost(e.target.parentNode.dataset.id);
         });
-      }
+      });
 
       // listen for click to open modal with post/id
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
@@ -77,12 +77,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
+          console.log(e.currentTarget);
 
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
             author.name
           }">
+           <p><strong>${id}</strong></p>
           ${
             sStorage.name === author.name
               ? '<button class="delete-post-btn" type="button">delete</button>'
@@ -111,32 +113,21 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 }
 
 async function deletePost(id) {
-  console.log(id);
+  // console.log(id);
+  // console.log(`${baseURL}/posts/${id}`);
+  // console.log(sStorage.token);
   const sStorage = getSessionStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${sStorage.token}`,
     },
-  }).then((response) => {
-    console.log(response);
+  }).then((res) => {
+    if (res.ok) {
+      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    }
   });
-
-  // .catch((err) => console.log(err));
-  // try {
-  //   fetch(`${baseURL}/posts/${id}`, {
-  //     method: 'DELETE',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${sStorage.token}`,
-  //     },
-  //   });
-  // } catch (e) {
-  //   console.log(e, 'error in delePost()');
-  // }
 }
 
 // eventListeners

@@ -1,4 +1,5 @@
-import { post } from './utils.js';
+import { post, getPosts, getSessionStorage } from './utils.js';
+import { displayAllPosts } from './layout.js';
 
 const postForm = document.querySelector('.post-form');
 const postTitleInput = document.querySelector('.post-title-input');
@@ -11,7 +12,7 @@ const uploadImgeInput = document.querySelector('.upload-img-input');
 const homeComponent = document.querySelector('.home-component');
 const feedContainer = document.querySelector('.feed');
 
-const deletePostBtn = document.querySelectorAll('.delete-post-btn');
+const allPosts = document.querySelector('.all-posts');
 
 function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
@@ -50,7 +51,7 @@ uploadImgeInput.addEventListener('change', () => {
 
 // postForm
 
-postForm.addEventListener('submit', (e) => {
+postForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const titleInputValue = postTitleInput.value;
   const textareaValue = textareaPost.value;
@@ -64,6 +65,7 @@ postForm.addEventListener('submit', (e) => {
     media: image.src, // Optional
   };
   // console.log(submitObject);
+  const sStorage = getSessionStorage();
   post(submitObject);
 
   // organize submitted values above
