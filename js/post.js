@@ -55,33 +55,21 @@ postForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const titleInputValue = postTitleInput.value;
   const textareaValue = textareaPost.value;
-  const image = displayImageContainer.querySelector('img').src;
-  let submitObject = {};
+  const image = displayImageContainer.querySelector('img');
+  if (titleInputValue && textareaValue) {
+    // console.log(image);
+    const submitObject = {
+      title: titleInputValue, // Required
+      body: textareaValue, // Required
+      media: image ? image.src : '', // Optional
+    };
 
-  if (!image) {
-    submitObject = {
-      title: titleInputValue, // Required
-      body: textareaValue, // Required
-      media: image, // Optional
-    };
-    console.log(submitObject);
-  } else {
-    submitObject = {
-      title: titleInputValue, // Required
-      body: textareaValue, // Required
-    };
-    console.log(submitObject);
+    post(submitObject);
+    postForm.reset();
+    if (image) {
+      displayImageContainer.removeChild(image);
+    }
   }
-
-  // console.log(image.src);
-  // console.log(textareaValue);
-  // console.log(titleInputValue);
-
-  // const sStorage = getSessionStorage();
-  // post(submitObject);
-  // postForm.reset();
-  // displayImageContainer.removeChild(image);
-  // console.log(displayImageContainer.children);
 
   // organize submitted values above
   // make sure its JSON

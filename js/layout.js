@@ -42,7 +42,9 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const { id, title, body, media, author } = post;
 
       const listItem = `
-    <li class="single-post-feed" data-id="${id}" data-user="${author.name}">
+    <li class="single-post-feed" data-id="${id}" data-user="${
+        author && author.name
+      }">
     <p><strong>${id}</strong></p>
     ${
       sStorage.name === author.name
@@ -50,14 +52,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         : ''
     }
       
-      <p class="post-author">author: ${author.name && author.name}</p>
+      <p class="post-author">author: ${author && author.name}</p>
       <p class="post-title">title: ${title && title}</p>
       <p class="post-body">body: ${body && body}</p>
       <div class="post-image-container">
         ${
           media &&
           `<img class="post-image" src=${media} alt="image posted by ${
-            author.name && author.name
+            author && author.name
           }" onerror="this.style.display='none'" />`
         }
       </div>
@@ -83,15 +85,15 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const { id, title, body, media, author } = singleData;
           const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
-            author.name
+            author && author.name
           }">
            <p><strong>${id}</strong></p>
           ${
-            sStorage.name === author.name
+            sStorage === author.name
               ? '<button class="delete-post-btn" type="button">delete</button>'
               : ''
           }
-                <p class="post-author">author: ${author.name && author.name}</p>
+                <p class="post-author">author: ${author && author.name}</p>
                 <p class="post-title">title: ${title && title}</p>
                 <p class="post-body">body: ${body && body}</p>
                 <div class="post-image-container">
@@ -99,7 +101,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                     ${
                       media &&
                       `<img class="post-image" src=${media} alt="image posted by ${
-                        author.name && author.name
+                        author && author.name
                       }" onerror="this.style.display='none'" />`
                     }
                     
