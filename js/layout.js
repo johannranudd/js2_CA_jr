@@ -46,11 +46,13 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         author && author.name
       }">
     <p><strong>${id}</strong></p>
-    ${
-      sStorage.name === author.name
-        ? '<button class="delete-post-btn" type="button">delete</button>'
-        : ''
-    }
+      <div class="edit-delete-btn-container">
+      ${
+        sStorage.name === author.name
+          ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+          : ''
+      }
+      </div>
       
       <p class="post-author">author: ${author && author.name}</p>
       <p class="post-title">title: ${title && title}</p>
@@ -68,16 +70,15 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const deletePostBtns = document.querySelectorAll('.delete-post-btn');
       deletePostBtns.forEach((btn) => {
         btn.addEventListener('click', (e) => {
-          deletePost(e.target.parentNode.dataset.id);
+          const id = Number(e.target.parentNode.parentNode.dataset.id);
+          deletePost(id);
         });
       });
 
-      // listen for click to open modal with post/id
+      // single item
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
-          console.log(e.currentTarget);
-
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
@@ -88,11 +89,13 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
             author && author.name
           }">
            <p><strong>${id}</strong></p>
-          ${
-            sStorage === author.name
-              ? '<button class="delete-post-btn" type="button">delete</button>'
-              : ''
-          }
+            <div class="edit-delete-btn-container">
+              ${
+                sStorage.name === author.name
+                  ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+                  : ''
+              }
+            </div>
                 <p class="post-author">author: ${author && author.name}</p>
                 <p class="post-title">title: ${title && title}</p>
                 <p class="post-body">body: ${body && body}</p>
@@ -109,6 +112,17 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
               </li>`;
           list.innerHTML = singleListItem;
           // ** remove load more btn
+          const deletePostBtn = document.querySelector('.delete-post-btn');
+          deletePostBtn.addEventListener('click', (e) => {
+            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            deletePost(id);
+          });
+          // deletePostBtns.forEach((btn) => {
+          //   btn.addEventListener('click', (e) => {
+          //     console.log('ergrfg');
+          //     deletePost(e.target.parentNode.dataset.id);
+          //   });
+          // });
         });
       });
     });
