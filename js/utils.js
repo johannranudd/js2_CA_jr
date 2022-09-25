@@ -97,6 +97,25 @@ export function post(req) {
   });
 }
 // post();
+export function editPost(id, req) {
+  const sStorage = getSessionStorage();
+  console.log(id);
+  console.log(req);
+  fetch(`${baseURL}/posts/${id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+    body: JSON.stringify(req),
+  }).then((res) => {
+    if (res.ok) {
+      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    }
+  });
+  // const data = await res.json();
+}
 
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();

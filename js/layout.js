@@ -29,6 +29,8 @@ import {
 
 let currentOffset = 0;
 let limit = 20;
+export let isEditingPost = false;
+export let editID = '';
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   if (!isAddingToPrevList) {
@@ -67,7 +69,10 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       </div>
     </li>`;
       list.innerHTML += listItem;
+      // eventlisteners
       const deletePostBtns = document.querySelectorAll('.delete-post-btn');
+      const editPostBtns = document.querySelectorAll('.edit-post-btn');
+
       deletePostBtns.forEach((btn) => {
         btn.addEventListener('click', (e) => {
           const id = Number(e.target.parentNode.parentNode.dataset.id);
@@ -75,6 +80,22 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         });
       });
 
+      editPostBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const id = Number(e.target.parentNode.parentNode.dataset.id);
+          editID = id;
+          isEditingPost = true;
+          // submitPost(id);
+          // editPost(id);
+          // set isEditingPost to true
+
+          // then go to postForm and check for true or false
+          // if true use put method when submiting form
+        });
+      });
+      //
+      //
+      //
       // single item
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
@@ -113,26 +134,33 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           list.innerHTML = singleListItem;
           // ** remove load more btn
           const deletePostBtn = document.querySelector('.delete-post-btn');
+          const editPostBtn = document.querySelector('.edit-post-btn');
           deletePostBtn.addEventListener('click', (e) => {
             const id = Number(e.target.parentNode.parentNode.dataset.id);
             deletePost(id);
           });
-          // deletePostBtns.forEach((btn) => {
-          //   btn.addEventListener('click', (e) => {
-          //     console.log('ergrfg');
-          //     deletePost(e.target.parentNode.dataset.id);
-          //   });
-          // });
+
+          editPostBtn.addEventListener('click', () => {
+            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            editID = id;
+            isEditingPost = true;
+          });
         });
       });
     });
   }
 }
+//
+//
+//
+// editPost
 
+//
+//
+//
+//
+// deletePost
 function deletePost(id) {
-  // console.log(id);
-  // console.log(`${baseURL}/posts/${id}`);
-  // console.log(sStorage.token);
   const sStorage = getSessionStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'DELETE',
@@ -147,6 +175,10 @@ function deletePost(id) {
   });
 }
 
+//
+//
+//
+//
 // eventListeners
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -186,11 +218,6 @@ searchFormPosts.addEventListener('submit', async (e) => {
     }
   } else {
     //**  display a warning here
-    // displayAllPosts(
-    //   allPosts,
-    //   getPosts(sStorage.token, '', currentOffset),
-    //   false
-    // );
   }
 });
 
@@ -200,9 +227,11 @@ window.addEventListener('resize', () => {
   adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
 });
 adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-
+//
+//
+//
+//
 // sort by ascending
-
 let isDescending = true;
 
 sortByOldestBtn.addEventListener('click', async () => {
@@ -227,6 +256,8 @@ sortByNewestBtn.addEventListener('click', async () => {
   isDescending = true;
 });
 
+//
+//
 // load more
 loadMoreBtn.addEventListener('click', async () => {
   const sStorage = getSessionStorage();

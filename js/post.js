@@ -1,5 +1,5 @@
-import { post, getPosts, getSessionStorage } from './utils.js';
-import { displayAllPosts } from './layout.js';
+import { post, getPosts, getSessionStorage, editPost } from './utils.js';
+import { displayAllPosts, isEditingPost, editID } from './layout.js';
 
 const postForm = document.querySelector('.post-form');
 const postTitleInput = document.querySelector('.post-title-input');
@@ -34,7 +34,6 @@ textareaPost.addEventListener('keyup', (e) => {
 
 // upload image
 uploadImgeInput.addEventListener('change', () => {
-  // console.log(uploadImgeInput.files);
   const reader = new FileReader();
   reader.onload = function () {
     const img = new Image();
@@ -43,9 +42,7 @@ uploadImgeInput.addEventListener('change', () => {
     alt.value = 'Your uploaded image';
     img.setAttributeNode(alt);
     displayImageContainer.appendChild(img);
-    // console.log(displayImageContainer);
   };
-  // console.log(uploadImgeInput.files[0]);
   reader.readAsDataURL(uploadImgeInput.files[0]);
 });
 
@@ -57,24 +54,33 @@ postForm.addEventListener('submit', async (e) => {
   const textareaValue = textareaPost.value;
   const image = displayImageContainer.querySelector('img');
   if (titleInputValue && textareaValue) {
-    // console.log(image);
     const submitObject = {
       title: titleInputValue, // Required
       body: textareaValue, // Required
       media: image ? image.src : '', // Optional
     };
-
-    post(submitObject);
-    postForm.reset();
-    if (image) {
-      displayImageContainer.removeChild(image);
+    if (!isEditingPost) {
+      post(submitObject);
+      postForm.reset();
+      if (image) {
+        displayImageContainer.removeChild(image);
+      }
+    } else {
+      editPost(editID, submitObject);
+      postForm.reset();
+      if (image) {
+        displayImageContainer.removeChild(image);
+      }
     }
   }
-
-  // organize submitted values above
-  // make sure its JSON
-  // submit to a POST req, look in docs
-  // look in feed to see if works
 });
 
-// delete post
+//
+//
+//
+
+// {
+//       title: 'njbr test_3 title',
+//       body: 'njbr test_body_3',
+//       tags: ['test2'],
+//     }

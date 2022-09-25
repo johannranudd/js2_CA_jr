@@ -9,25 +9,6 @@ import {
 
 window.addEventListener('load', checkIfLoggedIn);
 
-async function changePostById(id) {
-  const sStorage = getSessionStorage();
-  const res = await fetch(`${baseURL}/posts/${id}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
-    },
-    body: JSON.stringify({
-      title: 'njbr test_3 title',
-      body: 'njbr test_body_3',
-      tags: ['test2'],
-    }),
-  });
-  // const data = await res.json();
-}
-// changePostById(57);
-
 async function getUsers(userName = '') {
   const sStorage = getSessionStorage();
   const res = await fetch(
