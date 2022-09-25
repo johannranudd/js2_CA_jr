@@ -8,6 +8,7 @@
   transform: translateX(-200%);
   background: #def;
   transition: 0.3s;
+  z-index: 1;
 }
 @media (min-width: 500px) {
   .sidebar {
@@ -78,6 +79,7 @@
   justify-content: space-between;
   padding: 1rem;
   background: rgb(147, 53, 133);
+  z-index: 2;
 }
 @media (min-width: 500px) {
   .mobilebar {

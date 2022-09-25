@@ -13,6 +13,7 @@ const homeComponent = document.querySelector('.home-component');
 const feedContainer = document.querySelector('.feed');
 
 const allPosts = document.querySelector('.all-posts');
+const submitPostBtn = document.querySelector('.submit-post-btn');
 
 function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
@@ -68,6 +69,7 @@ postForm.addEventListener('submit', async (e) => {
     } else {
       editPost(editID, submitObject);
       postForm.reset();
+      submitPostBtn.innerHTML = 'Post';
       if (image) {
         displayImageContainer.removeChild(image);
       }

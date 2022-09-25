@@ -49,6 +49,7 @@ loginForm.addEventListener('submit', (e) => {
 // loginForm();
 
 async function loginFn(email, password) {
+  console.log('starting loginFn()');
   try {
     const res = await fetch(`${baseURL}/auth/login`, {
       method: 'POST',
@@ -62,16 +63,11 @@ async function loginFn(email, password) {
       }),
     });
     const data = await res.json();
-
     if (res.ok) {
       const { accessToken, name, email, avatar } = data;
       setSessionStorage(true, accessToken, name, email, avatar);
       window.location.href = '/index.html';
-    } else {
-      sessionStorage.clear();
     }
-
-    return data;
   } catch (e) {
     console.log(e, 'error happened in loginFn()');
   }

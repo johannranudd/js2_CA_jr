@@ -17,6 +17,9 @@ const searchBtn = document.querySelector('.search-btn');
 const searchFormPosts = document.querySelector('.search-form-posts');
 export const allPosts = document.querySelector('.all-posts');
 const loadMoreBtn = document.querySelector('.load-more-btn');
+const postTitleInput = document.querySelector('.post-title-input');
+const textareaPost = document.querySelector('.post-textarea');
+const submitPostBtn = document.querySelector('.submit-post-btn');
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
 import {
@@ -25,12 +28,140 @@ import {
   getPosts,
   getSessionStorage,
   getSortedPosts,
+  deletePost,
 } from './utils.js';
 
 let currentOffset = 0;
 let limit = 20;
 export let isEditingPost = false;
 export let editID = '';
+
+// All global eventlisteners must be here to allow login
+const globalSStorage = getSessionStorage();
+if (globalSStorage) {
+  window.addEventListener('DOMContentLoaded', () => {
+    const sStorage = getSessionStorage();
+    displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  });
+
+  window.addEventListener('resize', () => {
+    adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  });
+
+  menuBtn.addEventListener('click', (e) => {
+    keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
+  });
+
+  contactBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
+      adjustForSidebar(
+        sidebar,
+        feedAndContactsContaier,
+        contacts,
+        mainContainer
+      );
+    });
+  });
+
+  searchFormPosts.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const sStorage = getSessionStorage();
+    const searchValue = searchPostsInput.value;
+    if (searchValue) {
+      const data = await getPosts(sStorage.token, '');
+      const filteredData = data.filter((item) => {
+        if (
+          item.title.includes(searchValue) ||
+          item.body.includes(searchValue) ||
+          item.author.name.includes(searchValue)
+        ) {
+          return item;
+        }
+      });
+      if (filteredData.length > 0) {
+        // remove load more btn here
+        currentOffset = 0;
+        displayAllPosts(allPosts, filteredData, false);
+      }
+    } else {
+      //**  display a warning here
+    }
+  });
+
+  // sort by ascending
+  let isDescending = true;
+
+  sortByOldestBtn.addEventListener('click', async () => {
+    const sStorage = getSessionStorage();
+    currentOffset = 0;
+    displayAllPosts(
+      allPosts,
+      getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
+      false
+    );
+    isDescending = false;
+  });
+  // sort by descending
+  sortByNewestBtn.addEventListener('click', async () => {
+    const sStorage = getSessionStorage();
+    currentOffset = 0;
+    displayAllPosts(
+      allPosts,
+      getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
+      false
+    );
+    isDescending = true;
+  });
+
+  //
+  //
+  // load more
+  loadMoreBtn.addEventListener('click', async () => {
+    const sStorage = getSessionStorage();
+    const data = await getPosts(sStorage.token, '', '');
+    if (currentOffset < data.length) {
+      currentOffset += 20;
+      if (isDescending) {
+        displayAllPosts(
+          allPosts,
+          getSortedPosts(
+            sStorage.token,
+            'created',
+            'desc',
+            currentOffset,
+            limit
+          ),
+          true
+        );
+      } else {
+        displayAllPosts(
+          allPosts,
+          getSortedPosts(
+            sStorage.token,
+            'created',
+            'asc',
+            currentOffset,
+            limit
+          ),
+          true
+        );
+      }
+    } else {
+      console.log('wanring: there are no mote posts lodamore eventlistener');
+    }
+  });
+}
+
+// end of global eventlisteners
+//
+//
+//
+//
+//
+//
+// displayAllPosts
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   if (!isAddingToPrevList) {
@@ -55,7 +186,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           : ''
       }
       </div>
-      
+
       <p class="post-author">author: ${author && author.name}</p>
       <p class="post-title">title: ${title && title}</p>
       <p class="post-body">body: ${body && body}</p>
@@ -85,6 +216,8 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           const id = Number(e.target.parentNode.parentNode.dataset.id);
           editID = id;
           isEditingPost = true;
+          postTitleInput.focus();
+          submitPostBtn.innerHTML = 'Edit post';
           // submitPost(id);
           // editPost(id);
           // set isEditingPost to true
@@ -121,14 +254,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                 <p class="post-title">title: ${title && title}</p>
                 <p class="post-body">body: ${body && body}</p>
                 <div class="post-image-container">
-                    
+
                     ${
                       media &&
                       `<img class="post-image" src=${media} alt="image posted by ${
                         author && author.name
                       }" onerror="this.style.display='none'" />`
                     }
-                    
+
                 </div>
               </li>`;
           list.innerHTML = singleListItem;
@@ -141,9 +274,11 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           });
 
           editPostBtn.addEventListener('click', () => {
-            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            const id = Number(e.target.parentNode.dataset.id);
             editID = id;
             isEditingPost = true;
+            postTitleInput.focus();
+            submitPostBtn.innerHTML = 'Edit post';
           });
         });
       });
@@ -153,133 +288,27 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
+//
+// > 500
+
+//
+//
+//
+//
+//
+//
+//
 // editPost
 
 //
 //
 //
 //
-// deletePost
-function deletePost(id) {
-  const sStorage = getSessionStorage();
-  fetch(`${baseURL}/posts/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
-    },
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-    }
-  });
-}
 
 //
 //
 //
 //
 // eventListeners
-
-window.addEventListener('DOMContentLoaded', () => {
-  const sStorage = getSessionStorage();
-  displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-});
-
-menuBtn.addEventListener('click', (e) => {
-  keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
-});
-contactBtns.forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
-    adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-  });
-});
-
-searchFormPosts.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const sStorage = getSessionStorage();
-  const searchValue = searchPostsInput.value;
-  if (searchValue) {
-    const data = await getPosts(sStorage.token, '');
-    const filteredData = data.filter((item) => {
-      if (
-        item.title.includes(searchValue) ||
-        item.body.includes(searchValue) ||
-        item.author.name.includes(searchValue)
-      ) {
-        return item;
-      }
-    });
-    if (filteredData.length > 0) {
-      // remove load more btn here
-      currentOffset = 0;
-      displayAllPosts(allPosts, filteredData, false);
-    }
-  } else {
-    //**  display a warning here
-  }
-});
-
-// > 500
-
-window.addEventListener('resize', () => {
-  adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-});
-adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-//
-//
-//
-//
-// sort by ascending
-let isDescending = true;
-
-sortByOldestBtn.addEventListener('click', async () => {
-  const sStorage = getSessionStorage();
-  currentOffset = 0;
-  displayAllPosts(
-    allPosts,
-    getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
-    false
-  );
-  isDescending = false;
-});
-// sort by descending
-sortByNewestBtn.addEventListener('click', async () => {
-  const sStorage = getSessionStorage();
-  currentOffset = 0;
-  displayAllPosts(
-    allPosts,
-    getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
-    false
-  );
-  isDescending = true;
-});
-
-//
-//
-// load more
-loadMoreBtn.addEventListener('click', async () => {
-  const sStorage = getSessionStorage();
-  const data = await getPosts(sStorage.token, '', '');
-  if (currentOffset < data.length) {
-    currentOffset += 20;
-    if (isDescending) {
-      displayAllPosts(
-        allPosts,
-        getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
-        true
-      );
-    } else {
-      displayAllPosts(
-        allPosts,
-        getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
-        true
-      );
-    }
-  } else {
-    console.log('wanring: there are no mote posts lodamore eventlistener');
-  }
-});
 
 // press post

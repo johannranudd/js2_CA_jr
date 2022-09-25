@@ -72,11 +72,11 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 
 export function checkIfLoggedIn() {
   const sStorage = getSessionStorage();
-
+  // console.log('checkIfLoggedIn() sStorage::', sStorage);
   if (!sStorage || !sStorage.isLoggedIn) {
     window.location.href = '../login.html';
   } else {
-    console.log('you are already logged in as');
+    console.log(`you are already logged in as ${sStorage.name}`);
   }
 }
 
@@ -115,6 +115,22 @@ export function editPost(id, req) {
     }
   });
   // const data = await res.json();
+}
+
+// deletePost
+export function deletePost(id) {
+  const sStorage = getSessionStorage();
+  fetch(`${baseURL}/posts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+  }).then((res) => {
+    if (res.ok) {
+      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    }
+  });
 }
 
 export function contactsElementPositioning(contacts, mainContainer) {
