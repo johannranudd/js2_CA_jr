@@ -6,6 +6,13 @@
   background: white;
   height: 2.3rem;
   border-bottom: 1px solid black;
+  h4 {
+    p {
+      display: inline;
+      color: grey;
+      font-style: italic;
+    }
+  }
 }
 
 .post-component {

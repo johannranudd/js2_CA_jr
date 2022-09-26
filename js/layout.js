@@ -20,6 +20,7 @@ const loadMoreBtn = document.querySelector('.load-more-btn');
 const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const submitPostBtn = document.querySelector('.submit-post-btn');
+const homeComponentHeading = document.querySelector('.home-component h4');
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
 import {
@@ -38,11 +39,14 @@ export let editID = '';
 
 // All global eventlisteners must be here to allow login
 const globalSStorage = getSessionStorage();
+const onPageText = homeComponentHeading.textContent.split('/')[0];
+
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
     const sStorage = getSessionStorage();
     displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+    homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
   });
 
   window.addEventListener('resize', () => {
@@ -70,7 +74,7 @@ if (globalSStorage) {
     const sStorage = getSessionStorage();
     const searchValue = searchPostsInput.value;
     if (searchValue) {
-      const data = await getPosts(sStorage.token, '');
+      const data = await getPosts(sStorage.token, '', 0);
       const filteredData = data.filter((item) => {
         if (
           item.title.includes(searchValue) ||
@@ -82,6 +86,7 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
+        // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       }
@@ -102,6 +107,8 @@ if (globalSStorage) {
       false
     );
     isDescending = false;
+    sidebar.classList.remove('show-sidebar');
+    homeComponentHeading.innerHTML = `${onPageText}<p> / Oldest posts</p>`;
   });
   // sort by descending
   sortByNewestBtn.addEventListener('click', async () => {
@@ -113,6 +120,8 @@ if (globalSStorage) {
       false
     );
     isDescending = true;
+    sidebar.classList.remove('show-sidebar');
+    homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
   });
 
   //

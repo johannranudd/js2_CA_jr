@@ -105,6 +105,11 @@
   height: 2.3rem;
   border-bottom: 1px solid black;
 }
+.home-component h4 p {
+  display: inline;
+  color: grey;
+  font-style: italic;
+}
 
 .post-component .profile-img-text-input {
   display: flex;
@@ -183,6 +188,7 @@ body {
 
 a {
   text-decoration: none;
+  display: inline-block;
 }
 
 ul {

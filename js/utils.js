@@ -46,7 +46,6 @@ export async function getPosts(token, searchParams = '', limit = '') {
   );
 
   const data = await res.json();
-  // console.log(data);
   return data;
 }
 

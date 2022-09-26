@@ -15,16 +15,42 @@
     <main class="main-container container-1280">
       <!-- sidebar -->
       <nav class="sidebar">
+        <!-- logo -->
         <a href="./index.html" class="logo">
           <i class="fa-solid fa-hippo"></i>
         </a>
-        <button class="contacts-btn">contacts</button>
-        <a href="./profile.html">Profile</a>
+        <!-- list of links -->
+        <ul class="list-of-links">
+          <li>
+            <a href="./">Home</a>
+          </li>
+          <li>
+            <a href="./profile.html">Profile</a>
+          </li>
+          <li>
+            <button class="contacts-btn">contacts</button>
+          </li>
+          <li>
+            <button class="newest" type="button">Newest posts</button>
+          </li>
+          <li>
+            <button class="oldest" type="button">Oldest posts</button>
+          </li>
+        </ul>
       </nav>
 
       <div class="feed-and-contacts-container">
         <div class="home-component">
-          <h4>home</h4>
+          <h4>Home</h4>
+          <form class="search-form-posts">
+            <input
+              class="search-posts-input"
+              type="text"
+              placeholder="Search posts title..."
+              aria-label="Search"
+            />
+            <button class="search-btn" type="submit">Submit</button>
+          </form>
         </div>
         <!-- post component -->
         <div class="post-component">
@@ -61,9 +87,11 @@
         <!-- feed -->
         <div class="feed">
           <div class="filter-and-search-posts">
-            <button class="newest" type="button">newest</button>
-            <button class="oldest" type="button">oldest</button>
-            <form class="search-form-posts">
+            <!-- !moved to sidebar -->
+            <!-- <button class="newest" type="button">newest</button>
+            <button class="oldest" type="button">oldest</button> -->
+            <!-- !moved to home component -->
+            <!-- <form class="search-form-posts">
               <input
                 class="search-posts-input"
                 type="text"
@@ -71,7 +99,7 @@
                 aria-label="Search"
               />
               <button class="search-btn" type="submit">Submit</button>
-            </form>
+            </form> -->
           </div>
           <ul class="all-posts"></ul>
           <div class="load-more-btn-container">
