@@ -21,8 +21,6 @@ export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
   );
 }
 
-// `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
-
 function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
@@ -31,6 +29,25 @@ function setFetchLimitURL(limit) {
     return limitQuery;
   }
 }
+
+export async function getUsers(userName = '', limit = '') {
+  const sStorage = getSessionStorage();
+  const limitQuery = setFetchLimitURL(limit);
+  const res = await fetch(
+    `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sStorage.token}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
+
+// `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
 
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);

@@ -3,4 +3,42 @@
 .profile-component {
   margin-top: 2.3rem;
   background: rgb(247, 170, 242);
+  .banner {
+    height: 10rem;
+    background: #333
+      url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg/1200px-Altja_j%C3%B5gi_Lahemaal.jpg')
+      no-repeat center center/cover;
+  }
+  .profile-image-edit-profile-btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    translate: 0 -50%;
+    padding: 0 1rem;
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .edit-profile-btn {
+      padding: 0.25rem;
+      margin-bottom: 1rem;
+    }
+  }
+  .username {
+  }
+  p {
+    strong {
+    }
+  }
+  // .follow-statistics-contianer {
+  // }
+  // .post-count {
+  // }
+  // .following {
+  // }
+  // .followers {
+  // }
 }

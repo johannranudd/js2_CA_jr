@@ -74,7 +74,7 @@ if (globalSStorage) {
     const sStorage = getSessionStorage();
     const searchValue = searchPostsInput.value;
     if (searchValue) {
-      const data = await getPosts(sStorage.token, '', 0);
+      const data = await getPosts(sStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
         if (
           item.title.includes(searchValue) ||
