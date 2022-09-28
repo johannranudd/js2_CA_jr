@@ -8,16 +8,21 @@ import {
   checkIfLoggedIn,
   getPosts,
   getUsers,
+  uploadImageToContainer,
+  updateProfileInfo,
 } from './utils.js';
 import { displayAllPosts } from './layout.js';
+const globalSStorage = getSessionStorage();
 
-window.addEventListener('DOMContentLoaded', displayAllPosts(allPosts));
+window.addEventListener('DOMContentLoaded', () => {
+  displayProfileInfo();
+  displayAllPosts(allPosts);
+});
 
-async function displayProfileInfo() {
+export async function displayProfileInfo(username = globalSStorage.name) {
   profileComponent.innerHTML = '';
-  const sStorage = getSessionStorage();
-  const data = await getUsers(sStorage.name, 99999);
-  console.log(data);
+  const data = await getUsers(username, 99999);
+  // console.log(data);
   const { avatar, banner, email, followers, following, name, posts, count } =
     data;
   profileComponent.innerHTML = `
@@ -49,12 +54,35 @@ async function displayProfileInfo() {
     `;
   const bannerContainer = profileComponent.querySelector('.banner');
   bannerContainer.style.backgroundImage = `url(${banner && banner})`;
-  if (posts) {
-    console.log('has');
-    console.log(posts.length);
-  } else {
-    console.log('no');
-  }
-  // console.log(followers && followers);
+
+  const editProfileBtn = document.querySelector('.edit-profile-btn');
+  editProfileBtn.addEventListener('click', (e) => {
+    editProfileForm.classList.add('show-edit-profile-modal');
+  });
 }
-displayProfileInfo();
+// function openEditModal() {}
+
+const editProfileForm = document.querySelector('.edit-profile-modal');
+const newBannerInput = document.querySelector('#new-banner');
+const newAvatarInput = document.querySelector('#new-avatar');
+const uploadedBanner = document.querySelector('.uploaded-banner');
+const uploadedAvatar = document.querySelector('.uploaded-avatar');
+
+newBannerInput.addEventListener('change', () => {
+  uploadImageToContainer(uploadedBanner, newBannerInput);
+});
+newAvatarInput.addEventListener('change', () => {
+  uploadImageToContainer(uploadedAvatar, newAvatarInput);
+});
+
+editProfileForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const bannerImage = uploadedBanner.querySelector('img');
+  const avatarImage = uploadedAvatar.querySelector('img');
+  const submitObject = {
+    banner: bannerImage ? bannerImage.src : '', // Optional
+    avatar: avatarImage ? avatarImage.src : '', // Optional
+  };
+  updateProfileInfo(globalSStorage.name, submitObject);
+  editProfileForm.classList.remove('show-edit-profile-modal');
+});

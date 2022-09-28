@@ -1,4 +1,10 @@
-import { post, getPosts, getSessionStorage, editPost } from './utils.js';
+import {
+  post,
+  getPosts,
+  getSessionStorage,
+  editPost,
+  uploadImageToContainer,
+} from './utils.js';
 import { displayAllPosts, isEditingPost, editID } from './layout.js';
 
 const postForm = document.querySelector('.post-form');
@@ -35,17 +41,21 @@ textareaPost.addEventListener('keyup', (e) => {
 
 // upload image
 uploadImgeInput.addEventListener('change', () => {
-  const reader = new FileReader();
-  reader.onload = function () {
-    const img = new Image();
-    img.src = reader.result;
-    const alt = document.createAttribute('alt');
-    alt.value = 'Your uploaded image';
-    img.setAttributeNode(alt);
-    displayImageContainer.appendChild(img);
-  };
-  reader.readAsDataURL(uploadImgeInput.files[0]);
+  uploadImageToContainer(displayImageContainer, uploadImgeInput);
 });
+// !moved to utils
+// export function uploadImageToContainer(container) {
+//   const reader = new FileReader();
+//   reader.onload = function () {
+//     const img = new Image();
+//     img.src = reader.result;
+//     const alt = document.createAttribute('alt');
+//     alt.value = 'Your uploaded image';
+//     img.setAttributeNode(alt);
+//     container.appendChild(img);
+//   };
+//   reader.readAsDataURL(uploadImgeInput.files[0]);
+// }
 
 // postForm
 

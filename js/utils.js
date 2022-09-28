@@ -1,5 +1,6 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 import { allPosts, displayAllPosts } from './layout.js';
+import { displayProfileInfo } from './profile.js';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -28,6 +29,19 @@ function setFetchLimitURL(limit) {
     let limitQuery = `&limit=${limit}`;
     return limitQuery;
   }
+}
+
+export function uploadImageToContainer(container, input) {
+  const reader = new FileReader();
+  reader.onload = function () {
+    const img = new Image();
+    img.src = reader.result;
+    const alt = document.createAttribute('alt');
+    alt.value = 'Your uploaded image';
+    img.setAttributeNode(alt);
+    container.appendChild(img);
+  };
+  reader.readAsDataURL(input.files[0]);
 }
 
 export async function getUsers(userName = '', limit = '') {
@@ -94,6 +108,23 @@ export function checkIfLoggedIn() {
   } else {
     console.log(`you are already logged in as ${sStorage.name}`);
   }
+}
+
+export async function updateProfileInfo(name, req) {
+  const sStorage = getSessionStorage();
+  fetch(`${baseURL}/profiles/${name}/media`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+    body: JSON.stringify(req),
+  }).then((res) => {
+    if (res.ok) {
+      displayProfileInfo();
+    }
+  });
 }
 
 export function post(req) {
