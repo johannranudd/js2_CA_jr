@@ -32,6 +32,8 @@ import {
   deletePost,
 } from './utils.js';
 
+import { displayProfileInfo } from './profile.js';
+
 let currentOffset = 0;
 let limit = 20;
 export let isEditingPost = false;
@@ -196,9 +198,9 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       }
       </div>
 
-      <p class="post-author">author: ${author && author.name}</p>
-      <p class="post-title">title: ${title && title}</p>
-      <p class="post-body">body: ${body && body}</p>
+      <p class="post-author">${author && author.name}</p>
+      <p class="post-title">${title && title}</p>
+      <p class="post-body">${body && body}</p>
       <div class="post-image-container">
         ${
           media &&
@@ -212,29 +214,33 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       // eventlisteners
       const deletePostBtns = document.querySelectorAll('.delete-post-btn');
       const editPostBtns = document.querySelectorAll('.edit-post-btn');
+      const postAuthor = document.querySelectorAll('.post-author');
 
-      deletePostBtns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(e.target.parentNode.parentNode.dataset.id);
-          deletePost(id);
+      if (deletePostBtns && editPostBtns) {
+        deletePostBtns.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            deletePost(id);
+          });
+        });
+
+        editPostBtns.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            editID = id;
+            isEditingPost = true;
+            postTitleInput.focus();
+            submitPostBtn.innerHTML = 'Edit post';
+          });
+        });
+      }
+      postAuthor.forEach((author) => {
+        author.addEventListener('click', (e) => {
+          const name = e.target.textContent;
+          displayProfileInfo(name);
         });
       });
 
-      editPostBtns.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          const id = Number(e.target.parentNode.parentNode.dataset.id);
-          editID = id;
-          isEditingPost = true;
-          postTitleInput.focus();
-          submitPostBtn.innerHTML = 'Edit post';
-          // submitPost(id);
-          // editPost(id);
-          // set isEditingPost to true
-
-          // then go to postForm and check for true or false
-          // if true use put method when submiting form
-        });
-      });
       //
       //
       //
@@ -259,9 +265,9 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                   : ''
               }
             </div>
-                <p class="post-author">author: ${author && author.name}</p>
-                <p class="post-title">title: ${title && title}</p>
-                <p class="post-body">body: ${body && body}</p>
+                <p class="post-author">${author && author.name}</p>
+                <p class="post-title">${title && title}</p>
+                <p class="post-body">${body && body}</p>
                 <div class="post-image-container">
 
                     ${
@@ -277,17 +283,25 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           // ** remove load more btn
           const deletePostBtn = document.querySelector('.delete-post-btn');
           const editPostBtn = document.querySelector('.edit-post-btn');
-          deletePostBtn.addEventListener('click', (e) => {
-            const id = Number(e.target.parentNode.parentNode.dataset.id);
-            deletePost(id);
-          });
+          const postAuthor = document.querySelector('.post-author');
 
-          editPostBtn.addEventListener('click', () => {
-            const id = Number(e.target.parentNode.dataset.id);
-            editID = id;
-            isEditingPost = true;
-            postTitleInput.focus();
-            submitPostBtn.innerHTML = 'Edit post';
+          if (deletePostBtn && editPostBtn) {
+            deletePostBtn.addEventListener('click', (e) => {
+              const id = Number(e.target.parentNode.parentNode.dataset.id);
+              deletePost(id);
+            });
+
+            editPostBtn.addEventListener('click', () => {
+              const id = Number(e.target.parentNode.dataset.id);
+              editID = id;
+              isEditingPost = true;
+              postTitleInput.focus();
+              submitPostBtn.innerHTML = 'Edit post';
+            });
+          }
+          postAuthor.addEventListener('click', (e) => {
+            const name = e.target.textContent;
+            displayProfileInfo(name);
           });
         });
       });

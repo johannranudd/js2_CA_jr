@@ -6,6 +6,10 @@
   background: white;
   height: 2.3rem;
   border-bottom: 1px solid black;
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   h4 {
     p {
       display: inline;

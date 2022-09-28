@@ -126,6 +126,37 @@ export async function updateProfileInfo(name, req) {
     }
   });
 }
+export async function followProfile(name) {
+  const sStorage = getSessionStorage();
+  fetch(`${baseURL}/profiles/${name}/follow`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+    body: JSON.stringify(req),
+  }).then((res) => {
+    if (res.ok) {
+      displayProfileInfo();
+    }
+  });
+}
+export async function unfollowProfile(name) {
+  const sStorage = getSessionStorage();
+  fetch(`${baseURL}/profiles/${name}/unfollow`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+  }).then((res) => {
+    if (res.ok) {
+      displayProfileInfo();
+    }
+  });
+}
 
 export function post(req) {
   const sStorage = getSessionStorage();

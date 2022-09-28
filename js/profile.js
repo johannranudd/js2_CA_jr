@@ -1,6 +1,11 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const allPosts = document.querySelector('.all-posts');
 const profileComponent = document.querySelector('.profile-component');
+const editProfileForm = document.querySelector('.edit-profile-modal');
+const newBannerInput = document.querySelector('#new-banner');
+const newAvatarInput = document.querySelector('#new-avatar');
+const uploadedBanner = document.querySelector('.uploaded-banner');
+const uploadedAvatar = document.querySelector('.uploaded-avatar');
 
 import {
   getSessionStorage,
@@ -17,14 +22,32 @@ const globalSStorage = getSessionStorage();
 window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
   displayAllPosts(allPosts);
+
+  newBannerInput.addEventListener('change', () => {
+    uploadImageToContainer(uploadedBanner, newBannerInput);
+  });
+  newAvatarInput.addEventListener('change', () => {
+    uploadImageToContainer(uploadedAvatar, newAvatarInput);
+  });
+
+  editProfileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bannerImage = uploadedBanner.querySelector('img');
+    const avatarImage = uploadedAvatar.querySelector('img');
+    const submitObject = {
+      banner: bannerImage ? bannerImage.src : '', // Optional
+      avatar: avatarImage ? avatarImage.src : '', // Optional
+    };
+    updateProfileInfo(globalSStorage.name, submitObject);
+    editProfileForm.classList.remove('show-edit-profile-modal');
+  });
 });
 
 export async function displayProfileInfo(username = globalSStorage.name) {
-  profileComponent.innerHTML = '';
   const data = await getUsers(username, 99999);
-  // console.log(data);
   const { avatar, banner, email, followers, following, name, posts, count } =
     data;
+
   profileComponent.innerHTML = `
           <div class="banner"></div>
           <div class="profile-image-edit-profile-btn-container">
@@ -37,7 +60,12 @@ export async function displayProfileInfo(username = globalSStorage.name) {
               }"
               alt="Profile image"
             />
-            <button class="edit-profile-btn">Edit profile</button>
+            ${
+              name === globalSStorage.name
+                ? '<button class="edit-profile-btn">Edit profile</button>'
+                : ''
+            }
+            
           </div>
           <h2 class="username">${name}</h2>
           <div class="follow-statistics-contianer">
@@ -50,39 +78,28 @@ export async function displayProfileInfo(username = globalSStorage.name) {
               <button class="followers"><strong>${
                 followers.length
               }</strong>Followers</button>
+              ${
+                name !== globalSStorage.name
+                  ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
+                  : ''
+              }
+              
           </div>
     `;
   const bannerContainer = profileComponent.querySelector('.banner');
   bannerContainer.style.backgroundImage = `url(${banner && banner})`;
 
   const editProfileBtn = document.querySelector('.edit-profile-btn');
-  editProfileBtn.addEventListener('click', (e) => {
-    editProfileForm.classList.add('show-edit-profile-modal');
-  });
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener('click', (e) => {
+      editProfileForm.classList.add('show-edit-profile-modal');
+    });
+  }
+  const followBtn = document.querySelector('.follow-btn');
+  if (followBtn) {
+    followBtn.addEventListener('click', (e) => {
+      console.log(e.target.dataset.username);
+    });
+  }
 }
 // function openEditModal() {}
-
-const editProfileForm = document.querySelector('.edit-profile-modal');
-const newBannerInput = document.querySelector('#new-banner');
-const newAvatarInput = document.querySelector('#new-avatar');
-const uploadedBanner = document.querySelector('.uploaded-banner');
-const uploadedAvatar = document.querySelector('.uploaded-avatar');
-
-newBannerInput.addEventListener('change', () => {
-  uploadImageToContainer(uploadedBanner, newBannerInput);
-});
-newAvatarInput.addEventListener('change', () => {
-  uploadImageToContainer(uploadedAvatar, newAvatarInput);
-});
-
-editProfileForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const bannerImage = uploadedBanner.querySelector('img');
-  const avatarImage = uploadedAvatar.querySelector('img');
-  const submitObject = {
-    banner: bannerImage ? bannerImage.src : '', // Optional
-    avatar: avatarImage ? avatarImage.src : '', // Optional
-  };
-  updateProfileInfo(globalSStorage.name, submitObject);
-  editProfileForm.classList.remove('show-edit-profile-modal');
-});

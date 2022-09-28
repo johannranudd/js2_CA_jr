@@ -20,8 +20,11 @@
         // word-wrap: break-word;
         hyphens: auto;
       }
-      // .post-author {
-      // }
+      .post-author {
+        &:hover {
+          color: white;
+        }
+      }
       // .post-title {
       // }
       // .post-body {
