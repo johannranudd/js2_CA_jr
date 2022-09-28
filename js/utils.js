@@ -135,11 +135,11 @@ export async function followProfile(name) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sStorage.token}`,
     },
-    body: JSON.stringify(req),
   }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo();
-    }
+    console.log(res);
+    // if (res.ok) {
+    //   displayProfileInfo(name);
+    // }
   });
 }
 export async function unfollowProfile(name) {
@@ -153,7 +153,7 @@ export async function unfollowProfile(name) {
     },
   }).then((res) => {
     if (res.ok) {
-      displayProfileInfo();
+      displayProfileInfo(name);
     }
   });
 }

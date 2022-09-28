@@ -205,10 +205,11 @@
   margin-bottom: 1rem;
 }
 .edit-profile-modal {
-  display: none;
+  visibility: hidden;
 }
 
 .show-edit-profile-modal {
+  visibility: visible;
   position: absolute;
   top: 50%;
   left: 50%;

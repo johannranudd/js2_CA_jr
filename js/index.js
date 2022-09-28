@@ -8,3 +8,18 @@ import {
 } from './utils.js';
 
 window.addEventListener('load', checkIfLoggedIn);
+
+// function test() {
+//   const sStorage = getSessionStorage();
+//   fetch(`${baseURL}/posts/Oliver`, {
+//     method: 'GET',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${sStorage.token}`,
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((data) => console.log(data));
+// }
+// test();

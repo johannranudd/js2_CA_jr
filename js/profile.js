@@ -15,6 +15,8 @@ import {
   getUsers,
   uploadImageToContainer,
   updateProfileInfo,
+  followProfile,
+  unfollowProfile,
 } from './utils.js';
 import { displayAllPosts } from './layout.js';
 const globalSStorage = getSessionStorage();
@@ -23,31 +25,32 @@ window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
   displayAllPosts(allPosts);
 
-  newBannerInput.addEventListener('change', () => {
-    uploadImageToContainer(uploadedBanner, newBannerInput);
-  });
-  newAvatarInput.addEventListener('change', () => {
-    uploadImageToContainer(uploadedAvatar, newAvatarInput);
-  });
+  if (newAvatarInput && newAvatarInput && editProfileForm) {
+    newBannerInput.addEventListener('change', () => {
+      uploadImageToContainer(uploadedBanner, newBannerInput);
+    });
+    newAvatarInput.addEventListener('change', () => {
+      uploadImageToContainer(uploadedAvatar, newAvatarInput);
+    });
 
-  editProfileForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const bannerImage = uploadedBanner.querySelector('img');
-    const avatarImage = uploadedAvatar.querySelector('img');
-    const submitObject = {
-      banner: bannerImage ? bannerImage.src : '', // Optional
-      avatar: avatarImage ? avatarImage.src : '', // Optional
-    };
-    updateProfileInfo(globalSStorage.name, submitObject);
-    editProfileForm.classList.remove('show-edit-profile-modal');
-  });
+    editProfileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const bannerImage = uploadedBanner.querySelector('img');
+      const avatarImage = uploadedAvatar.querySelector('img');
+      const submitObject = {
+        banner: bannerImage ? bannerImage.src : '', // Optional
+        avatar: avatarImage ? avatarImage.src : '', // Optional
+      };
+      updateProfileInfo(globalSStorage.name, submitObject);
+      editProfileForm.classList.remove('show-edit-profile-modal');
+    });
+  }
 });
 
 export async function displayProfileInfo(username = globalSStorage.name) {
   const data = await getUsers(username, 99999);
-  const { avatar, banner, email, followers, following, name, posts, count } =
+  const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
-
   profileComponent.innerHTML = `
           <div class="banner"></div>
           <div class="profile-image-edit-profile-btn-container">
@@ -70,13 +73,13 @@ export async function displayProfileInfo(username = globalSStorage.name) {
           <h2 class="username">${name}</h2>
           <div class="follow-statistics-contianer">
             <button class="post-count"><strong>${
-              posts.length
+              _count.posts
             }</strong>Posts</button>
               <button class="following"><strong>${
-                following.length
+                _count.following
               }</strong>Following</button>
               <button class="followers"><strong>${
-                followers.length
+                _count.followers
               }</strong>Followers</button>
               ${
                 name !== globalSStorage.name
@@ -98,7 +101,9 @@ export async function displayProfileInfo(username = globalSStorage.name) {
   const followBtn = document.querySelector('.follow-btn');
   if (followBtn) {
     followBtn.addEventListener('click', (e) => {
-      console.log(e.target.dataset.username);
+      const name = e.target.dataset.username;
+      console.log(name);
+      followProfile(name);
     });
   }
 }

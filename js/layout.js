@@ -41,13 +41,13 @@ export let editID = '';
 
 // All global eventlisteners must be here to allow login
 const globalSStorage = getSessionStorage();
-const onPageText = homeComponentHeading.textContent.split('/')[0];
 
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
     const sStorage = getSessionStorage();
     displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+    const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
   });
 
