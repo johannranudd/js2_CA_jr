@@ -15,14 +15,16 @@ import {
   getUsers,
   uploadImageToContainer,
   updateProfileInfo,
-} from './utils.js';
-import { displayAllPosts } from './layout.js';
+} from './utils.mjs';
+import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
 
 window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
   displayAllPosts(allPosts);
+});
 
+if (newBannerInput && newAvatarInput && editProfileForm) {
   newBannerInput.addEventListener('change', () => {
     uploadImageToContainer(uploadedBanner, newBannerInput);
   });
@@ -41,9 +43,13 @@ window.addEventListener('DOMContentLoaded', () => {
     updateProfileInfo(globalSStorage.name, submitObject);
     editProfileForm.classList.remove('show-edit-profile-modal');
   });
-});
+}
 
-export async function displayProfileInfo(username = globalSStorage.name) {
+if (globalSStorage) {
+}
+export async function displayProfileInfo(
+  username = globalSStorage && globalSStorage.name
+) {
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, count } =
     data;

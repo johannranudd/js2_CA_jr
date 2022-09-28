@@ -30,9 +30,9 @@ import {
   getSessionStorage,
   getSortedPosts,
   deletePost,
-} from './utils.js';
+} from './utils.mjs';
 
-import { displayProfileInfo } from './profile.js';
+import { displayProfileInfo } from './profile.mjs';
 
 let currentOffset = 0;
 let limit = 20;
@@ -41,13 +41,13 @@ export let editID = '';
 
 // All global eventlisteners must be here to allow login
 const globalSStorage = getSessionStorage();
-const onPageText = homeComponentHeading.textContent.split('/')[0];
 
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
     const sStorage = getSessionStorage();
     displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+    const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
   });
 
@@ -176,7 +176,9 @@ if (globalSStorage) {
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   if (!isAddingToPrevList) {
-    list.innerHTML = '';
+    if (list) {
+      list.innerHTML = '';
+    }
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);

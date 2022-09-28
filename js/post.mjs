@@ -4,8 +4,8 @@ import {
   getSessionStorage,
   editPost,
   uploadImageToContainer,
-} from './utils.js';
-import { displayAllPosts, isEditingPost, editID } from './layout.js';
+} from './utils.mjs';
+import { displayAllPosts, isEditingPost, editID } from './layout.mjs';
 
 const postForm = document.querySelector('.post-form');
 const postTitleInput = document.querySelector('.post-title-input');

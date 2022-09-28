@@ -1,6 +1,6 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts } from './layout.js';
-import { displayProfileInfo } from './profile.js';
+import { allPosts, displayAllPosts } from './layout.mjs';
+import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -53,7 +53,7 @@ export async function getUsers(userName = '', limit = '') {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${sStorage && sStorage.token}`,
       },
     }
   );
