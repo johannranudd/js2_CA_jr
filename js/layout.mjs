@@ -30,9 +30,9 @@ import {
   getSessionStorage,
   getSortedPosts,
   deletePost,
-} from './utils.js';
+} from './utils.mjs';
 
-import { displayProfileInfo } from './profile.js';
+import { displayProfileInfo } from './profile.mjs';
 
 let currentOffset = 0;
 let limit = 20;
@@ -176,7 +176,9 @@ if (globalSStorage) {
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   if (!isAddingToPrevList) {
-    list.innerHTML = '';
+    if (list) {
+      list.innerHTML = '';
+    }
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);

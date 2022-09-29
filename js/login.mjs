@@ -3,7 +3,7 @@ const loginForm = document.querySelector('.login-form');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
-import { getSessionStorage, setSessionStorage } from './utils.js';
+import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
 async function registerFn(loginDetails) {
   fetch(`${baseURL}/auth/register`, {
@@ -17,7 +17,6 @@ async function registerFn(loginDetails) {
   // .then((res) => res.json())
   // .then((data) => console.log(data));
 }
-// registerFn(loginDetails);
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();

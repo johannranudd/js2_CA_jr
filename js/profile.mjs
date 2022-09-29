@@ -17,37 +17,41 @@ import {
   updateProfileInfo,
   followProfile,
   unfollowProfile,
-} from './utils.js';
-import { displayAllPosts } from './layout.js';
+} from './utils.mjs';
+import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
 
 window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
   displayAllPosts(allPosts);
-
-  if (newAvatarInput && newAvatarInput && editProfileForm) {
-    newBannerInput.addEventListener('change', () => {
-      uploadImageToContainer(uploadedBanner, newBannerInput);
-    });
-    newAvatarInput.addEventListener('change', () => {
-      uploadImageToContainer(uploadedAvatar, newAvatarInput);
-    });
-
-    editProfileForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const bannerImage = uploadedBanner.querySelector('img');
-      const avatarImage = uploadedAvatar.querySelector('img');
-      const submitObject = {
-        banner: bannerImage ? bannerImage.src : '', // Optional
-        avatar: avatarImage ? avatarImage.src : '', // Optional
-      };
-      updateProfileInfo(globalSStorage.name, submitObject);
-      editProfileForm.classList.remove('show-edit-profile-modal');
-    });
-  }
 });
 
-export async function displayProfileInfo(username = globalSStorage.name) {
+if (newBannerInput && newAvatarInput && editProfileForm) {
+  newBannerInput.addEventListener('change', () => {
+    uploadImageToContainer(uploadedBanner, newBannerInput);
+  });
+  newAvatarInput.addEventListener('change', () => {
+    uploadImageToContainer(uploadedAvatar, newAvatarInput);
+  });
+
+  editProfileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bannerImage = uploadedBanner.querySelector('img');
+    const avatarImage = uploadedAvatar.querySelector('img');
+    const submitObject = {
+      banner: bannerImage ? bannerImage.src : '', // Optional
+      avatar: avatarImage ? avatarImage.src : '', // Optional
+    };
+    updateProfileInfo(globalSStorage.name, submitObject);
+    editProfileForm.classList.remove('show-edit-profile-modal');
+  });
+}
+
+if (globalSStorage) {
+}
+export async function displayProfileInfo(
+  username = globalSStorage && globalSStorage.name
+) {
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
@@ -102,7 +106,6 @@ export async function displayProfileInfo(username = globalSStorage.name) {
   if (followBtn) {
     followBtn.addEventListener('click', (e) => {
       const name = e.target.dataset.username;
-      console.log(name);
       followProfile(name);
     });
   }

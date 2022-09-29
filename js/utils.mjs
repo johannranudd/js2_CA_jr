@@ -1,6 +1,6 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts } from './layout.js';
-import { displayProfileInfo } from './profile.js';
+import { allPosts, displayAllPosts } from './layout.mjs';
+import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -53,7 +53,7 @@ export async function getUsers(userName = '', limit = '') {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${sStorage && sStorage.token}`,
       },
     }
   );
@@ -61,7 +61,7 @@ export async function getUsers(userName = '', limit = '') {
   return data;
 }
 
-// `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
+// ``${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`
 
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);
@@ -84,7 +84,6 @@ export async function getPosts(token, searchParams = '', limit = '') {
 
 export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
   const limitQuery = setFetchLimitURL(limit);
-  // console.log('limitQuery in getSortedPosts():::', limitQuery);
   const res = await fetch(
     `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
     {
@@ -136,10 +135,10 @@ export async function followProfile(name) {
       Authorization: `Bearer ${sStorage.token}`,
     },
   }).then((res) => {
+    if (res.ok) {
+      displayProfileInfo();
+    }
     console.log(res);
-    // if (res.ok) {
-    //   displayProfileInfo(name);
-    // }
   });
 }
 export async function unfollowProfile(name) {
