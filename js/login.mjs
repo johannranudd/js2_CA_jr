@@ -17,7 +17,6 @@ async function registerFn(loginDetails) {
   // .then((res) => res.json())
   // .then((data) => console.log(data));
 }
-// registerFn();
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();

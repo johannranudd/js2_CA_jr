@@ -61,7 +61,7 @@ export async function getUsers(userName = '', limit = '') {
   return data;
 }
 
-// `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true&limit=${limit}`;
+// ``${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`
 
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);
