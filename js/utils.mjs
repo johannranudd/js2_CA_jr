@@ -84,7 +84,6 @@ export async function getPosts(token, searchParams = '', limit = '') {
 
 export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
   const limitQuery = setFetchLimitURL(limit);
-  // console.log('limitQuery in getSortedPosts():::', limitQuery);
   const res = await fetch(
     `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
     {
@@ -135,11 +134,11 @@ export async function followProfile(name) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sStorage.token}`,
     },
-    body: JSON.stringify(req),
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo();
     }
+    console.log(res);
   });
 }
 export async function unfollowProfile(name) {

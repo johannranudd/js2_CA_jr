@@ -15,6 +15,7 @@ import {
   getUsers,
   uploadImageToContainer,
   updateProfileInfo,
+  followProfile,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
@@ -104,7 +105,8 @@ export async function displayProfileInfo(
   const followBtn = document.querySelector('.follow-btn');
   if (followBtn) {
     followBtn.addEventListener('click', (e) => {
-      console.log(e.target.dataset.username);
+      const name = e.target.dataset.username;
+      followProfile(name);
     });
   }
 }
