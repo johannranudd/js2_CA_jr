@@ -33,7 +33,7 @@ import {
   deletePost,
 } from './utils.mjs';
 
-import { displayProfileInfo } from './profile.mjs';
+import { displayProfileInfo, profileDisplayed } from './profile.mjs';
 
 let currentOffset = 0;
 let limit = 20;
@@ -180,15 +180,21 @@ if (globalSStorage) {
 // displayAllPosts
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+
   if (!isAddingToPrevList) {
     if (list) {
       list.innerHTML = '';
+      list.appendChild(spinner);
     }
   }
+  list.appendChild(spinner);
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
   const sStorage = getSessionStorage();
   if (data) {
+    spinner.remove();
     data.map((post) => {
       const { id, title, body, media, author } = post;
 
@@ -218,6 +224,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       </div>
     </li>`;
       list.innerHTML += listItem;
+
       // eventlisteners
       const deletePostBtns = document.querySelectorAll('.delete-post-btn');
       const editPostBtns = document.querySelectorAll('.edit-post-btn');
@@ -255,15 +262,18 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
+          list.innerHTML = '';
+          list.appendChild(spinner);
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
-
-          const { id, title, body, media, author } = singleData;
-          const singleListItem = `
+          if (singleData) {
+            spinner.remove();
+            const { id, title, body, media, author } = singleData;
+            const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
-            author && author.name
-          }">
+              author && author.name
+            }">
            <p><strong>${id}</strong></p>
             <div class="edit-delete-btn-container">
               ${
@@ -286,30 +296,31 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 
                 </div>
               </li>`;
-          list.innerHTML = singleListItem;
-          // ** remove load more btn
-          const deletePostBtn = document.querySelector('.delete-post-btn');
-          const editPostBtn = document.querySelector('.edit-post-btn');
-          const postAuthor = document.querySelector('.post-author');
+            list.innerHTML = singleListItem;
+            // ** remove load more btn
+            const deletePostBtn = document.querySelector('.delete-post-btn');
+            const editPostBtn = document.querySelector('.edit-post-btn');
+            const postAuthor = document.querySelector('.post-author');
 
-          if (deletePostBtn && editPostBtn) {
-            deletePostBtn.addEventListener('click', (e) => {
-              const id = Number(e.target.parentNode.parentNode.dataset.id);
-              deletePost(id);
-            });
+            if (deletePostBtn && editPostBtn) {
+              deletePostBtn.addEventListener('click', (e) => {
+                const id = Number(e.target.parentNode.parentNode.dataset.id);
+                deletePost(id);
+              });
 
-            editPostBtn.addEventListener('click', () => {
-              const id = Number(e.target.parentNode.dataset.id);
-              editID = id;
-              isEditingPost = true;
-              postTitleInput.focus();
-              submitPostBtn.innerHTML = 'Edit post';
+              editPostBtn.addEventListener('click', () => {
+                const id = Number(e.target.parentNode.dataset.id);
+                editID = id;
+                isEditingPost = true;
+                postTitleInput.focus();
+                submitPostBtn.innerHTML = 'Edit post';
+              });
+            }
+            postAuthor.addEventListener('click', (e) => {
+              const name = e.target.textContent;
+              displayProfileInfo(name);
             });
           }
-          postAuthor.addEventListener('click', (e) => {
-            const name = e.target.textContent;
-            displayProfileInfo(name);
-          });
         });
       });
     });

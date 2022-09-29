@@ -17,14 +17,21 @@ import {
   updateProfileInfo,
   followProfile,
   unfollowProfile,
+  setFetchLimitURL,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
-let profileDisplayed = globalSStorage && globalSStorage.name;
+export let profileDisplayed = globalSStorage && globalSStorage.name;
 
 window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
-  displayAllPosts(allPosts);
+  // displayAllPosts(allPosts);
+  // displayAllPosts(
+  //   allPosts,
+  //   getPosts(globalSStorage.token, profileDisplayed, 9999),
+  //   false
+  // );
+  // getPosts(token, (searchParams = ''), (limit = ''));
 });
 
 if (newBannerInput && newAvatarInput && editProfileForm) {
@@ -49,11 +56,9 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
 }
 
 export async function displayProfileInfo(username = profileDisplayed) {
-  profileComponent.innerHTML = '';
   const data = await getUsers(username, 99999);
-  const { avatar, banner, email, followers, following, name, posts, count } =
+  const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
-
   profileComponent.innerHTML = `
           <div class="banner"></div>
           <div class="profile-image-edit-profile-btn-container">
@@ -75,23 +80,23 @@ export async function displayProfileInfo(username = profileDisplayed) {
           </div>
           <h2 class="username">${name}</h2>
           <div class="follow-statistics-contianer">
-            <button class="post-count"><strong>${
-              posts.length
-            }</strong>Posts</button>
+            <button class="post-count" data-username="${name}"><strong>${
+    _count.posts
+  }</strong>Posts</button>
               <button class="following"><strong>${
-                following.length
+                _count.following
               }</strong>Following</button>
               <button class="followers"><strong>${
-                followers.length
+                _count.followers
               }</strong>Followers</button>
               ${
                 name !== globalSStorage.name
                   ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
                   : ''
-              }
-              
+              }              
           </div>
     `;
+  profileDisplayed = name;
   // banner
   const bannerContainer = profileComponent.querySelector('.banner');
   bannerContainer.style.backgroundImage = `url(${banner && banner})`;
@@ -103,6 +108,10 @@ export async function displayProfileInfo(username = profileDisplayed) {
       editProfileForm.classList.add('show-edit-profile-modal');
     });
   }
+
+  // load Posts
+  const viewPostsBtn = document.querySelector('.post-count');
+  viewPostsBtn.addEventListener('click', getDisplayedUseersPosts);
 
   // follow / unfollow
   const followBtn = document.querySelector('.follow-btn');
@@ -121,6 +130,18 @@ export async function displayProfileInfo(username = profileDisplayed) {
       followeUnfollowUpdate(e, followBtn);
     });
   }
+}
+
+export async function getDisplayedUseersPosts() {
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+  allPosts.innerHTML = '';
+  allPosts.appendChild(spinner);
+  const data = await getPosts(globalSStorage.token, '', 9999);
+  const allPostsFromUser = data.filter(
+    (item) => item.author.name === profileDisplayed
+  );
+  displayAllPosts(allPosts, allPostsFromUser, false);
 }
 // function openEditModal() {}
 

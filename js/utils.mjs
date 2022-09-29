@@ -22,7 +22,7 @@ export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
   );
 }
 
-function setFetchLimitURL(limit) {
+export function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
   } else {
