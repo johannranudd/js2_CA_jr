@@ -100,12 +100,14 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 }
 
 export function checkIfLoggedIn() {
-  const sStorage = getSessionStorage();
   // console.log('checkIfLoggedIn() sStorage::', sStorage);
-  if (!sStorage || !sStorage.isLoggedIn) {
-    window.location.href = '../login.html';
-  } else {
-    console.log(`you are already logged in as ${sStorage.name}`);
+  if (window.location.href !== 'http://localhost:5500/login.html') {
+    const sStorage = getSessionStorage();
+    if (!sStorage || !sStorage.isLoggedIn) {
+      window.location.href = '../login.html';
+    } else {
+      console.log(`you are already logged in as ${sStorage.name}`);
+    }
   }
 }
 
@@ -134,6 +136,7 @@ export async function followProfile(name) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sStorage.token}`,
     },
+    body: JSON.stringify({}),
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo();
@@ -150,6 +153,7 @@ export async function unfollowProfile(name) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${sStorage.token}`,
     },
+    body: JSON.stringify({}),
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo(name);

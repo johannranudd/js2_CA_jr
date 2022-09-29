@@ -24,6 +24,7 @@ const homeComponentHeading = document.querySelector('.home-component h4');
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
 import {
+  checkIfLoggedIn,
   adjustForSidebar,
   keepOlyOneSidebarOpen,
   getPosts,
@@ -41,6 +42,8 @@ export let editID = '';
 
 // All global eventlisteners must be here to allow login
 const globalSStorage = getSessionStorage();
+
+window.addEventListener('load', checkIfLoggedIn);
 
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
@@ -110,6 +113,7 @@ if (globalSStorage) {
     );
     isDescending = false;
     sidebar.classList.remove('show-sidebar');
+    const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Oldest posts</p>`;
   });
   // sort by descending
@@ -123,6 +127,7 @@ if (globalSStorage) {
     );
     isDescending = true;
     sidebar.classList.remove('show-sidebar');
+    const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
   });
 
