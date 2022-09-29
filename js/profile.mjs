@@ -16,6 +16,7 @@ import {
   uploadImageToContainer,
   updateProfileInfo,
   followProfile,
+  unfollowProfile,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
@@ -46,14 +47,16 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
   });
 }
 
-if (globalSStorage) {
-}
+// if (globalSStorage) {
+// }
 export async function displayProfileInfo(
   username = globalSStorage && globalSStorage.name
 ) {
+  profileComponent.innerHTML = '';
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, count } =
     data;
+  console.log('data:::', data);
 
   profileComponent.innerHTML = `
           <div class="banner"></div>
@@ -93,21 +96,49 @@ export async function displayProfileInfo(
               
           </div>
     `;
+  // banner
   const bannerContainer = profileComponent.querySelector('.banner');
   bannerContainer.style.backgroundImage = `url(${banner && banner})`;
 
+  // edit button
   const editProfileBtn = document.querySelector('.edit-profile-btn');
   if (editProfileBtn) {
     editProfileBtn.addEventListener('click', (e) => {
       editProfileForm.classList.add('show-edit-profile-modal');
     });
   }
+
+  // follow / unfollow
   const followBtn = document.querySelector('.follow-btn');
   if (followBtn) {
+    // followeUnfollowUpdate(followBtn, followers);
+    const foundFollower = followers.find(
+      (follower) => follower.name === globalSStorage.name
+    );
+    if (foundFollower) {
+      if (foundFollower.name === globalSStorage.name) {
+        followBtn.textContent = 'Unfollow -';
+      }
+    }
     followBtn.addEventListener('click', (e) => {
-      const name = e.target.dataset.username;
-      followProfile(name);
+      followeUnfollowUpdate(e, followBtn);
     });
   }
 }
 // function openEditModal() {}
+
+function followeUnfollowUpdate(e, followBtn) {
+  const name = e.target.dataset.username;
+
+  if (followBtn.textContent === 'Follow +') {
+    // console.log('follow');
+    followProfile(name);
+    displayProfileInfo(name);
+    console.log(name);
+  } else {
+    // console.log('unfollow');
+    unfollowProfile(name);
+    displayProfileInfo(name);
+    console.log(name);
+  }
+}

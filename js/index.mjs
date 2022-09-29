@@ -6,5 +6,3 @@ import {
   checkIfLoggedIn,
   getPosts,
 } from './utils.mjs';
-
-window.addEventListener('load', checkIfLoggedIn);
