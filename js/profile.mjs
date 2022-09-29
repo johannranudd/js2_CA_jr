@@ -20,6 +20,7 @@ import {
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
+let profileDisplayed = globalSStorage && globalSStorage.name;
 
 window.addEventListener('DOMContentLoaded', () => {
   displayProfileInfo();
@@ -47,16 +48,11 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
   });
 }
 
-// if (globalSStorage) {
-// }
-export async function displayProfileInfo(
-  username = globalSStorage && globalSStorage.name
-) {
+export async function displayProfileInfo(username = profileDisplayed) {
   profileComponent.innerHTML = '';
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, count } =
     data;
-  console.log('data:::', data);
 
   profileComponent.innerHTML = `
           <div class="banner"></div>
@@ -121,6 +117,7 @@ export async function displayProfileInfo(
       }
     }
     followBtn.addEventListener('click', (e) => {
+      // e.preventDefault();
       followeUnfollowUpdate(e, followBtn);
     });
   }
@@ -132,11 +129,14 @@ function followeUnfollowUpdate(e, followBtn) {
 
   if (followBtn.textContent === 'Follow +') {
     // console.log('follow');
+    profileDisplayed = name;
     followProfile(name);
     displayProfileInfo(name);
+
     console.log(name);
   } else {
     // console.log('unfollow');
+    profileDisplayed = name;
     unfollowProfile(name);
     displayProfileInfo(name);
     console.log(name);
