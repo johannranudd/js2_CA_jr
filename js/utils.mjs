@@ -101,7 +101,7 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 
 export function checkIfLoggedIn() {
   // console.log('checkIfLoggedIn() sStorage::', sStorage);
-  if (window.location.href !== 'http://localhost:5500/login.html') {
+  if (!window.location.href.includes('/login.html')) {
     const sStorage = getSessionStorage();
     if (!sStorage || !sStorage.isLoggedIn) {
       window.location.href = '../login.html';

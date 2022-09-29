@@ -6,8 +6,8 @@ const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
 const reg = {
-  name: 'jr_6', // Required
-  email: 'jr_6@stud.noroff.no', // Required
+  name: 'jr_7', // Required
+  email: 'jr_7@stud.noroff.no', // Required
   password: '123456789', // Required
   // avatar: 'https://img.service.com/avatar.jpg', // Optional
   // banner: 'https://img.service.com/banner.jpg', // Optional
@@ -25,7 +25,7 @@ async function registerFn(loginDetails) {
   // .then((res) => res.json())
   // .then((data) => console.log(data));
 }
-registerFn(reg);
+// registerFn(reg);
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
