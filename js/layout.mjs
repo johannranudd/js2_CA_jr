@@ -266,23 +266,23 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       }">
     <p><strong>${id}</strong></p>
       <div class="edit-delete-btn-container">
-      ${
-        sStorage.name === author.name
-          ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
-          : ''
-      }
+          ${
+            sStorage.name === author.name
+              ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+              : ''
+          }
       </div>
 
-      <p class="post-author">${author && author.name}</p>
-      <p class="post-title">${title && title}</p>
-      <p class="post-body">${body && body}</p>
-      <div class="post-image-container">
-        ${
-          media &&
-          `<img class="post-image" src=${media} alt="image posted by ${
-            author && author.name
-          }" onerror="this.style.display='none'" />`
-        }
+          <p class="post-author">${author && author.name}</p>
+          <p class="post-title">${title && title}</p>
+          <p class="post-body">${body && body}</p>
+          <div class="post-image-container">
+            ${
+              media &&
+              `<img class="post-image" src=${media} alt="image posted by ${
+                author && author.name
+              }" onerror="this.style.display='none'" />`
+            }
       </div>
     </li>`;
       list.innerHTML += listItem;
@@ -349,29 +349,69 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
               author && author.name
             }">
            <p><strong>${id}</strong></p>
-            <div class="edit-delete-btn-container">
-              ${
-                sStorage.name === author.name
-                  ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
-                  : ''
-              }
-            </div>
+                <div class="edit-delete-btn-container">
+                  ${
+                    sStorage.name === author.name
+                      ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+                      : ''
+                  }
+                </div>
                 <p class="post-author">${author && author.name}</p>
                 <p class="post-title">${title && title}</p>
                 <p class="post-body">${body && body}</p>
-                <div class="post-image-container">
 
+                <div class="post-image-container">
                     ${
                       media &&
                       `<img class="post-image" src=${media} alt="image posted by ${
                         author && author.name
                       }" onerror="this.style.display='none'" />`
                     }
-
+                </div>
+                <div class="comment-component">
+                    <div class="profile-img-text-input">
+                      <img
+                        class="profile-image"
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                        alt="profile-image"
+                      />
+                      <form class="comment-form">
+                        
+                        <textarea
+                          class="comment-textarea"
+                          placeholder="Comment"
+                        ></textarea>
+                        <div class="display-image-container"></div>
+                        <div class="add-items-and-submit-btn-contianer">
+                          <div class="add-items-btns">
+                            <label class="custom-file-upload">
+                              <input type="file" class="upload-img-input" />
+                              <i class="fa-solid fa-image"></i>
+                            </label>
+                          </div>
+                          <button class="submit-post-btn" type="submit">Comment</button>
+                        </div>
+                      </form>
+                    </div>
                 </div>
               </li>`;
             list.innerHTML = singleListItem;
-            // ** remove load more btn
+
+            const commentForm = document.querySelector('.comment-form');
+            const textareaComment = document.querySelector('.comment-textarea');
+            const uploadImgeInput = document.querySelector('.upload-img-input');
+
+            commentForm.addEventListener('click', (e) => {
+              e.preventDefault;
+              console.log('comment');
+            });
+
+            textareaComment.addEventListener('keyup', (e) => {
+              textareaComment.style.height = 'auto';
+              textareaComment.style.height = `${e.target.scrollHeight}px`;
+            });
+
+            loadMoreBtn.remove();
             const deletePostBtn = document.querySelector('.delete-post-btn');
             const editPostBtn = document.querySelector('.edit-post-btn');
             const postAuthor = document.querySelector('.post-author');
@@ -415,7 +455,29 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
-
+{
+  /* <form class='post-form'>
+  <input
+    class='post-title-input'
+    type='text'
+    aria-label='post-title'
+    placeholder='Title'
+  />
+  <textarea class='post-textarea' placeholder='Post something!'></textarea>
+  <div class='display-image-container'></div>
+  <div class='add-items-and-submit-btn-contianer'>
+    <div class='add-items-btns'>
+      <label class='custom-file-upload'>
+        <input type='file' class='upload-img-input' />
+        <i class='fa-solid fa-image'></i>
+      </label>
+    </div>
+    <button class='submit-post-btn' type='submit'>
+      post
+    </button>
+  </div>
+</form>; */
+}
 //
 // > 500
 
@@ -440,3 +502,24 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 // eventListeners
 
 // press post
+{
+  /* <div class="react-comment-container">
+                      <button class="react-btn">
+                        <i class="fa-solid fa-heart"></i>
+                      </button>
+                      <button class="comment-btn">
+                        <i class="fa-solid fa-comment"></i>
+                      </button>
+                    </div>
+                    <form class="comment-form">
+                      <img
+                          class="profile-image"
+                          src="${globalSStorage.avatar}"
+                          alt="Profile image of ${globalSStorage.name}"
+                          onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        />
+
+                      <input class="comment-input" type="text" placeholder="Comment" />
+                      <button class="submit-comment-btn" type="submit">Comment</button>
+                    </form> */
+}

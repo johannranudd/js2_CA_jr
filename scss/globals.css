@@ -35,6 +35,9 @@
 .feed .all-posts .single-post-feed {
   cursor: pointer;
 }
+.feed .all-posts .single-post-feed:hover {
+  background: #fed;
+}
 .feed .all-posts .single-post-feed p {
   -webkit-hyphens: auto;
       -ms-hyphens: auto;
@@ -46,8 +49,58 @@
 .feed .all-posts .single-post-feed .post-image-container .post-image {
   max-width: 100%;
 }
-.feed .all-posts .single-post-feed:hover {
-  background: #fed;
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
+  display: flex;
+  margin-top: 2.3rem;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .profile-image {
+  width: 50px;
+  height: 50px;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form {
+  width: 100%;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .comment-textarea {
+  width: 100%;
+  max-width: 400px;
+  max-height: 350px;
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0.5rem;
+  resize: none;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .comment-textarea:focus {
+  outline: none;
+  border-bottom: 2px solid black;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .comment-textarea::-webkit-scrollbar {
+  width: 3px;
+  background: transparent;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .comment-textarea::-webkit-scrollbar-thumb {
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 100px;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .display-image-container img {
+  max-width: 400px;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .add-items-and-submit-btn-contianer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload {
+  cursor: pointer;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload input[type=file] {
+  display: none;
+}
+.feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
+  font-size: 1.5rem;
 }
 .feed .load-more-btn-container {
   display: flex;
@@ -147,9 +200,11 @@
   font-style: italic;
 }
 
+.post-component {
+  margin-top: 2.3rem;
+}
 .post-component .profile-img-text-input {
   display: flex;
-  margin-top: 2.3rem;
 }
 .post-component .profile-img-text-input .profile-image {
   width: 70px;

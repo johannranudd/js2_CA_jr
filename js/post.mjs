@@ -8,6 +8,7 @@ import {
 import { displayAllPosts, isEditingPost, editID } from './layout.mjs';
 
 const postForm = document.querySelector('.post-form');
+
 const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const displayImageContainer = document.querySelector(
@@ -34,15 +35,19 @@ window.addEventListener('resize', () => {
 
 // eventlistener for textarea
 
-textareaPost.addEventListener('keyup', (e) => {
-  textareaPost.style.height = 'auto';
-  textareaPost.style.height = `${e.target.scrollHeight}px`;
-});
+if (textareaPost) {
+  textareaPost.addEventListener('keyup', (e) => {
+    textareaPost.style.height = 'auto';
+    textareaPost.style.height = `${e.target.scrollHeight}px`;
+  });
+}
 
 // upload image
-uploadImgeInput.addEventListener('change', () => {
-  uploadImageToContainer(displayImageContainer, uploadImgeInput);
-});
+if (uploadImgeInput) {
+  uploadImgeInput.addEventListener('change', () => {
+    uploadImageToContainer(displayImageContainer, uploadImgeInput);
+  });
+}
 // !moved to utils
 // export function uploadImageToContainer(container) {
 //   const reader = new FileReader();
@@ -58,34 +63,35 @@ uploadImgeInput.addEventListener('change', () => {
 // }
 
 // postForm
-
-postForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const titleInputValue = postTitleInput.value;
-  const textareaValue = textareaPost.value;
-  const image = displayImageContainer.querySelector('img');
-  if (titleInputValue && textareaValue) {
-    const submitObject = {
-      title: titleInputValue, // Required
-      body: textareaValue, // Required
-      media: image ? image.src : '', // Optional
-    };
-    if (!isEditingPost) {
-      post(submitObject);
-      postForm.reset();
-      if (image) {
-        displayImageContainer.removeChild(image);
-      }
-    } else {
-      editPost(editID, submitObject);
-      postForm.reset();
-      submitPostBtn.innerHTML = 'Post';
-      if (image) {
-        displayImageContainer.removeChild(image);
+if (postForm) {
+  postForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const titleInputValue = postTitleInput.value;
+    const textareaValue = textareaPost.value;
+    const image = displayImageContainer.querySelector('img');
+    if (titleInputValue && textareaValue) {
+      const submitObject = {
+        title: titleInputValue, // Required
+        body: textareaValue, // Required
+        media: image ? image.src : '', // Optional
+      };
+      if (!isEditingPost) {
+        post(submitObject);
+        postForm.reset();
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
+      } else {
+        editPost(editID, submitObject);
+        postForm.reset();
+        submitPostBtn.innerHTML = 'Post';
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
       }
     }
-  }
-});
+  });
+}
 
 //
 //
