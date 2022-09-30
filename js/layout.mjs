@@ -21,6 +21,8 @@ const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
+const profileLink = document.querySelector('.profile-link');
+
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
 import {
@@ -47,54 +49,57 @@ const globalSStorage = getSessionStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
-async function displayContacts() {
+export async function displayContacts() {
+  listOfContacts.innerHTML = '';
   const users = await getUsers(globalSStorage.name, '');
-  // console.log(users);
-  users.following.map((item) => {
-    const { avatar, name } = item;
-    listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
-      <img class="profile-image-contacts" src="${
-        avatar
-          ? avatar
-          : 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'
-      }" alt="profile image of ${name}" />
+  if (users) {
+    users.following.map((item) => {
+      const { avatar, name } = item;
+      console.log(item);
+      listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
+      <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
+              alt="Profile image ${name}"
+              onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
       <p>${name}</p>
     </li>`;
-    const contactsListItem = document.querySelectorAll('.contact-list-item');
-    // console.log(contactsListItem);
-    contactsListItem.forEach((contact) => {
-      contact.addEventListener('click', (e) => {
-        const profileName = e.currentTarget.dataset.username;
-        contacts.classList.remove('show-contacts');
-        adjustForSidebar(
-          sidebar,
-          feedAndContactsContaier,
-          contacts,
-          mainContainer
-        );
-        // console.log(window.location.href);
-        if (window.location.href.includes('profile.html')) {
-          // console.log('profile');
-          // profileDisplayed = name;
-          displayProfileInfo(profileName);
-        } else {
-          // profileDisplayed = profileName;
-          setSessionStorage(
-            true,
-            globalSStorage.token,
-            globalSStorage.name,
-            globalSStorage.email,
-            globalSStorage.avatar,
-            profileName
-          );
-          window.location.href = `../profile.html`;
-          // displayProfileInfo(profileName);
-        }
+      const contactsListItem = document.querySelectorAll('.contact-list-item');
+      // console.log(contactsListItem);
+      contactsListItem.forEach((contact) => {
+        contact.addEventListener('click', (e) => {
+          refreshContactsAndProfile(e);
+        });
       });
     });
-  });
+  } else {
+    console.log('no user');
+  }
 
   // console.log(globalSStorage.name);
+}
+
+function refreshContactsAndProfile(e) {
+  const profileName = e.currentTarget.dataset.username;
+  contacts.classList.remove('show-contacts');
+  adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  // console.log(window.location.href);
+  if (window.location.href.includes('profile.html')) {
+    // console.log('profile');
+    // profileDisplayed = name;
+    displayProfileInfo(profileName);
+  } else {
+    // profileDisplayed = profileName;
+    // console.log(profileName);
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      profileName
+    );
+    window.location.href = `../profile.html`;
+    // displayProfileInfo(profileName);
+  }
 }
 
 if (globalSStorage) {
@@ -104,11 +109,23 @@ if (globalSStorage) {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
-    displayContacts();
+    // displayContacts();
   });
 
   window.addEventListener('resize', () => {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  });
+
+  profileLink.addEventListener('click', (e) => {
+    // console.log('profile-link');
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      globalSStorage.name
+    );
   });
 
   menuBtn.addEventListener('click', (e) => {

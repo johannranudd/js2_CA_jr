@@ -147,7 +147,7 @@ export async function followProfile(name) {
     body: JSON.stringify({}),
   }).then((res) => {
     if (res.ok) {
-      displayProfileInfo();
+      displayProfileInfo(name);
     }
     console.log(res);
   });
@@ -164,7 +164,7 @@ export async function unfollowProfile(name) {
     body: JSON.stringify({}),
   }).then((res) => {
     if (res.ok) {
-      displayProfileInfo();
+      displayProfileInfo(name);
     }
   });
 }

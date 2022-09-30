@@ -6,8 +6,8 @@ const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
 const reg = {
-  name: 'njbr4', // Required
-  email: 'njbr4@stud.noroff.no', // Required
+  name: 'njbr5', // Required
+  email: 'njbr5@stud.noroff.no', // Required
   password: 'qwertyuiop', // Required
   // avatar: 'https://img.service.com/avatar.jpg', // Optional
   // banner: 'https://img.service.com/banner.jpg', // Optional
@@ -25,7 +25,7 @@ async function registerFn(loginDetails) {
   // .then((res) => res.json())
   // .then((data) => console.log(data));
 }
-registerFn(reg);
+// registerFn(reg);
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -74,7 +74,7 @@ async function loginFn(email, password) {
     if (res.ok) {
       const { accessToken, name, email, avatar } = data;
       setSessionStorage(true, accessToken, name, email, avatar, name);
-      window.location.href = '/index.html';
+      window.location.href = '../index.html';
     }
   } catch (e) {
     console.log(e, 'error happened in loginFn()');

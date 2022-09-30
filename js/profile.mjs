@@ -7,7 +7,6 @@ const newAvatarInput = document.querySelector('#new-avatar');
 const uploadedBanner = document.querySelector('.uploaded-banner');
 const uploadedAvatar = document.querySelector('.uploaded-avatar');
 const loadMoreBtn = document.querySelector('.load-more-btn');
-const profileLink = document.querySelector('.profile-link');
 
 import {
   getSessionStorage,
@@ -21,20 +20,9 @@ import {
   unfollowProfile,
   setFetchLimitURL,
 } from './utils.mjs';
-import { displayAllPosts } from './layout.mjs';
+import { displayAllPosts, displayContacts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
 // export let profileDisplayed = globalSStorage && globalSStorage.name;
-
-// window.onbeforeunload = function () {
-//   setSessionStorage(
-//     true,
-//     globalSStorage.token,
-//     globalSStorage.name,
-//     globalSStorage.email,
-//     globalSStorage.avatar,
-//     globalSStorage.name
-//   );
-// };
 
 window.addEventListener('DOMContentLoaded', () => {
   if (globalSStorage) {
@@ -44,27 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
       displayProfileInfo(globalSStorage.profileDisplayed);
     }
   }
-  // displayAllPosts(allPosts);
-  // displayAllPosts(
-  //   allPosts,
-  //   getPosts(globalSStorage.token, profileDisplayed, 9999),
-  //   false
-  // );
-  // getPosts(token, (searchParams = ''), (limit = ''));
 });
-
-if (profileLink) {
-  profileLink.addEventListener('click', () => {
-    setSessionStorage(
-      true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      globalSStorage.name
-    );
-  });
-}
 
 if (newBannerInput && newAvatarInput && editProfileForm) {
   newBannerInput.addEventListener('change', () => {
@@ -90,21 +58,19 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
 export async function displayProfileInfo(
   username = globalSStorage.profileDisplayed
 ) {
-  const data = await getUsers(username, 99999);
+  const data = await getUsers(username, '');
   const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
+
   if (profileComponent) {
     profileComponent.innerHTML = `
           <div class="banner"></div>
           <div class="profile-image-edit-profile-btn-container">
             <img
               class="profile-image"
-              src="${
-                avatar
-                  ? avatar
-                  : 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'
-              }"
-              alt="Profile image"
+              src="${avatar}"
+              alt="Profile image of ${name}"
+              onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
             />
             ${
               name === globalSStorage.name
@@ -132,6 +98,7 @@ export async function displayProfileInfo(
           </div>
     `;
     // profileDisplayed = name;
+
     setSessionStorage(
       true,
       globalSStorage.token,
@@ -163,6 +130,7 @@ export async function displayProfileInfo(
       const foundFollower = followers.find(
         (follower) => follower.name === globalSStorage.name
       );
+      console.log(followers);
       if (foundFollower) {
         if (foundFollower.name === globalSStorage.name) {
           followBtn.textContent = 'Unfollow -';
@@ -192,36 +160,18 @@ export async function getDisplayedUseersPosts(e) {
 }
 
 function followeUnfollowUpdate(e, followBtn) {
-  const name = e.target.dataset.username;
-
+  const profileName = e.target.dataset.username;
+  setSessionStorage(
+    true,
+    globalSStorage.token,
+    globalSStorage.name,
+    globalSStorage.email,
+    globalSStorage.avatar,
+    profileName
+  );
   if (followBtn.textContent === 'Follow +') {
-    // console.log('follow');
-    // profileDisplayed = name;
-    setSessionStorage(
-      true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      name
-    );
-    followProfile(name);
-    displayProfileInfo(name);
-
-    // console.log(name);
+    followProfile(profileName);
   } else {
-    // console.log('unfollow');
-    // profileDisplayed = name;
-    setSessionStorage(
-      true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      name
-    );
-    unfollowProfile(name);
-    displayProfileInfo(name);
-    // console.log(name);
+    unfollowProfile(profileName);
   }
 }
