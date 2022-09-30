@@ -57,6 +57,8 @@
 }
 .feed .load-more-btn-container .load-more-btn {
   padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #000;
 }
 
 .contacts {
@@ -68,7 +70,34 @@
   background: #fed;
   transition: 0.3s;
   padding-bottom: 10rem;
+  z-index: 2;
 }
+.contacts .list-of-contacts {
+  padding: 1rem 0 4rem 0;
+}
+.contacts .list-of-contacts h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.contacts .list-of-contacts li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.contacts .list-of-contacts li:hover {
+  background: red;
+}
+.contacts .list-of-contacts li img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.contacts .list-of-contacts li p {
+  margin-left: 1rem;
+}
+
 .show-contacts {
   transition: 0.3s;
 }
@@ -256,4 +285,45 @@ img {
   width: 95%;
   max-width: 1280px;
   margin: auto;
+}
+
+.spinner {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  translate: -50%;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.spinner:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  -webkit-animation: spinn 1.2s linear infinite;
+          animation: spinn 1.2s linear infinite;
+}
+
+@-webkit-keyframes spinn {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinn {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }/*# sourceMappingURL=globals.css.map */

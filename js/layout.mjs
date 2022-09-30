@@ -21,6 +21,8 @@ const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
+const profileLink = document.querySelector('.profile-link');
+
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
 import {
@@ -31,6 +33,8 @@ import {
   getSessionStorage,
   getSortedPosts,
   deletePost,
+  getUsers,
+  setSessionStorage,
 } from './utils.mjs';
 
 import { displayProfileInfo } from './profile.mjs';
@@ -45,6 +49,50 @@ const globalSStorage = getSessionStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
+export async function displayContacts() {
+  listOfContacts.innerHTML = '';
+  const user = await getUsers(globalSStorage.name, '');
+  if (user) {
+    user.following.map((item) => {
+      const { avatar, name } = item;
+      listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
+        <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
+                alt="Profile image ${name}"
+                onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
+        <p>${name}</p>
+      </li>`;
+      const contactsListItem = document.querySelectorAll('.contact-list-item');
+      // console.log(contactsListItem);
+      contactsListItem.forEach((contact) => {
+        contact.addEventListener('click', (e) => {
+          refreshContactsAndProfile(e);
+        });
+      });
+    });
+  } else {
+    console.log('no user');
+  }
+}
+
+function refreshContactsAndProfile(e) {
+  const profileName = e.currentTarget.dataset.username;
+  contacts.classList.remove('show-contacts');
+  adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  setSessionStorage(
+    true,
+    globalSStorage.token,
+    globalSStorage.name,
+    globalSStorage.email,
+    globalSStorage.avatar,
+    profileName
+  );
+  if (window.location.href.includes('profile.html')) {
+    displayProfileInfo(profileName);
+  } else {
+    window.location.href = `../profile.html`;
+  }
+}
+
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
     const sStorage = getSessionStorage();
@@ -52,10 +100,23 @@ if (globalSStorage) {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
+    displayContacts();
   });
 
   window.addEventListener('resize', () => {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+  });
+
+  profileLink.addEventListener('click', (e) => {
+    // console.log('profile-link');
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      globalSStorage.name
+    );
   });
 
   menuBtn.addEventListener('click', (e) => {
@@ -91,6 +152,7 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
+        loadMoreBtn.remove();
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
@@ -180,15 +242,21 @@ if (globalSStorage) {
 // displayAllPosts
 
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+  list.appendChild(spinner);
+
   if (!isAddingToPrevList) {
     if (list) {
       list.innerHTML = '';
+      list.appendChild(spinner);
     }
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
   const sStorage = getSessionStorage();
   if (data) {
+    spinner.remove();
     data.map((post) => {
       const { id, title, body, media, author } = post;
 
@@ -218,6 +286,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       </div>
     </li>`;
       list.innerHTML += listItem;
+
       // eventlisteners
       const deletePostBtns = document.querySelectorAll('.delete-post-btn');
       const editPostBtns = document.querySelectorAll('.edit-post-btn');
@@ -243,8 +312,20 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       }
       postAuthor.forEach((author) => {
         author.addEventListener('click', (e) => {
-          const name = e.target.textContent;
-          displayProfileInfo(name);
+          const profileName = e.target.textContent;
+          setSessionStorage(
+            true,
+            globalSStorage.token,
+            globalSStorage.name,
+            globalSStorage.email,
+            globalSStorage.avatar,
+            profileName
+          );
+          if (!window.location.href.includes('profile.html')) {
+            window.location.href = '../profile.html';
+          } else {
+            displayProfileInfo(profileName);
+          }
         });
       });
 
@@ -255,15 +336,18 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
+          list.innerHTML = '';
+          list.appendChild(spinner);
           const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
           const singleData = await getPosts(sStorage.token, postID, '');
-
-          const { id, title, body, media, author } = singleData;
-          const singleListItem = `
+          if (singleData) {
+            spinner.remove();
+            const { id, title, body, media, author } = singleData;
+            const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
-            author && author.name
-          }">
+              author && author.name
+            }">
            <p><strong>${id}</strong></p>
             <div class="edit-delete-btn-container">
               ${
@@ -286,30 +370,43 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 
                 </div>
               </li>`;
-          list.innerHTML = singleListItem;
-          // ** remove load more btn
-          const deletePostBtn = document.querySelector('.delete-post-btn');
-          const editPostBtn = document.querySelector('.edit-post-btn');
-          const postAuthor = document.querySelector('.post-author');
+            list.innerHTML = singleListItem;
+            // ** remove load more btn
+            const deletePostBtn = document.querySelector('.delete-post-btn');
+            const editPostBtn = document.querySelector('.edit-post-btn');
+            const postAuthor = document.querySelector('.post-author');
 
-          if (deletePostBtn && editPostBtn) {
-            deletePostBtn.addEventListener('click', (e) => {
-              const id = Number(e.target.parentNode.parentNode.dataset.id);
-              deletePost(id);
-            });
+            if (deletePostBtn && editPostBtn) {
+              deletePostBtn.addEventListener('click', (e) => {
+                const id = Number(e.target.parentNode.parentNode.dataset.id);
+                deletePost(id);
+              });
 
-            editPostBtn.addEventListener('click', () => {
-              const id = Number(e.target.parentNode.dataset.id);
-              editID = id;
-              isEditingPost = true;
-              postTitleInput.focus();
-              submitPostBtn.innerHTML = 'Edit post';
+              editPostBtn.addEventListener('click', () => {
+                const id = Number(e.target.parentNode.dataset.id);
+                editID = id;
+                isEditingPost = true;
+                postTitleInput.focus();
+                submitPostBtn.innerHTML = 'Edit post';
+              });
+            }
+            postAuthor.addEventListener('click', (e) => {
+              const profileName = e.target.textContent;
+              setSessionStorage(
+                true,
+                globalSStorage.token,
+                globalSStorage.name,
+                globalSStorage.email,
+                globalSStorage.avatar,
+                profileName
+              );
+              if (!window.location.href.includes('profile.html')) {
+                window.location.href = '../profile.html';
+              } else {
+                displayProfileInfo(profileName);
+              }
             });
           }
-          postAuthor.addEventListener('click', (e) => {
-            const name = e.target.textContent;
-            displayProfileInfo(name);
-          });
         });
       });
     });
@@ -318,6 +415,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
+
 //
 // > 500
 

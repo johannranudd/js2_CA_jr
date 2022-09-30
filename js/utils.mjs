@@ -1,5 +1,5 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts } from './layout.mjs';
+import { allPosts, displayAllPosts, displayContacts } from './layout.mjs';
 import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
@@ -9,7 +9,14 @@ export function getSessionStorage() {
   return sStorage;
 }
 
-export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
+export function setSessionStorage(
+  isLoggedIn,
+  token,
+  name,
+  email,
+  avatar,
+  profileDisplayed
+) {
   sessionStorage.setItem(
     'isLoggedIn',
     JSON.stringify({
@@ -18,11 +25,12 @@ export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
       name: name,
       email: email,
       avatar: avatar,
+      profileDisplayed: profileDisplayed,
     })
   );
 }
 
-function setFetchLimitURL(limit) {
+export function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
   } else {
@@ -101,7 +109,7 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 
 export function checkIfLoggedIn() {
   // console.log('checkIfLoggedIn() sStorage::', sStorage);
-  if (window.location.href !== 'http://localhost:5500/login.html') {
+  if (!window.location.href.includes('/login.html')) {
     const sStorage = getSessionStorage();
     if (!sStorage || !sStorage.isLoggedIn) {
       window.location.href = '../login.html';
@@ -139,9 +147,10 @@ export async function followProfile(name) {
     body: JSON.stringify({}),
   }).then((res) => {
     if (res.ok) {
-      displayProfileInfo();
+      displayProfileInfo(name);
+      displayContacts();
     }
-    console.log(res);
+    // console.log(res);
   });
 }
 export async function unfollowProfile(name) {
@@ -157,7 +166,10 @@ export async function unfollowProfile(name) {
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo(name);
+
+      displayContacts();
     }
+    // console.log(res);
   });
 }
 

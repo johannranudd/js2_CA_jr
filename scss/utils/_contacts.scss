@@ -10,11 +10,30 @@
   background: #fed;
   transition: 0.3s;
   padding-bottom: 10rem;
-  @media (min-width: $laptop-s) {
-    // position: fixed;
-    // right: 2.5%;
-    // left: 97.5%;
-    // right: 0%;
+  z-index: 2;
+  .list-of-contacts {
+    padding: 1rem 0 4rem 0;
+    h4 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    li {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      &:hover {
+        background: red;
+      }
+      img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+      }
+      p {
+        margin-left: 1rem;
+      }
+    }
   }
 }
 
