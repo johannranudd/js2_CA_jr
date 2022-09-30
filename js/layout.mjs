@@ -1,37 +1,3 @@
-// !paste
-// const { avatar, name } = follower;
-// console.log(follower);
-// listOfContacts.innerHTML += `<li class="contact-list-item">
-//   <img class="profile-image-contacts" src="${
-//     avatar
-//       ? avatar
-//       : 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'
-//   }" alt="profile image of ${name}" />
-//   <p>${name}</p>
-// </li>`;
-// const contactsListItem =
-//   document.querySelectorAll('.contact-list-item');
-// contactsListItem.forEach((contact) => {
-//   contact.addEventListener('click', () => {
-//     contacts.classList.remove('show-contacts');
-//     adjustForSidebar(
-//       sidebar,
-//       feedAndContactsContaier,
-//       contacts,
-//       mainContainer
-//     );
-//     console.log(window.location.href);
-//     if (window.location.href.includes('profile')) {
-//       console.log('profile');
-//       displayProfileInfo(name);
-//     } else {
-//       window.location.href = '../profile.html';
-//       // profileDisplayed = name;
-//     }
-//   });
-// });
-// !paste
-
 const feedAndContactsContaier = document.querySelector(
   '.feed-and-contacts-container'
 );
@@ -66,9 +32,10 @@ import {
   getSortedPosts,
   deletePost,
   getUsers,
+  setSessionStorage,
 } from './utils.mjs';
 
-import { displayProfileInfo, profileDisplayed } from './profile.mjs';
+import { displayProfileInfo } from './profile.mjs';
 
 let currentOffset = 0;
 let limit = 20;
@@ -81,8 +48,51 @@ const globalSStorage = getSessionStorage();
 window.addEventListener('load', checkIfLoggedIn);
 
 async function displayContacts() {
-  const users = await getUsers('', 9999);
-  // console.log(users[0]);
+  const users = await getUsers(globalSStorage.name, '');
+  // console.log(users);
+  users.following.map((item) => {
+    const { avatar, name } = item;
+    listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
+      <img class="profile-image-contacts" src="${
+        avatar
+          ? avatar
+          : 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'
+      }" alt="profile image of ${name}" />
+      <p>${name}</p>
+    </li>`;
+    const contactsListItem = document.querySelectorAll('.contact-list-item');
+    // console.log(contactsListItem);
+    contactsListItem.forEach((contact) => {
+      contact.addEventListener('click', (e) => {
+        const profileName = e.currentTarget.dataset.username;
+        contacts.classList.remove('show-contacts');
+        adjustForSidebar(
+          sidebar,
+          feedAndContactsContaier,
+          contacts,
+          mainContainer
+        );
+        // console.log(window.location.href);
+        if (window.location.href.includes('profile.html')) {
+          // console.log('profile');
+          // profileDisplayed = name;
+          displayProfileInfo(profileName);
+        } else {
+          // profileDisplayed = profileName;
+          setSessionStorage(
+            true,
+            globalSStorage.token,
+            globalSStorage.name,
+            globalSStorage.email,
+            globalSStorage.avatar,
+            profileName
+          );
+          window.location.href = `../profile.html`;
+          // displayProfileInfo(profileName);
+        }
+      });
+    });
+  });
 
   // console.log(globalSStorage.name);
 }
@@ -294,8 +304,16 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       }
       postAuthor.forEach((author) => {
         author.addEventListener('click', (e) => {
-          const name = e.target.textContent;
-          displayProfileInfo(name);
+          const profileName = e.target.textContent;
+          // setSessionStorage(
+          //   true,
+          //   globalSStorage.token,
+          //   globalSStorage.name,
+          //   globalSStorage.email,
+          //   globalSStorage.avatar,
+          //   name
+          // );
+          displayProfileInfo(profileName);
         });
       });
 
@@ -362,6 +380,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
             }
             postAuthor.addEventListener('click', (e) => {
               const name = e.target.textContent;
+              // setSessionStorage(
+              //   true,
+              //   globalSStorage.token,
+              //   globalSStorage.name,
+              //   globalSStorage.email,
+              //   globalSStorage.avatar,
+              //   name
+              // );
               displayProfileInfo(name);
             });
           }

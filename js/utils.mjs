@@ -9,7 +9,14 @@ export function getSessionStorage() {
   return sStorage;
 }
 
-export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
+export function setSessionStorage(
+  isLoggedIn,
+  token,
+  name,
+  email,
+  avatar,
+  profileDisplayed
+) {
   sessionStorage.setItem(
     'isLoggedIn',
     JSON.stringify({
@@ -18,6 +25,7 @@ export function setSessionStorage(isLoggedIn, token, name, email, avatar) {
       name: name,
       email: email,
       avatar: avatar,
+      profileDisplayed: profileDisplayed,
     })
   );
 }

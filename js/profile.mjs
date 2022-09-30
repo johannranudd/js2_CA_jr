@@ -7,6 +7,7 @@ const newAvatarInput = document.querySelector('#new-avatar');
 const uploadedBanner = document.querySelector('.uploaded-banner');
 const uploadedAvatar = document.querySelector('.uploaded-avatar');
 const loadMoreBtn = document.querySelector('.load-more-btn');
+const profileLink = document.querySelector('.profile-link');
 
 import {
   getSessionStorage,
@@ -22,10 +23,27 @@ import {
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
-export let profileDisplayed = globalSStorage && globalSStorage.name;
+// export let profileDisplayed = globalSStorage && globalSStorage.name;
+
+// window.onbeforeunload = function () {
+//   setSessionStorage(
+//     true,
+//     globalSStorage.token,
+//     globalSStorage.name,
+//     globalSStorage.email,
+//     globalSStorage.avatar,
+//     globalSStorage.name
+//   );
+// };
 
 window.addEventListener('DOMContentLoaded', () => {
-  displayProfileInfo();
+  if (globalSStorage) {
+    if (globalSStorage.name === globalSStorage.profileDisplayed) {
+      displayProfileInfo(globalSStorage.name);
+    } else {
+      displayProfileInfo(globalSStorage.profileDisplayed);
+    }
+  }
   // displayAllPosts(allPosts);
   // displayAllPosts(
   //   allPosts,
@@ -33,6 +51,17 @@ window.addEventListener('DOMContentLoaded', () => {
   //   false
   // );
   // getPosts(token, (searchParams = ''), (limit = ''));
+});
+
+profileLink.addEventListener('click', () => {
+  setSessionStorage(
+    true,
+    globalSStorage.token,
+    globalSStorage.name,
+    globalSStorage.email,
+    globalSStorage.avatar,
+    globalSStorage.name
+  );
 });
 
 if (newBannerInput && newAvatarInput && editProfileForm) {
@@ -56,7 +85,9 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
   });
 }
 
-export async function displayProfileInfo(username = profileDisplayed) {
+export async function displayProfileInfo(
+  username = globalSStorage.profileDisplayed
+) {
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
@@ -97,7 +128,15 @@ export async function displayProfileInfo(username = profileDisplayed) {
               }              
           </div>
     `;
-  profileDisplayed = name;
+  // profileDisplayed = name;
+  setSessionStorage(
+    true,
+    globalSStorage.token,
+    globalSStorage.name,
+    globalSStorage.email,
+    globalSStorage.avatar,
+    name
+  );
   // banner
   const bannerContainer = profileComponent.querySelector('.banner');
   bannerContainer.style.backgroundImage = `url(${banner && banner})`;
@@ -141,27 +180,43 @@ export async function getDisplayedUseersPosts() {
   loadMoreBtn.remove();
   const data = await getPosts(globalSStorage.token, '', 9999);
   const allPostsFromUser = data.filter(
-    (item) => item.author.name === profileDisplayed
+    (item) => item.author.name === globalSStorage.profileDisplayed
   );
+  console.log(allPostsFromUser);
   displayAllPosts(allPosts, allPostsFromUser, false);
 }
-// function openEditModal() {}
 
 function followeUnfollowUpdate(e, followBtn) {
   const name = e.target.dataset.username;
 
   if (followBtn.textContent === 'Follow +') {
     // console.log('follow');
-    profileDisplayed = name;
+    // profileDisplayed = name;
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      name
+    );
     followProfile(name);
     displayProfileInfo(name);
 
-    console.log(name);
+    // console.log(name);
   } else {
     // console.log('unfollow');
-    profileDisplayed = name;
+    // profileDisplayed = name;
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      name
+    );
     unfollowProfile(name);
     displayProfileInfo(name);
-    console.log(name);
+    // console.log(name);
   }
 }

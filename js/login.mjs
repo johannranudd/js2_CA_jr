@@ -5,12 +5,6 @@ const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
-const reg = {
-  name: 'testnjbr', // Required
-  email: 'testnjbr@stud.noroff.no', // Required
-  password: 'qwertyuiop', // Required
-};
-
 async function registerFn(loginDetails) {
   fetch(`${baseURL}/auth/register`, {
     method: 'POST',
@@ -71,7 +65,7 @@ async function loginFn(email, password) {
     const data = await res.json();
     if (res.ok) {
       const { accessToken, name, email, avatar } = data;
-      setSessionStorage(true, accessToken, name, email, avatar);
+      setSessionStorage(true, accessToken, name, email, avatar, name);
       window.location.href = '/index.html';
     }
   } catch (e) {
