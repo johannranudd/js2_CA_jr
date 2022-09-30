@@ -51,17 +51,16 @@ window.addEventListener('load', checkIfLoggedIn);
 
 export async function displayContacts() {
   listOfContacts.innerHTML = '';
-  const users = await getUsers(globalSStorage.name, '');
-  if (users) {
-    users.following.map((item) => {
+  const user = await getUsers(globalSStorage.name, '');
+  if (user) {
+    user.following.map((item) => {
       const { avatar, name } = item;
-      console.log(item);
       listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
-      <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
-              alt="Profile image ${name}"
-              onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
-      <p>${name}</p>
-    </li>`;
+        <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
+                alt="Profile image ${name}"
+                onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
+        <p>${name}</p>
+      </li>`;
       const contactsListItem = document.querySelectorAll('.contact-list-item');
       // console.log(contactsListItem);
       contactsListItem.forEach((contact) => {
@@ -73,32 +72,24 @@ export async function displayContacts() {
   } else {
     console.log('no user');
   }
-
-  // console.log(globalSStorage.name);
 }
 
 function refreshContactsAndProfile(e) {
   const profileName = e.currentTarget.dataset.username;
   contacts.classList.remove('show-contacts');
   adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-  // console.log(window.location.href);
+  setSessionStorage(
+    true,
+    globalSStorage.token,
+    globalSStorage.name,
+    globalSStorage.email,
+    globalSStorage.avatar,
+    profileName
+  );
   if (window.location.href.includes('profile.html')) {
-    // console.log('profile');
-    // profileDisplayed = name;
     displayProfileInfo(profileName);
   } else {
-    // profileDisplayed = profileName;
-    // console.log(profileName);
-    setSessionStorage(
-      true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      profileName
-    );
     window.location.href = `../profile.html`;
-    // displayProfileInfo(profileName);
   }
 }
 
@@ -109,7 +100,7 @@ if (globalSStorage) {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
-    // displayContacts();
+    displayContacts();
   });
 
   window.addEventListener('resize', () => {

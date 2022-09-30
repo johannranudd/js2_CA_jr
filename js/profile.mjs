@@ -20,7 +20,7 @@ import {
   unfollowProfile,
   setFetchLimitURL,
 } from './utils.mjs';
-import { displayAllPosts, displayContacts } from './layout.mjs';
+import { displayAllPosts } from './layout.mjs';
 const globalSStorage = getSessionStorage();
 // export let profileDisplayed = globalSStorage && globalSStorage.name;
 
@@ -130,7 +130,6 @@ export async function displayProfileInfo(
       const foundFollower = followers.find(
         (follower) => follower.name === globalSStorage.name
       );
-      console.log(followers);
       if (foundFollower) {
         if (foundFollower.name === globalSStorage.name) {
           followBtn.textContent = 'Unfollow -';

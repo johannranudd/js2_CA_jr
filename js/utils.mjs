@@ -1,5 +1,5 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts } from './layout.mjs';
+import { allPosts, displayAllPosts, displayContacts } from './layout.mjs';
 import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
@@ -148,8 +148,9 @@ export async function followProfile(name) {
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo(name);
+      displayContacts();
     }
-    console.log(res);
+    // console.log(res);
   });
 }
 export async function unfollowProfile(name) {
@@ -165,7 +166,9 @@ export async function unfollowProfile(name) {
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo(name);
+      displayContacts();
     }
+    // console.log(res);
   });
 }
 
