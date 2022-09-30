@@ -305,15 +305,19 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       postAuthor.forEach((author) => {
         author.addEventListener('click', (e) => {
           const profileName = e.target.textContent;
-          // setSessionStorage(
-          //   true,
-          //   globalSStorage.token,
-          //   globalSStorage.name,
-          //   globalSStorage.email,
-          //   globalSStorage.avatar,
-          //   name
-          // );
-          displayProfileInfo(profileName);
+          setSessionStorage(
+            true,
+            globalSStorage.token,
+            globalSStorage.name,
+            globalSStorage.email,
+            globalSStorage.avatar,
+            profileName
+          );
+          if (!window.location.href.includes('profile.html')) {
+            window.location.href = '../profile.html';
+          } else {
+            displayProfileInfo(profileName);
+          }
         });
       });
 
@@ -379,16 +383,20 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
               });
             }
             postAuthor.addEventListener('click', (e) => {
-              const name = e.target.textContent;
-              // setSessionStorage(
-              //   true,
-              //   globalSStorage.token,
-              //   globalSStorage.name,
-              //   globalSStorage.email,
-              //   globalSStorage.avatar,
-              //   name
-              // );
-              displayProfileInfo(name);
+              const profileName = e.target.textContent;
+              setSessionStorage(
+                true,
+                globalSStorage.token,
+                globalSStorage.name,
+                globalSStorage.email,
+                globalSStorage.avatar,
+                profileName
+              );
+              if (!window.location.href.includes('profile.html')) {
+                window.location.href = '../profile.html';
+              } else {
+                displayProfileInfo(profileName);
+              }
             });
           }
         });

@@ -53,16 +53,18 @@ window.addEventListener('DOMContentLoaded', () => {
   // getPosts(token, (searchParams = ''), (limit = ''));
 });
 
-profileLink.addEventListener('click', () => {
-  setSessionStorage(
-    true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
-    globalSStorage.name
-  );
-});
+if (profileLink) {
+  profileLink.addEventListener('click', () => {
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      globalSStorage.name
+    );
+  });
+}
 
 if (newBannerInput && newAvatarInput && editProfileForm) {
   newBannerInput.addEventListener('change', () => {
@@ -91,7 +93,8 @@ export async function displayProfileInfo(
   const data = await getUsers(username, 99999);
   const { avatar, banner, email, followers, following, name, posts, _count } =
     data;
-  profileComponent.innerHTML = `
+  if (profileComponent) {
+    profileComponent.innerHTML = `
           <div class="banner"></div>
           <div class="profile-image-edit-profile-btn-container">
             <img
@@ -113,8 +116,8 @@ export async function displayProfileInfo(
           <h2 class="username">${name}</h2>
           <div class="follow-statistics-contianer">
             <button class="post-count" data-username="${name}"><strong>${
-    _count.posts
-  }</strong>Posts</button>
+      _count.posts
+    }</strong>Posts</button>
               <button class="following"><strong>${
                 _count.following
               }</strong>Following</button>
@@ -128,46 +131,47 @@ export async function displayProfileInfo(
               }              
           </div>
     `;
-  // profileDisplayed = name;
-  setSessionStorage(
-    true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
-    name
-  );
-  // banner
-  const bannerContainer = profileComponent.querySelector('.banner');
-  bannerContainer.style.backgroundImage = `url(${banner && banner})`;
-
-  // edit button
-  const editProfileBtn = document.querySelector('.edit-profile-btn');
-  if (editProfileBtn) {
-    editProfileBtn.addEventListener('click', (e) => {
-      editProfileForm.classList.add('show-edit-profile-modal');
-    });
-  }
-
-  // load Posts
-  const viewPostsBtn = document.querySelector('.post-count');
-  viewPostsBtn.addEventListener('click', getDisplayedUseersPosts);
-
-  // follow / unfollow
-  const followBtn = document.querySelector('.follow-btn');
-  if (followBtn) {
-    // followeUnfollowUpdate(followBtn, followers);
-    const foundFollower = followers.find(
-      (follower) => follower.name === globalSStorage.name
+    // profileDisplayed = name;
+    setSessionStorage(
+      true,
+      globalSStorage.token,
+      globalSStorage.name,
+      globalSStorage.email,
+      globalSStorage.avatar,
+      name
     );
-    if (foundFollower) {
-      if (foundFollower.name === globalSStorage.name) {
-        followBtn.textContent = 'Unfollow -';
-      }
+    // banner
+    const bannerContainer = profileComponent.querySelector('.banner');
+    bannerContainer.style.backgroundImage = `url(${banner && banner})`;
+
+    // edit button
+    const editProfileBtn = document.querySelector('.edit-profile-btn');
+    if (editProfileBtn) {
+      editProfileBtn.addEventListener('click', (e) => {
+        editProfileForm.classList.add('show-edit-profile-modal');
+      });
     }
-    followBtn.addEventListener('click', (e) => {
-      followeUnfollowUpdate(e, followBtn);
-    });
+
+    // load Posts
+    const viewPostsBtn = document.querySelector('.post-count');
+    viewPostsBtn.addEventListener('click', getDisplayedUseersPosts);
+
+    // follow / unfollow
+    const followBtn = document.querySelector('.follow-btn');
+    if (followBtn) {
+      // followeUnfollowUpdate(followBtn, followers);
+      const foundFollower = followers.find(
+        (follower) => follower.name === globalSStorage.name
+      );
+      if (foundFollower) {
+        if (foundFollower.name === globalSStorage.name) {
+          followBtn.textContent = 'Unfollow -';
+        }
+      }
+      followBtn.addEventListener('click', (e) => {
+        followeUnfollowUpdate(e, followBtn);
+      });
+    }
   }
 }
 

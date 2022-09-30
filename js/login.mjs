@@ -5,6 +5,14 @@ const passwordInput = document.querySelector('#password');
 const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
+const reg = {
+  name: 'njbr4', // Required
+  email: 'njbr4@stud.noroff.no', // Required
+  password: 'qwertyuiop', // Required
+  // avatar: 'https://img.service.com/avatar.jpg', // Optional
+  // banner: 'https://img.service.com/banner.jpg', // Optional
+};
+
 async function registerFn(loginDetails) {
   fetch(`${baseURL}/auth/register`, {
     method: 'POST',
@@ -17,7 +25,7 @@ async function registerFn(loginDetails) {
   // .then((res) => res.json())
   // .then((data) => console.log(data));
 }
-// registerFn(reg);
+registerFn(reg);
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
