@@ -6,6 +6,7 @@ const newBannerInput = document.querySelector('#new-banner');
 const newAvatarInput = document.querySelector('#new-avatar');
 const uploadedBanner = document.querySelector('.uploaded-banner');
 const uploadedAvatar = document.querySelector('.uploaded-avatar');
+const loadMoreBtn = document.querySelector('.load-more-btn');
 
 import {
   getSessionStorage,
@@ -126,7 +127,6 @@ export async function displayProfileInfo(username = profileDisplayed) {
       }
     }
     followBtn.addEventListener('click', (e) => {
-      // e.preventDefault();
       followeUnfollowUpdate(e, followBtn);
     });
   }
@@ -137,6 +137,8 @@ export async function getDisplayedUseersPosts() {
   spinner.classList.add('spinner');
   allPosts.innerHTML = '';
   allPosts.appendChild(spinner);
+  const loadMoreBtn = document.querySelector('.load-more-btn');
+  loadMoreBtn.remove();
   const data = await getPosts(globalSStorage.token, '', 9999);
   const allPostsFromUser = data.filter(
     (item) => item.author.name === profileDisplayed

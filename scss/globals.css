@@ -57,6 +57,8 @@
 }
 .feed .load-more-btn-container .load-more-btn {
   padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #000;
 }
 
 .contacts {

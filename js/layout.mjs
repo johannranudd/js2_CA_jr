@@ -91,6 +91,7 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
+        loadMoreBtn.remove();
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
@@ -182,6 +183,7 @@ if (globalSStorage) {
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
+  list.appendChild(spinner);
 
   if (!isAddingToPrevList) {
     if (list) {
@@ -189,7 +191,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       list.appendChild(spinner);
     }
   }
-  list.appendChild(spinner);
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
   const sStorage = getSessionStorage();
