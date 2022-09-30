@@ -70,7 +70,34 @@
   background: #fed;
   transition: 0.3s;
   padding-bottom: 10rem;
+  z-index: 2;
 }
+.contacts .list-of-contacts {
+  padding: 1rem 0 4rem 0;
+}
+.contacts .list-of-contacts h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.contacts .list-of-contacts li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.contacts .list-of-contacts li:hover {
+  background: red;
+}
+.contacts .list-of-contacts li img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.contacts .list-of-contacts li p {
+  margin-left: 1rem;
+}
+
 .show-contacts {
   transition: 0.3s;
 }

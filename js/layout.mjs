@@ -1,3 +1,37 @@
+// !paste
+// const { avatar, name } = follower;
+// console.log(follower);
+// listOfContacts.innerHTML += `<li class="contact-list-item">
+//   <img class="profile-image-contacts" src="${
+//     avatar
+//       ? avatar
+//       : 'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'
+//   }" alt="profile image of ${name}" />
+//   <p>${name}</p>
+// </li>`;
+// const contactsListItem =
+//   document.querySelectorAll('.contact-list-item');
+// contactsListItem.forEach((contact) => {
+//   contact.addEventListener('click', () => {
+//     contacts.classList.remove('show-contacts');
+//     adjustForSidebar(
+//       sidebar,
+//       feedAndContactsContaier,
+//       contacts,
+//       mainContainer
+//     );
+//     console.log(window.location.href);
+//     if (window.location.href.includes('profile')) {
+//       console.log('profile');
+//       displayProfileInfo(name);
+//     } else {
+//       window.location.href = '../profile.html';
+//       // profileDisplayed = name;
+//     }
+//   });
+// });
+// !paste
+
 const feedAndContactsContaier = document.querySelector(
   '.feed-and-contacts-container'
 );
@@ -31,6 +65,7 @@ import {
   getSessionStorage,
   getSortedPosts,
   deletePost,
+  getUsers,
 } from './utils.mjs';
 
 import { displayProfileInfo, profileDisplayed } from './profile.mjs';
@@ -45,6 +80,13 @@ const globalSStorage = getSessionStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
+async function displayContacts() {
+  const users = await getUsers('', 9999);
+  // console.log(users[0]);
+
+  // console.log(globalSStorage.name);
+}
+
 if (globalSStorage) {
   window.addEventListener('DOMContentLoaded', () => {
     const sStorage = getSessionStorage();
@@ -52,6 +94,7 @@ if (globalSStorage) {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
+    displayContacts();
   });
 
   window.addEventListener('resize', () => {
@@ -330,6 +373,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
+
 //
 // > 500
 

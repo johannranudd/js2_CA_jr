@@ -6,8 +6,8 @@ const header = document.querySelector('h1');
 import { getSessionStorage, setSessionStorage } from './utils.mjs';
 
 const reg = {
-  name: 'njbr1', // Required
-  email: 'njbr1@stud.noroff.no', // Required
+  name: 'testnjbr', // Required
+  email: 'testnjbr@stud.noroff.no', // Required
   password: 'qwertyuiop', // Required
 };
 
