@@ -171,18 +171,19 @@ export async function displayProfileInfo(
   }
 }
 
-export async function getDisplayedUseersPosts() {
+export async function getDisplayedUseersPosts(e) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
   allPosts.innerHTML = '';
   allPosts.appendChild(spinner);
   const loadMoreBtn = document.querySelector('.load-more-btn');
-  loadMoreBtn.remove();
+  if (loadMoreBtn) {
+    loadMoreBtn.remove();
+  }
   const data = await getPosts(globalSStorage.token, '', 9999);
   const allPostsFromUser = data.filter(
-    (item) => item.author.name === globalSStorage.profileDisplayed
+    (item) => item.author.name === e.target.dataset.username
   );
-  console.log(allPostsFromUser);
   displayAllPosts(allPosts, allPostsFromUser, false);
 }
 
