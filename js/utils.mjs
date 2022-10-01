@@ -212,19 +212,19 @@ export async function unfollowProfile(name) {
       displayProfileInfo(name);
       displayContacts();
     }
-    // console.log(res);
   });
 }
 
 // react
 export async function reactToPost(id, symbol, allPosts) {
+  const sStorage = getSessionStorage();
   try {
     const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${globalSStorage.token}`,
+        Authorization: `Bearer ${sStorage.token}`,
       },
       body: JSON.stringify({
         symbol: symbol,
