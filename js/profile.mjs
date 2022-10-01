@@ -79,7 +79,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
       submitObject.avatar = avatarImage.src;
     }
     updateProfileInfo(globalSStorage.name, submitObject);
-    getProfileImage();
+
     editProfileForm.classList.remove('show-edit-profile-modal');
   });
 }
