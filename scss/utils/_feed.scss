@@ -14,6 +14,10 @@
     // margin-bottom: 4rem;
     .single-post-feed {
       cursor: pointer;
+
+      &:hover {
+        background: #fed;
+      }
       p {
         // white-space: 'word-wrap';
         // overflow-wrap: break-word;
@@ -37,9 +41,68 @@
           // max-height: 100%;
         }
       }
+      .comment-component {
+        .profile-img-text-input {
+          display: flex;
+          margin: 2.3rem 0;
+          .profile-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+          }
+          .comment-form {
+            width: 100%;
+            .comment-textarea {
+              width: 100%;
+              max-width: 400px;
+              max-height: 350px;
+              font-size: 1rem;
+              border: none;
+              border-bottom: 1px solid black;
+              padding: 0.5rem;
+              resize: none;
+              &:focus {
+                outline: none;
+                border-bottom: 2px solid black;
+              }
+              &::-webkit-scrollbar {
+                width: 3px;
+                background: transparent;
+              }
+              &::-webkit-scrollbar-thumb {
+                width: 10px;
+                height: 10px;
+                background: black;
+                border-radius: 100px;
+              }
+            }
+            .display-image-container {
+              img {
+                max-width: 400px;
+              }
+            }
+            .add-items-and-submit-btn-contianer {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              max-width: 400px;
+              .add-items-btns {
+                .custom-file-upload {
+                  cursor: pointer;
+                  input[type='file'] {
+                    display: none;
+                  }
+                  .fa-image {
+                    font-size: 1.5rem;
+                  }
+                }
+              }
 
-      &:hover {
-        background: #fed;
+              .submit-comment-btn {
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -55,3 +118,37 @@
     }
   }
 }
+
+//
+//
+//
+//
+//
+//
+// .react-comment-container {
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-around;
+//         button {
+//           border: none;
+//           background: transparent;
+//           cursor: pointer;
+//         }
+//         // react-btn
+//         // comment-btn
+//       }
+//       .comment-form {
+//         display: flex;
+//         justify-content: space-between;
+//         // align-items: center;
+//         .profile-image {
+//           width: 50px;
+//           height: 50px;
+//           object-fit: cover;
+//         }
+//         .comment-input {
+//           width: 100%;
+//         }
+//         .submit-comment-btn {
+//         }
+//       }

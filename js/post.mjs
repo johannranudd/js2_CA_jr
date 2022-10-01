@@ -8,6 +8,7 @@ import {
 import { displayAllPosts, isEditingPost, editID } from './layout.mjs';
 
 const postForm = document.querySelector('.post-form');
+
 const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const displayImageContainer = document.querySelector(
@@ -20,6 +21,8 @@ const feedContainer = document.querySelector('.feed');
 
 const allPosts = document.querySelector('.all-posts');
 const submitPostBtn = document.querySelector('.submit-post-btn');
+const postImage = document.querySelector('.post-image');
+// const dropBox = document.querySelector('#div1');
 
 function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
@@ -34,15 +37,27 @@ window.addEventListener('resize', () => {
 
 // eventlistener for textarea
 
-textareaPost.addEventListener('keyup', (e) => {
-  textareaPost.style.height = 'auto';
-  textareaPost.style.height = `${e.target.scrollHeight}px`;
-});
+if (textareaPost) {
+  textareaPost.addEventListener('keyup', (e) => {
+    textareaPost.style.height = 'auto';
+    textareaPost.style.height = `${e.target.scrollHeight}px`;
+  });
+}
 
 // upload image
-uploadImgeInput.addEventListener('change', () => {
-  uploadImageToContainer(displayImageContainer, uploadImgeInput);
-});
+if (uploadImgeInput) {
+  uploadImgeInput.addEventListener('drop', (e) => {
+    setTimeout(() => {
+      uploadImageToContainer(displayImageContainer, uploadImgeInput);
+    }, 100);
+  });
+  uploadImgeInput.addEventListener('keyup', (e) => {
+    setTimeout(() => {
+      uploadImageToContainer(displayImageContainer, uploadImgeInput);
+    }, 100);
+  });
+}
+
 // !moved to utils
 // export function uploadImageToContainer(container) {
 //   const reader = new FileReader();
@@ -58,34 +73,41 @@ uploadImgeInput.addEventListener('change', () => {
 // }
 
 // postForm
+if (postForm) {
+  postForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const titleInputValue = postTitleInput.value;
+    const textareaValue = textareaPost.value;
+    const image = displayImageContainer.querySelector('img');
+    // }
+    if (titleInputValue && textareaValue) {
+      const submitObject = {
+        title: titleInputValue, // Required
+        body: textareaValue, // Required
+        tags: ['test'], // Optional
+      };
 
-postForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const titleInputValue = postTitleInput.value;
-  const textareaValue = textareaPost.value;
-  const image = displayImageContainer.querySelector('img');
-  if (titleInputValue && textareaValue) {
-    const submitObject = {
-      title: titleInputValue, // Required
-      body: textareaValue, // Required
-      media: image ? image.src : '', // Optional
-    };
-    if (!isEditingPost) {
-      post(submitObject);
-      postForm.reset();
       if (image) {
-        displayImageContainer.removeChild(image);
+        submitObject.media = image.src;
       }
-    } else {
-      editPost(editID, submitObject);
-      postForm.reset();
-      submitPostBtn.innerHTML = 'Post';
-      if (image) {
-        displayImageContainer.removeChild(image);
+
+      if (!isEditingPost) {
+        post(submitObject);
+        postForm.reset();
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
+      } else {
+        editPost(editID, submitObject);
+        postForm.reset();
+        submitPostBtn.innerHTML = 'Post';
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
       }
     }
-  }
-});
+  });
+}
 
 //
 //

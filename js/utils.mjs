@@ -1,5 +1,10 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts, displayContacts } from './layout.mjs';
+import {
+  allPosts,
+  displayAllPosts,
+  displayContacts,
+  displaySinglePost,
+} from './layout.mjs';
 import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
@@ -39,17 +44,56 @@ export function setFetchLimitURL(limit) {
   }
 }
 
+export async function commentOnPost(req) {
+  const sStorage = getSessionStorage();
+  const { postID, body, list } = req;
+  console.log(postID);
+  try {
+    const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sStorage.token}`,
+      },
+      body: JSON.stringify({
+        body: body, // Required
+      }),
+    });
+    if (res.ok) {
+      displaySinglePost(postID, list);
+    }
+  } catch (e) {
+    console.log(e, 'error in commentOnPost()');
+  }
+  // .then((res) => console.log(res));
+}
+
 export function uploadImageToContainer(container, input) {
-  const reader = new FileReader();
-  reader.onload = function () {
-    const img = new Image();
-    img.src = reader.result;
-    const alt = document.createAttribute('alt');
-    alt.value = 'Your uploaded image';
-    img.setAttributeNode(alt);
-    container.appendChild(img);
-  };
-  reader.readAsDataURL(input.files[0]);
+  // onerror="this.style.display='none'"
+  if (input) {
+    console.log(input.value);
+    container.innerHTML = `<img class="uploaded-image-before-post" src="${input.value}" alt="your uploaded image"  />`;
+    const image = document.querySelector('.uploaded-image-before-post');
+    image.addEventListener('error', (e) => {
+      image.style.display = 'none';
+      container.textContent = 'Image must be a string';
+      setTimeout(() => {
+        container.textContent = '';
+      }, 3000);
+    });
+  }
+  // !base 64
+  // const reader = new FileReader();
+  // reader.onload = function () {
+  //   const img = new Image();
+  //   img.src = reader.result;
+  //   const alt = document.createAttribute('alt');
+  //   alt.value = 'Your uploaded image';
+  //   img.setAttributeNode(alt);
+  //   container.appendChild(img);
+  // };
+  // reader.readAsDataURL(input.files[0]);
 }
 
 export async function getUsers(userName = '', limit = '') {
@@ -173,21 +217,35 @@ export async function unfollowProfile(name) {
   });
 }
 
-export function post(req) {
+export async function post(req) {
   const sStorage = getSessionStorage();
-  fetch(`${baseURL}/posts`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
-    },
-    body: JSON.stringify(req),
-  }).then((res) => {
+  try {
+    const res = await fetch(`${baseURL}/posts`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sStorage.token}`,
+      },
+      body: JSON.stringify(req),
+    });
     if (res.ok) {
       displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     }
-  });
+  } catch (e) {
+    console.log(e, 'error in post()');
+  }
+
+  // .then((res) => {
+  //   console.log(req);
+  //   if (res.ok) {
+  //     console.log(req);
+  //
+  //   } else {
+  //     console.log(res);
+  //   }
+  // })
+  // .catch((e) => console.log(e, 'error in post'));
 }
 // post();
 export function editPost(id, req) {

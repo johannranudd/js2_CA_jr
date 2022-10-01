@@ -76,12 +76,11 @@
         <!-- post component -->
         <div class="post-component">
           <div class="profile-img-text-input">
-            <!-- !removed in profile only -->
-            <!-- <img
+            <img
               class="profile-image"
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
               alt="profile-image"
-            /> -->
+            />
             <form class="post-form">
               <input
                 class="post-title-input"
@@ -96,10 +95,12 @@
               <div class="display-image-container"></div>
               <div class="add-items-and-submit-btn-contianer">
                 <div class="add-items-btns">
-                  <label class="custom-file-upload">
-                    <input type="file" class="upload-img-input" />
-                    <i class="fa-solid fa-image"></i>
-                  </label>
+                  <!-- <i class="fa-solid fa-image"></i> -->
+                  <input
+                    type="text"
+                    class="upload-img-input"
+                    placeholder="drag/drop or post image address"
+                  />
                 </div>
                 <button class="submit-post-btn" type="submit">post</button>
               </div>

@@ -4,6 +4,7 @@
   // grid-template-columns: repeat(3, 1fr);
   .feed-and-contacts-container {
     display: grid;
+
     // grid-template-columns: 100% 0%;
     @media (min-width: $laptop-s) {
       // display: flex;

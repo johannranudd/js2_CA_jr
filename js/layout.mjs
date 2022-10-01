@@ -35,6 +35,7 @@ import {
   deletePost,
   getUsers,
   setSessionStorage,
+  commentOnPost,
 } from './utils.mjs';
 
 import { displayProfileInfo } from './profile.mjs';
@@ -266,23 +267,23 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       }">
     <p><strong>${id}</strong></p>
       <div class="edit-delete-btn-container">
-      ${
-        sStorage.name === author.name
-          ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
-          : ''
-      }
+          ${
+            sStorage.name === author.name
+              ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+              : ''
+          }
       </div>
 
-      <p class="post-author">${author && author.name}</p>
-      <p class="post-title">${title && title}</p>
-      <p class="post-body">${body && body}</p>
-      <div class="post-image-container">
-        ${
-          media &&
-          `<img class="post-image" src=${media} alt="image posted by ${
-            author && author.name
-          }" onerror="this.style.display='none'" />`
-        }
+          <p class="post-author">${author && author.name}</p>
+          <p class="post-title">${title && title}</p>
+          <p class="post-body">${body && body}</p>
+          <div class="post-image-container">
+            ${
+              media &&
+              `<img class="post-image" src=${media} alt="image posted by ${
+                author && author.name
+              }" onerror="this.style.display='none'" draggable="true"/>`
+            }
       </div>
     </li>`;
       list.innerHTML += listItem;
@@ -336,77 +337,8 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
-          list.innerHTML = '';
-          list.appendChild(spinner);
-          const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
-          const singleData = await getPosts(sStorage.token, postID, '');
-          if (singleData) {
-            spinner.remove();
-            const { id, title, body, media, author } = singleData;
-            const singleListItem = `
-              <li class="single-post-feed" data-id="${id}" data-user="${
-              author && author.name
-            }">
-           <p><strong>${id}</strong></p>
-            <div class="edit-delete-btn-container">
-              ${
-                sStorage.name === author.name
-                  ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
-                  : ''
-              }
-            </div>
-                <p class="post-author">${author && author.name}</p>
-                <p class="post-title">${title && title}</p>
-                <p class="post-body">${body && body}</p>
-                <div class="post-image-container">
-
-                    ${
-                      media &&
-                      `<img class="post-image" src=${media} alt="image posted by ${
-                        author && author.name
-                      }" onerror="this.style.display='none'" />`
-                    }
-
-                </div>
-              </li>`;
-            list.innerHTML = singleListItem;
-            // ** remove load more btn
-            const deletePostBtn = document.querySelector('.delete-post-btn');
-            const editPostBtn = document.querySelector('.edit-post-btn');
-            const postAuthor = document.querySelector('.post-author');
-
-            if (deletePostBtn && editPostBtn) {
-              deletePostBtn.addEventListener('click', (e) => {
-                const id = Number(e.target.parentNode.parentNode.dataset.id);
-                deletePost(id);
-              });
-
-              editPostBtn.addEventListener('click', () => {
-                const id = Number(e.target.parentNode.dataset.id);
-                editID = id;
-                isEditingPost = true;
-                postTitleInput.focus();
-                submitPostBtn.innerHTML = 'Edit post';
-              });
-            }
-            postAuthor.addEventListener('click', (e) => {
-              const profileName = e.target.textContent;
-              setSessionStorage(
-                true,
-                globalSStorage.token,
-                globalSStorage.name,
-                globalSStorage.email,
-                globalSStorage.avatar,
-                profileName
-              );
-              if (!window.location.href.includes('profile.html')) {
-                window.location.href = '../profile.html';
-              } else {
-                displayProfileInfo(profileName);
-              }
-            });
-          }
+          displaySinglePost(postID, list);
         });
       });
     });
@@ -415,7 +347,185 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
+// let commentingOnID;
+export async function displaySinglePost(postID, list) {
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+  const sStorage = getSessionStorage();
+  list.innerHTML = '';
+  list.appendChild(spinner);
+  const singleData = await getPosts(sStorage.token, postID, '');
+  if (singleData) {
+    spinner.remove();
+    const { id, title, body, media, author } = singleData;
+    const singleListItem = `
+              <li class="single-post-feed" data-id="${id}" data-user="${
+      author && author.name
+    }">
+           <p><strong>${id}</strong></p>
+                <div class="edit-delete-btn-container">
+                  ${
+                    sStorage.name === author.name
+                      ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+                      : ''
+                  }
+                </div>
+                <p class="post-author">${author && author.name}</p>
+                <p class="post-title">${title && title}</p>
+                <p class="post-body">${body && body}</p>
 
+                <div class="post-image-container">
+                    ${
+                      media &&
+                      `<img class="post-image" src=${media} alt="image posted by ${
+                        author && author.name
+                      }" onerror="this.style.display='none'" draggable="true" />`
+                    }
+                </div>
+                <div class="react-comment-container"> </div>
+                 <div class="comment-component">
+                  <div class="profile-img-text-input">
+                              <img
+                      class="profile-image"
+                      src="${globalSStorage.avatar}"
+                      alt="Profile image of ${author && author.name}"
+                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                    />
+                    <form class="comment-form" data-id="${id}">
+                      <textarea
+                        class="comment-textarea"
+                        placeholder="Comment"
+                      ></textarea>
+
+                        <button class="submit-comment-btn" type="submit">Comment</button>
+                    </form>
+                  </div>
+              </div>
+              
+              <ul class="list-of-comments"></ul>
+              </li>`;
+
+    list.innerHTML = singleListItem;
+
+    const reactOrCommentComponent = document.querySelector(
+      '.react-comment-container'
+    );
+
+    const getThisPost = await getPosts(globalSStorage.token, id, '');
+    if (getThisPost) {
+      const { _count } = getThisPost;
+      console.log(getThisPost);
+      reactOrCommentComponent.innerHTML += `
+              <button class="react-btn">
+              <p>${_count.reactions}</p>
+              <span>
+                <i class="fa-solid fa-heart"></i>
+              </span>
+              </button>
+              <button class="comment-btn">
+                <p>${_count.comments}</p>
+              <span>
+                <i class="fa-solid fa-comment"></i>
+              </span>
+              </button>
+              `;
+    }
+    // get comments length and reactions
+    // getPosts(token, (searchParams = ''), (limit = ''));
+    const listOfComments = document.querySelector('.list-of-comments');
+    singleData.comments.map(async (comment) => {
+      // console.log(comment);
+      const { body, owner } = comment;
+      const ownerData = await getUsers(owner, '');
+      const listItem = `<li>
+                      
+                      <img
+                        class="profile-image"
+                        src="${ownerData.avatar}"
+                        alt="Profile image of ${ownerData && ownerData.name}"
+                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      />
+              <p><strong>${owner}</strong></p>
+              <p>${body}</p>
+              </li>`;
+      listOfComments.innerHTML += listItem;
+    });
+
+    const commentForm = document.querySelector('.comment-form');
+    const textareaComment = document.querySelector('.comment-textarea');
+
+    commentForm.addEventListener('submit', (e) => {
+      const postID = Number(e.target.dataset.id);
+      e.preventDefault();
+      const body = textareaComment.value;
+      commentOnPost({ postID, body, list });
+    });
+
+    textareaComment.addEventListener('keyup', (e) => {
+      textareaComment.style.height = 'auto';
+      textareaComment.style.height = `${e.target.scrollHeight}px`;
+    });
+
+    loadMoreBtn.remove();
+    const deletePostBtn = document.querySelector('.delete-post-btn');
+    const editPostBtn = document.querySelector('.edit-post-btn');
+    const postAuthor = document.querySelector('.post-author');
+
+    if (deletePostBtn && editPostBtn) {
+      deletePostBtn.addEventListener('click', (e) => {
+        const id = Number(e.target.parentNode.parentNode.dataset.id);
+        deletePost(id);
+      });
+
+      editPostBtn.addEventListener('click', () => {
+        const id = Number(e.target.parentNode.dataset.id);
+        editID = id;
+        isEditingPost = true;
+        postTitleInput.focus();
+        submitPostBtn.innerHTML = 'Edit post';
+      });
+    }
+    postAuthor.addEventListener('click', (e) => {
+      const profileName = e.target.textContent;
+      setSessionStorage(
+        true,
+        globalSStorage.token,
+        globalSStorage.name,
+        globalSStorage.email,
+        globalSStorage.avatar,
+        profileName
+      );
+      if (!window.location.href.includes('profile.html')) {
+        window.location.href = '../profile.html';
+      } else {
+        displayProfileInfo(profileName);
+      }
+    });
+  }
+}
+{
+  /* <form class='post-form'>
+  <input
+    class='post-title-input'
+    type='text'
+    aria-label='post-title'
+    placeholder='Title'
+  />
+  <textarea class='post-textarea' placeholder='Post something!'></textarea>
+  <div class='display-image-container'></div>
+  <div class='add-items-and-submit-btn-contianer'>
+    <div class='add-items-btns'>
+      <label class='custom-file-upload'>
+        <input type='file' class='upload-img-input' />
+        <i class='fa-solid fa-image'></i>
+      </label>
+    </div>
+    <button class='submit-post-btn' type='submit'>
+      post
+    </button>
+  </div>
+</form>; */
+}
 //
 // > 500
 
@@ -440,3 +550,24 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 // eventListeners
 
 // press post
+{
+  /* <div class="react-comment-container">
+                      <button class="react-btn">
+                        <i class="fa-solid fa-heart"></i>
+                      </button>
+                      <button class="comment-btn">
+                        <i class="fa-solid fa-comment"></i>
+                      </button>
+                    </div>
+                    <form class="comment-form">
+                      <img
+                          class="profile-image"
+                          src="${globalSStorage.avatar}"
+                          alt="Profile image of ${globalSStorage.name}"
+                          onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        />
+
+                      <input class="comment-input" type="text" placeholder="Comment" />
+                      <button class="submit-comment-btn" type="submit">Comment</button>
+                    </form> */
+}
