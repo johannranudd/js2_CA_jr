@@ -282,7 +282,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
               media &&
               `<img class="post-image" src=${media} alt="image posted by ${
                 author && author.name
-              }" onerror="this.style.display='none'" />`
+              }" onerror="this.style.display='none'" draggable="true"/>`
             }
       </div>
     </li>`;
@@ -366,61 +366,62 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                       media &&
                       `<img class="post-image" src=${media} alt="image posted by ${
                         author && author.name
-                      }" onerror="this.style.display='none'" />`
+                      }" onerror="this.style.display='none'" draggable="true" />`
                     }
                 </div>
-                <div class="comment-component">
-                    <div class="profile-img-text-input">
-                                <img
-                        class="profile-image"
-                        src="${globalSStorage.avatar}"
-                        alt="Profile image of ${author && author.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
-                      />
-                      <form class="comment-form">
-                        <textarea
-                          class="comment-textarea"
-                          placeholder="Comment"
-                        ></textarea>
-                        
-                          <button class="submit-comment-btn" type="submit">Comment</button>
-                      </form>
-                    </div>
-                </div>
-                <ul class="list-of-comments"></ul>
+                
               </li>`;
+            // <div class="comment-component">
+            //       <div class="profile-img-text-input">
+            //                   <img
+            //           class="profile-image"
+            //           src="${globalSStorage.avatar}"
+            //           alt="Profile image of ${author && author.name}"
+            //           onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+            //         />
+            //         <form class="comment-form">
+            //           <textarea
+            //             class="comment-textarea"
+            //             placeholder="Comment"
+            //           ></textarea>
+
+            //             <button class="submit-comment-btn" type="submit">Comment</button>
+            //         </form>
+            //       </div>
+            //   </div>
+            //   <ul class="list-of-comments"></ul>
             list.innerHTML = singleListItem;
-            const listOfComments = document.querySelector('.list-of-comments');
+            // const listOfComments = document.querySelector('.list-of-comments');
 
-            singleData.comments.map(async (comment) => {
-              const { body, owner } = comment;
-              const ownerData = await getUsers(owner, '');
-              const listItem = `<li>
-              <img
-                        class="profile-image"
-                        src="${ownerData.avatar}"
-                        alt="Profile image of ${ownerData && ownerData.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
-                      />
-              <p><strong>${owner}</strong></p>
-              <p>${body}</p>
-              </li>`;
-              list.innerHTML += listItem;
-            });
+            // singleData.comments.map(async (comment) => {
+            //   const { body, owner } = comment;
+            //   const ownerData = await getUsers(owner, '');
+            //   const listItem = `<li>
+            //   <img
+            //             class="profile-image"
+            //             src="${ownerData.avatar}"
+            //             alt="Profile image of ${ownerData && ownerData.name}"
+            //             onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+            //           />
+            //   <p><strong>${owner}</strong></p>
+            //   <p>${body}</p>
+            //   </li>`;
+            //   list.innerHTML += listItem;
+            // });
 
-            const commentForm = document.querySelector('.comment-form');
-            const textareaComment = document.querySelector('.comment-textarea');
+            // const commentForm = document.querySelector('.comment-form');
+            // const textareaComment = document.querySelector('.comment-textarea');
 
-            commentForm.addEventListener('submit', (e) => {
-              e.preventDefault();
-              const body = textareaComment.value;
-              commentOnPost({ id, body });
-            });
+            // commentForm.addEventListener('submit', (e) => {
+            //   e.preventDefault();
+            //   const body = textareaComment.value;
+            //   commentOnPost({ id, body });
+            // });
 
-            textareaComment.addEventListener('keyup', (e) => {
-              textareaComment.style.height = 'auto';
-              textareaComment.style.height = `${e.target.scrollHeight}px`;
-            });
+            // textareaComment.addEventListener('keyup', (e) => {
+            //   textareaComment.style.height = 'auto';
+            //   textareaComment.style.height = `${e.target.scrollHeight}px`;
+            // });
 
             loadMoreBtn.remove();
             const deletePostBtn = document.querySelector('.delete-post-btn');

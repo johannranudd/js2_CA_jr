@@ -72,14 +72,17 @@
         align-items: center;
         max-width: 400px;
         .add-items-btns {
-          .custom-file-upload {
-            cursor: pointer;
-            input[type='file'] {
-              display: none;
-            }
-            .fa-image {
-              font-size: 1.5rem;
-            }
+          cursor: pointer;
+          width: 100%;
+          .upload-img-input {
+            width: 70%;
+            // min-width
+            border: 1px dotted black;
+            height: 50px;
+            background: transparent;
+          }
+          .fa-image {
+            font-size: 1.5rem;
           }
         }
 

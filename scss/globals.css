@@ -256,13 +256,17 @@
   align-items: center;
   max-width: 400px;
 }
-.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload {
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns {
   cursor: pointer;
+  width: 100%;
 }
-.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload input[type=file] {
-  display: none;
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .upload-img-input {
+  width: 70%;
+  border: 1px dotted black;
+  height: 50px;
+  background: transparent;
 }
-.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
+.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .fa-image {
   font-size: 1.5rem;
 }
 .profile-component {
