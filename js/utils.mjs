@@ -39,6 +39,22 @@ export function setFetchLimitURL(limit) {
   }
 }
 
+export async function commentOnPost(req) {
+  const sStorage = getSessionStorage();
+  const { id, body } = req;
+  fetch(`${baseURL}/posts/${id}/comment`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sStorage.token}`,
+    },
+    body: JSON.stringify({
+      body: body, // Required
+    }),
+  }).then((res) => console.log(res));
+}
+
 export function uploadImageToContainer(container, input) {
   const reader = new FileReader();
   reader.onload = function () {
@@ -182,11 +198,15 @@ export function post(req) {
       Authorization: `Bearer ${sStorage.token}`,
     },
     body: JSON.stringify(req),
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+      } else {
+        console.log(res);
+      }
+    })
+    .catch((e) => console.log(e, 'error in post'));
 }
 // post();
 export function editPost(id, req) {

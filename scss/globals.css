@@ -51,11 +51,13 @@
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
   display: flex;
-  margin-top: 2.3rem;
+  margin: 2.3rem 0;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input .profile-image {
   width: 50px;
   height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form {
   width: 100%;
@@ -209,6 +211,8 @@
 .post-component .profile-img-text-input .profile-image {
   width: 70px;
   height: 70px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .post-component .profile-img-text-input .post-form {
   width: 100%;

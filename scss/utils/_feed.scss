@@ -44,10 +44,11 @@
       .comment-component {
         .profile-img-text-input {
           display: flex;
-          margin-top: 2.3rem;
+          margin: 2.3rem 0;
           .profile-image {
             width: 50px;
             height: 50px;
+            object-fit: cover;
           }
           .comment-form {
             width: 100%;
@@ -97,7 +98,7 @@
                 }
               }
 
-              .submit-post-btn {
+              .submit-comment-btn {
               }
             }
           }

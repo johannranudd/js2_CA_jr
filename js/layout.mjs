@@ -35,6 +35,7 @@ import {
   deletePost,
   getUsers,
   setSessionStorage,
+  commentOnPost,
 } from './utils.mjs';
 
 import { displayProfileInfo } from './profile.mjs';
@@ -370,40 +371,50 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                 </div>
                 <div class="comment-component">
                     <div class="profile-img-text-input">
-                      <img
+                                <img
                         class="profile-image"
-                        src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                        alt="profile-image"
+                        src="${globalSStorage.avatar}"
+                        alt="Profile image of ${author && author.name}"
+                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                       />
                       <form class="comment-form">
-                        
                         <textarea
                           class="comment-textarea"
                           placeholder="Comment"
                         ></textarea>
-                        <div class="display-image-container"></div>
-                        <div class="add-items-and-submit-btn-contianer">
-                          <div class="add-items-btns">
-                            <label class="custom-file-upload">
-                              <input type="file" class="upload-img-input" />
-                              <i class="fa-solid fa-image"></i>
-                            </label>
-                          </div>
-                          <button class="submit-post-btn" type="submit">Comment</button>
-                        </div>
+                        
+                          <button class="submit-comment-btn" type="submit">Comment</button>
                       </form>
                     </div>
                 </div>
+                <ul class="list-of-comments"></ul>
               </li>`;
             list.innerHTML = singleListItem;
+            const listOfComments = document.querySelector('.list-of-comments');
+
+            singleData.comments.map(async (comment) => {
+              const { body, owner } = comment;
+              const ownerData = await getUsers(owner, '');
+              const listItem = `<li>
+              <img
+                        class="profile-image"
+                        src="${ownerData.avatar}"
+                        alt="Profile image of ${ownerData && ownerData.name}"
+                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      />
+              <p><strong>${owner}</strong></p>
+              <p>${body}</p>
+              </li>`;
+              list.innerHTML += listItem;
+            });
 
             const commentForm = document.querySelector('.comment-form');
             const textareaComment = document.querySelector('.comment-textarea');
-            const uploadImgeInput = document.querySelector('.upload-img-input');
 
-            commentForm.addEventListener('click', (e) => {
-              e.preventDefault;
-              console.log('comment');
+            commentForm.addEventListener('submit', (e) => {
+              e.preventDefault();
+              const body = textareaComment.value;
+              commentOnPost({ id, body });
             });
 
             textareaComment.addEventListener('keyup', (e) => {
