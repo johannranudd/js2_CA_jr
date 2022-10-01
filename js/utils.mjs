@@ -5,7 +5,7 @@ import {
   displayContacts,
   displaySinglePost,
 } from './layout.mjs';
-import { displayProfileInfo } from './profile.mjs';
+import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -164,6 +164,8 @@ export function checkIfLoggedIn() {
 }
 
 export async function updateProfileInfo(name, req) {
+  console.log('name::', name);
+  console.log('req::', req);
   const sStorage = getSessionStorage();
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
@@ -176,6 +178,7 @@ export async function updateProfileInfo(name, req) {
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo();
+      getProfileImage();
     }
   });
 }

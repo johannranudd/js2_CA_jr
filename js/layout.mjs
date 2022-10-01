@@ -103,6 +103,7 @@ if (globalSStorage) {
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
     displayContacts();
+    // getProfileImage();
   });
 
   window.addEventListener('resize', () => {

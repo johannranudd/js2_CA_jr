@@ -58,17 +58,23 @@
         <form class="edit-profile-modal">
           <label for="new-banner">New banner</label>
           <!--   -->
-          <label class="custom-file-upload">
-            <input type="file" class="upload-banner-input" id="new-banner" />
-            <i class="fa-solid fa-image"></i>
-          </label>
+          <input
+            id="new-banner"
+            type="text"
+            placeholder="drag/drop or post image address"
+          />
           <div class="uploaded-banner"></div>
           <!--  -->
           <label for="new-avatar">New Avatar</label>
-          <label class="custom-file-upload">
+          <input
+            id="new-avatar"
+            type="text"
+            placeholder="drag/drop or post image address"
+          />
+          <!-- <label class="custom-file-upload">
             <input type="file" class="upload-avatar-input" id="new-avatar" />
             <i class="fa-solid fa-image"></i>
-          </label>
+          </label> -->
           <div class="uploaded-avatar"></div>
 
           <button type="submit">Submit</button>
