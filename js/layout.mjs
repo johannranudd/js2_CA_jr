@@ -485,7 +485,7 @@ export async function displaySinglePost(postID, list) {
           deletePost(id);
         });
 
-        editPostBtn.addEventListener('click', () => {
+        editPostBtn.addEventListener('click', (e) => {
           const id = Number(e.target.parentNode.dataset.id);
           editID = id;
           isEditingPost = true;
