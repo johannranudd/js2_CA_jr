@@ -44,9 +44,9 @@ export function setFetchLimitURL(limit) {
   }
 }
 
-export async function commentOnPost(req) {
+export async function commentOnPost(payload) {
   const sStorage = getSessionStorage();
-  const { postID, body, list } = req;
+  const { postID, body, list } = payload;
   console.log(postID);
   try {
     const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
