@@ -46,7 +46,6 @@ if (textareaPost) {
 
 // upload image
 if (uploadImgeInput) {
-  console.log(uploadImgeInput);
   uploadImgeInput.addEventListener('drop', (e) => {
     setTimeout(() => {
       uploadImageToContainer(displayImageContainer, uploadImgeInput);
@@ -77,74 +76,34 @@ if (uploadImgeInput) {
 if (postForm) {
   postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    // const uploadedFile = uploadImgeInput.files[0];
     const titleInputValue = postTitleInput.value;
     const textareaValue = textareaPost.value;
     const image = displayImageContainer.querySelector('img');
-    // const formData = new FormData();
-    // formData.append('title', titleInputValue);
-    // formData.append('body', textareaValue);
-    // if (uploadedFile) {
-    //   formData.append('media', uploadedFile);
     // }
     if (titleInputValue && textareaValue) {
       const submitObject = {
         title: titleInputValue, // Required
         body: textareaValue, // Required
         tags: ['test'], // Optional
-        // media: image ? image.src : '', // Optional
-        media: image && image.src,
       };
 
-      console.log(submitObject);
-      // function dataURItoBlob(dataURI) {
-      //   // convert base64/URLEncoded data component to raw binary data held in a string
-      //   let byteString;
-      //   if (dataURI.split(',')[0].indexOf('base64') >= 0)
-      //     byteString = atob(dataURI.split(',')[1]);
-      //   else byteString = unescape(dataURI.split(',')[1]);
-
-      //   // separate out the mime component
-      //   let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-      //   // write the bytes of the string to a typed array
-      //   let ia = new Uint8Array(byteString.length);
-      //   for (let i = 0; i < byteString.length; i++) {
-      //     ia[i] = byteString.charCodeAt(i);
-      //   }
-
-      //   return new Blob([ia], { type: mimeString });
-      // }
-      // const blob = dataURItoBlob(image.src);
-      // console.log('blob::', blob.type);
-      // if (blob) {
-      //   submitObject.media = blob.type;
-      // }
-      // console.log(submitObject);
-      // From there, appending the data to a form such that it will be uploaded as a file is easy:
-
-      // let dataURL = canvas.toDataURL('image/jpeg', 0.5);
-      // let blob = dataURItoBlob(dataURL);
-      // let fd = new FormData(document.forms[0]);
-      // fd.append('canvasImage', blob);
-      // console.log(fd);
-      // media:
-      //   'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-      // console.log('before:: ', submitObject);
+      if (image) {
+        submitObject.media = image.src;
+      }
 
       if (!isEditingPost) {
         post(submitObject);
         postForm.reset();
-        // if (image) {
-        //   displayImageContainer.removeChild(image);
-        // }
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
       } else {
         editPost(editID, submitObject);
         postForm.reset();
         submitPostBtn.innerHTML = 'Post';
-        // if (image) {
-        //   displayImageContainer.removeChild(image);
-        // }
+        if (image) {
+          displayImageContainer.removeChild(image);
+        }
       }
     }
   });

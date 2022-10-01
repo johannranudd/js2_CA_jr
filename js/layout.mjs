@@ -337,18 +337,31 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
-          list.innerHTML = '';
-          list.appendChild(spinner);
-          const sStorage = getSessionStorage();
           const postID = Number(e.currentTarget.dataset.id);
-          const singleData = await getPosts(sStorage.token, postID, '');
-          if (singleData) {
-            spinner.remove();
-            const { id, title, body, media, author } = singleData;
-            const singleListItem = `
+          displaySinglePost(postID, list);
+        });
+      });
+    });
+  }
+}
+//
+//
+//
+// let commentingOnID;
+export async function displaySinglePost(postID, list) {
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+  const sStorage = getSessionStorage();
+  list.innerHTML = '';
+  list.appendChild(spinner);
+  const singleData = await getPosts(sStorage.token, postID, '');
+  if (singleData) {
+    spinner.remove();
+    const { id, title, body, media, author } = singleData;
+    const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
-              author && author.name
-            }">
+      author && author.name
+    }">
            <p><strong>${id}</strong></p>
                 <div class="edit-delete-btn-container">
                   ${
@@ -369,104 +382,127 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                       }" onerror="this.style.display='none'" draggable="true" />`
                     }
                 </div>
-                
+                <div class="react-comment-container"> </div>
+                 <div class="comment-component">
+                  <div class="profile-img-text-input">
+                              <img
+                      class="profile-image"
+                      src="${globalSStorage.avatar}"
+                      alt="Profile image of ${author && author.name}"
+                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                    />
+                    <form class="comment-form" data-id="${id}">
+                      <textarea
+                        class="comment-textarea"
+                        placeholder="Comment"
+                      ></textarea>
+
+                        <button class="submit-comment-btn" type="submit">Comment</button>
+                    </form>
+                  </div>
+              </div>
+              
+              <ul class="list-of-comments"></ul>
               </li>`;
-            // <div class="comment-component">
-            //       <div class="profile-img-text-input">
-            //                   <img
-            //           class="profile-image"
-            //           src="${globalSStorage.avatar}"
-            //           alt="Profile image of ${author && author.name}"
-            //           onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
-            //         />
-            //         <form class="comment-form">
-            //           <textarea
-            //             class="comment-textarea"
-            //             placeholder="Comment"
-            //           ></textarea>
 
-            //             <button class="submit-comment-btn" type="submit">Comment</button>
-            //         </form>
-            //       </div>
-            //   </div>
-            //   <ul class="list-of-comments"></ul>
-            list.innerHTML = singleListItem;
-            // const listOfComments = document.querySelector('.list-of-comments');
+    list.innerHTML = singleListItem;
 
-            // singleData.comments.map(async (comment) => {
-            //   const { body, owner } = comment;
-            //   const ownerData = await getUsers(owner, '');
-            //   const listItem = `<li>
-            //   <img
-            //             class="profile-image"
-            //             src="${ownerData.avatar}"
-            //             alt="Profile image of ${ownerData && ownerData.name}"
-            //             onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
-            //           />
-            //   <p><strong>${owner}</strong></p>
-            //   <p>${body}</p>
-            //   </li>`;
-            //   list.innerHTML += listItem;
-            // });
+    const reactOrCommentComponent = document.querySelector(
+      '.react-comment-container'
+    );
 
-            // const commentForm = document.querySelector('.comment-form');
-            // const textareaComment = document.querySelector('.comment-textarea');
+    const getThisPost = await getPosts(globalSStorage.token, id, '');
+    if (getThisPost) {
+      const { _count } = getThisPost;
+      console.log(getThisPost);
+      reactOrCommentComponent.innerHTML += `
+              <button class="react-btn">
+              <p>${_count.reactions}</p>
+              <span>
+                <i class="fa-solid fa-heart"></i>
+              </span>
+              </button>
+              <button class="comment-btn">
+                <p>${_count.comments}</p>
+              <span>
+                <i class="fa-solid fa-comment"></i>
+              </span>
+              </button>
+              `;
+    }
+    // get comments length and reactions
+    // getPosts(token, (searchParams = ''), (limit = ''));
+    const listOfComments = document.querySelector('.list-of-comments');
+    singleData.comments.map(async (comment) => {
+      // console.log(comment);
+      const { body, owner } = comment;
+      const ownerData = await getUsers(owner, '');
+      const listItem = `<li>
+                      
+                      <img
+                        class="profile-image"
+                        src="${ownerData.avatar}"
+                        alt="Profile image of ${ownerData && ownerData.name}"
+                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      />
+              <p><strong>${owner}</strong></p>
+              <p>${body}</p>
+              </li>`;
+      listOfComments.innerHTML += listItem;
+    });
 
-            // commentForm.addEventListener('submit', (e) => {
-            //   e.preventDefault();
-            //   const body = textareaComment.value;
-            //   commentOnPost({ id, body });
-            // });
+    const commentForm = document.querySelector('.comment-form');
+    const textareaComment = document.querySelector('.comment-textarea');
 
-            // textareaComment.addEventListener('keyup', (e) => {
-            //   textareaComment.style.height = 'auto';
-            //   textareaComment.style.height = `${e.target.scrollHeight}px`;
-            // });
+    commentForm.addEventListener('submit', (e) => {
+      const postID = Number(e.target.dataset.id);
+      e.preventDefault();
+      const body = textareaComment.value;
+      commentOnPost({ postID, body, list });
+    });
 
-            loadMoreBtn.remove();
-            const deletePostBtn = document.querySelector('.delete-post-btn');
-            const editPostBtn = document.querySelector('.edit-post-btn');
-            const postAuthor = document.querySelector('.post-author');
+    textareaComment.addEventListener('keyup', (e) => {
+      textareaComment.style.height = 'auto';
+      textareaComment.style.height = `${e.target.scrollHeight}px`;
+    });
 
-            if (deletePostBtn && editPostBtn) {
-              deletePostBtn.addEventListener('click', (e) => {
-                const id = Number(e.target.parentNode.parentNode.dataset.id);
-                deletePost(id);
-              });
+    loadMoreBtn.remove();
+    const deletePostBtn = document.querySelector('.delete-post-btn');
+    const editPostBtn = document.querySelector('.edit-post-btn');
+    const postAuthor = document.querySelector('.post-author');
 
-              editPostBtn.addEventListener('click', () => {
-                const id = Number(e.target.parentNode.dataset.id);
-                editID = id;
-                isEditingPost = true;
-                postTitleInput.focus();
-                submitPostBtn.innerHTML = 'Edit post';
-              });
-            }
-            postAuthor.addEventListener('click', (e) => {
-              const profileName = e.target.textContent;
-              setSessionStorage(
-                true,
-                globalSStorage.token,
-                globalSStorage.name,
-                globalSStorage.email,
-                globalSStorage.avatar,
-                profileName
-              );
-              if (!window.location.href.includes('profile.html')) {
-                window.location.href = '../profile.html';
-              } else {
-                displayProfileInfo(profileName);
-              }
-            });
-          }
-        });
+    if (deletePostBtn && editPostBtn) {
+      deletePostBtn.addEventListener('click', (e) => {
+        const id = Number(e.target.parentNode.parentNode.dataset.id);
+        deletePost(id);
       });
+
+      editPostBtn.addEventListener('click', () => {
+        const id = Number(e.target.parentNode.dataset.id);
+        editID = id;
+        isEditingPost = true;
+        postTitleInput.focus();
+        submitPostBtn.innerHTML = 'Edit post';
+      });
+    }
+    postAuthor.addEventListener('click', (e) => {
+      const profileName = e.target.textContent;
+      setSessionStorage(
+        true,
+        globalSStorage.token,
+        globalSStorage.name,
+        globalSStorage.email,
+        globalSStorage.avatar,
+        profileName
+      );
+      if (!window.location.href.includes('profile.html')) {
+        window.location.href = '../profile.html';
+      } else {
+        displayProfileInfo(profileName);
+      }
     });
   }
 }
-//
-//
-//
 {
   /* <form class='post-form'>
   <input

@@ -1,5 +1,10 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-import { allPosts, displayAllPosts, displayContacts } from './layout.mjs';
+import {
+  allPosts,
+  displayAllPosts,
+  displayContacts,
+  displaySinglePost,
+} from './layout.mjs';
 import { displayProfileInfo } from './profile.mjs';
 
 export function getSessionStorage() {
@@ -41,18 +46,27 @@ export function setFetchLimitURL(limit) {
 
 export async function commentOnPost(req) {
   const sStorage = getSessionStorage();
-  const { id, body } = req;
-  fetch(`${baseURL}/posts/${id}/comment`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
-    },
-    body: JSON.stringify({
-      body: body, // Required
-    }),
-  }).then((res) => console.log(res));
+  const { postID, body, list } = req;
+  console.log(postID);
+  try {
+    const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sStorage.token}`,
+      },
+      body: JSON.stringify({
+        body: body, // Required
+      }),
+    });
+    if (res.ok) {
+      displaySinglePost(postID, list);
+    }
+  } catch (e) {
+    console.log(e, 'error in commentOnPost()');
+  }
+  // .then((res) => console.log(res));
 }
 
 export function uploadImageToContainer(container, input) {
@@ -215,10 +229,7 @@ export async function post(req) {
       body: JSON.stringify(req),
     });
     if (res.ok) {
-      console.log('res OK');
-    } else {
-      const data = await res.json();
-      console.log(data);
+      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     }
   } catch (e) {
     console.log(e, 'error in post()');
@@ -228,7 +239,7 @@ export async function post(req) {
   //   console.log(req);
   //   if (res.ok) {
   //     console.log(req);
-  //     displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+  //
   //   } else {
   //     console.log(res);
   //   }
