@@ -36,6 +36,7 @@ import {
   getUsers,
   setSessionStorage,
   commentOnPost,
+  reactToPost,
 } from './utils.mjs';
 
 import { displayProfileInfo } from './profile.mjs';
@@ -408,6 +409,7 @@ export async function displaySinglePost(postID, list) {
 
     list.innerHTML = singleListItem;
 
+    const listOfComments = document.querySelector('.list-of-comments');
     const reactOrCommentComponent = document.querySelector(
       '.react-comment-container'
     );
@@ -426,21 +428,11 @@ export async function displaySinglePost(postID, list) {
               </span>
               </button>
               `;
-
-    // get comments length and reactions
-    // getPosts(token, (searchParams = ''), (limit = ''));
-    const listOfComments = document.querySelector('.list-of-comments');
+    const commentBtn = document.querySelector('.comment-btn');
+    const reactBtn = document.querySelector('.react-btn');
     if (listOfComments) {
       const reversedComments = singleData.comments.reverse();
-      // const sortCommentsNewestFirst = slicedComments.sort((a, b) => {
-      //   if (a.created < b.created) {
-      //     return 1;
-      //   } else {
-      //     return -1;
-      //   }
-      // });
       reversedComments.map(async (comment) => {
-        // console.log(comment);
         listOfComments.innerHTML = '';
         const { body, owner } = comment;
         const ownerData = await getUsers(owner, '');
@@ -462,6 +454,13 @@ export async function displaySinglePost(postID, list) {
 
       const commentForm = document.querySelector('.comment-form');
       const textareaComment = document.querySelector('.comment-textarea');
+
+      commentBtn.addEventListener('click', () => {
+        textareaComment.focus();
+      });
+      reactBtn.addEventListener('click', () => {
+        reactToPost(id, '👍', allPosts);
+      });
 
       commentForm.addEventListener('submit', (e) => {
         const postID = Number(e.target.dataset.id);
@@ -513,6 +512,16 @@ export async function displaySinglePost(postID, list) {
     }
   }
 }
+
+//
+//
+// body: JSON.stringify({
+// symbol: symbol,
+// count: 1,
+// postId: id,
+// }),
+//
+
 {
   /* <form class='post-form'>
   <input

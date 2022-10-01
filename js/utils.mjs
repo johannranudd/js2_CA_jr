@@ -216,6 +216,30 @@ export async function unfollowProfile(name) {
   });
 }
 
+// react
+export async function reactToPost(id, symbol, allPosts) {
+  try {
+    const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${globalSStorage.token}`,
+      },
+      body: JSON.stringify({
+        symbol: symbol,
+        count: 1,
+        postId: id,
+      }),
+    });
+    if (res.ok) {
+      displaySinglePost(id, allPosts);
+    }
+  } catch (e) {
+    console.log(e, 'error in reactToPost()');
+  }
+}
+
 export async function post(req) {
   const sStorage = getSessionStorage();
   try {
