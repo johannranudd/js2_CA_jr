@@ -7,6 +7,9 @@ const newAvatarInput = document.querySelector('#new-avatar');
 const uploadedBanner = document.querySelector('.uploaded-banner');
 const uploadedAvatar = document.querySelector('.uploaded-avatar');
 const loadMoreBtn = document.querySelector('.load-more-btn');
+const profileImagePostComp = document.querySelector(
+  '.post-component .profile-image'
+);
 
 import {
   getSessionStorage,
@@ -21,36 +24,62 @@ import {
   setFetchLimitURL,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
+
 const globalSStorage = getSessionStorage();
 // export let profileDisplayed = globalSStorage && globalSStorage.name;
+
+export async function getProfileImage() {
+  const user = await getUsers(globalSStorage.name, '');
+  profileImagePostComp.src = user.avatar;
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   if (globalSStorage) {
     if (globalSStorage.name === globalSStorage.profileDisplayed) {
       displayProfileInfo(globalSStorage.name);
+      getProfileImage();
     } else {
       displayProfileInfo(globalSStorage.profileDisplayed);
     }
   }
 });
 
+// uploadImageToContainer(container, input);
 if (newBannerInput && newAvatarInput && editProfileForm) {
-  newBannerInput.addEventListener('change', () => {
-    uploadImageToContainer(uploadedBanner, newBannerInput);
+  newBannerInput.addEventListener('keyup', () => {
+    setTimeout(() => {
+      uploadImageToContainer(uploadedBanner, newBannerInput);
+    }, 100);
   });
-  newAvatarInput.addEventListener('change', () => {
-    uploadImageToContainer(uploadedAvatar, newAvatarInput);
+  newBannerInput.addEventListener('drop', () => {
+    setTimeout(() => {
+      uploadImageToContainer(uploadedBanner, newBannerInput);
+    }, 100);
+  });
+  newAvatarInput.addEventListener('keyup', () => {
+    setTimeout(() => {
+      uploadImageToContainer(uploadedAvatar, newAvatarInput);
+    }, 100);
+  });
+  newAvatarInput.addEventListener('drop', () => {
+    setTimeout(() => {
+      uploadImageToContainer(uploadedAvatar, newAvatarInput);
+    }, 100);
   });
 
   editProfileForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const bannerImage = uploadedBanner.querySelector('img');
     const avatarImage = uploadedAvatar.querySelector('img');
-    const submitObject = {
-      banner: bannerImage ? bannerImage.src : '', // Optional
-      avatar: avatarImage ? avatarImage.src : '', // Optional
-    };
+    const submitObject = {};
+    if (bannerImage) {
+      submitObject.banner = bannerImage.src;
+    }
+    if (avatarImage) {
+      submitObject.avatar = avatarImage.src;
+    }
     updateProfileInfo(globalSStorage.name, submitObject);
+    getProfileImage();
     editProfileForm.classList.remove('show-edit-profile-modal');
   });
 }

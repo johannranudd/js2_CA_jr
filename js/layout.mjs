@@ -36,6 +36,7 @@ import {
   getUsers,
   setSessionStorage,
   commentOnPost,
+  reactToPost,
 } from './utils.mjs';
 
 import { displayProfileInfo } from './profile.mjs';
@@ -102,6 +103,7 @@ if (globalSStorage) {
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
     displayContacts();
+    // getProfileImage();
   });
 
   window.addEventListener('resize', () => {
@@ -355,9 +357,10 @@ export async function displaySinglePost(postID, list) {
   list.innerHTML = '';
   list.appendChild(spinner);
   const singleData = await getPosts(sStorage.token, postID, '');
+
   if (singleData) {
     spinner.remove();
-    const { id, title, body, media, author } = singleData;
+    const { id, title, body, media, author, _count } = singleData;
     const singleListItem = `
               <li class="single-post-feed" data-id="${id}" data-user="${
       author && author.name
@@ -407,15 +410,12 @@ export async function displaySinglePost(postID, list) {
 
     list.innerHTML = singleListItem;
 
+    const listOfComments = document.querySelector('.list-of-comments');
     const reactOrCommentComponent = document.querySelector(
       '.react-comment-container'
     );
 
-    const getThisPost = await getPosts(globalSStorage.token, id, '');
-    if (getThisPost) {
-      const { _count } = getThisPost;
-      console.log(getThisPost);
-      reactOrCommentComponent.innerHTML += `
+    reactOrCommentComponent.innerHTML += `
               <button class="react-btn">
               <p>${_count.reactions}</p>
               <span>
@@ -429,80 +429,100 @@ export async function displaySinglePost(postID, list) {
               </span>
               </button>
               `;
-    }
-    // get comments length and reactions
-    // getPosts(token, (searchParams = ''), (limit = ''));
-    const listOfComments = document.querySelector('.list-of-comments');
-    singleData.comments.map(async (comment) => {
-      // console.log(comment);
-      const { body, owner } = comment;
-      const ownerData = await getUsers(owner, '');
-      const listItem = `<li>
+    const commentBtn = document.querySelector('.comment-btn');
+    const reactBtn = document.querySelector('.react-btn');
+    if (listOfComments) {
+      const reversedComments = singleData.comments.reverse();
+      reversedComments.map(async (comment) => {
+        listOfComments.innerHTML = '';
+        const { body, owner } = comment;
+        const ownerData = await getUsers(owner, '');
+        const listItem = `<li>
                       
                       <img
                         class="profile-image"
-                        src="${ownerData.avatar}"
+                        src="${ownerData.avatar && ownerData.avatar}"
                         alt="Profile image of ${ownerData && ownerData.name}"
                         onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                       />
-              <p><strong>${owner}</strong></p>
-              <p>${body}</p>
+                      <div class="comment-text">
+                        <p><strong>${owner}</strong></p>
+                        <p>${body}</p>
+                      </div>
               </li>`;
-      listOfComments.innerHTML += listItem;
-    });
-
-    const commentForm = document.querySelector('.comment-form');
-    const textareaComment = document.querySelector('.comment-textarea');
-
-    commentForm.addEventListener('submit', (e) => {
-      const postID = Number(e.target.dataset.id);
-      e.preventDefault();
-      const body = textareaComment.value;
-      commentOnPost({ postID, body, list });
-    });
-
-    textareaComment.addEventListener('keyup', (e) => {
-      textareaComment.style.height = 'auto';
-      textareaComment.style.height = `${e.target.scrollHeight}px`;
-    });
-
-    loadMoreBtn.remove();
-    const deletePostBtn = document.querySelector('.delete-post-btn');
-    const editPostBtn = document.querySelector('.edit-post-btn');
-    const postAuthor = document.querySelector('.post-author');
-
-    if (deletePostBtn && editPostBtn) {
-      deletePostBtn.addEventListener('click', (e) => {
-        const id = Number(e.target.parentNode.parentNode.dataset.id);
-        deletePost(id);
+        listOfComments.innerHTML += listItem;
       });
 
-      editPostBtn.addEventListener('click', () => {
-        const id = Number(e.target.parentNode.dataset.id);
-        editID = id;
-        isEditingPost = true;
-        postTitleInput.focus();
-        submitPostBtn.innerHTML = 'Edit post';
+      const commentForm = document.querySelector('.comment-form');
+      const textareaComment = document.querySelector('.comment-textarea');
+
+      commentBtn.addEventListener('click', () => {
+        textareaComment.focus();
+      });
+      reactBtn.addEventListener('click', () => {
+        reactToPost(id, '👍', allPosts);
+      });
+
+      commentForm.addEventListener('submit', (e) => {
+        const postID = Number(e.target.dataset.id);
+        e.preventDefault();
+        const body = textareaComment.value;
+        commentOnPost({ postID, body, list });
+      });
+
+      textareaComment.addEventListener('keyup', (e) => {
+        textareaComment.style.height = 'auto';
+        textareaComment.style.height = `${e.target.scrollHeight}px`;
+      });
+
+      loadMoreBtn.remove();
+      const deletePostBtn = document.querySelector('.delete-post-btn');
+      const editPostBtn = document.querySelector('.edit-post-btn');
+      const postAuthor = document.querySelector('.post-author');
+
+      if (deletePostBtn && editPostBtn) {
+        deletePostBtn.addEventListener('click', (e) => {
+          const id = Number(e.target.parentNode.parentNode.dataset.id);
+          deletePost(id);
+        });
+
+        editPostBtn.addEventListener('click', (e) => {
+          const id = Number(e.target.parentNode.dataset.id);
+          editID = id;
+          isEditingPost = true;
+          postTitleInput.focus();
+          submitPostBtn.innerHTML = 'Edit post';
+        });
+      }
+      postAuthor.addEventListener('click', (e) => {
+        const profileName = e.target.textContent;
+        setSessionStorage(
+          true,
+          globalSStorage.token,
+          globalSStorage.name,
+          globalSStorage.email,
+          globalSStorage.avatar,
+          profileName
+        );
+        if (!window.location.href.includes('profile.html')) {
+          window.location.href = '../profile.html';
+        } else {
+          displayProfileInfo(profileName);
+        }
       });
     }
-    postAuthor.addEventListener('click', (e) => {
-      const profileName = e.target.textContent;
-      setSessionStorage(
-        true,
-        globalSStorage.token,
-        globalSStorage.name,
-        globalSStorage.email,
-        globalSStorage.avatar,
-        profileName
-      );
-      if (!window.location.href.includes('profile.html')) {
-        window.location.href = '../profile.html';
-      } else {
-        displayProfileInfo(profileName);
-      }
-    });
   }
 }
+
+//
+//
+// body: JSON.stringify({
+// symbol: symbol,
+// count: 1,
+// postId: id,
+// }),
+//
+
 {
   /* <form class='post-form'>
   <input

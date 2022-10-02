@@ -5,7 +5,7 @@ import {
   displayContacts,
   displaySinglePost,
 } from './layout.mjs';
-import { displayProfileInfo } from './profile.mjs';
+import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
 export function getSessionStorage() {
   const sStorage = sessionStorage.getItem('isLoggedIn')
@@ -44,9 +44,9 @@ export function setFetchLimitURL(limit) {
   }
 }
 
-export async function commentOnPost(req) {
+export async function commentOnPost(payload) {
   const sStorage = getSessionStorage();
-  const { postID, body, list } = req;
+  const { postID, body, list } = payload;
   console.log(postID);
   try {
     const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
@@ -164,6 +164,8 @@ export function checkIfLoggedIn() {
 }
 
 export async function updateProfileInfo(name, req) {
+  console.log('name::', name);
+  console.log('req::', req);
   const sStorage = getSessionStorage();
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
@@ -176,6 +178,7 @@ export async function updateProfileInfo(name, req) {
   }).then((res) => {
     if (res.ok) {
       displayProfileInfo();
+      getProfileImage();
     }
   });
 }
@@ -213,8 +216,32 @@ export async function unfollowProfile(name) {
 
       displayContacts();
     }
-    // console.log(res);
   });
+}
+
+// react
+export async function reactToPost(id, symbol, allPosts) {
+  const sStorage = getSessionStorage();
+  try {
+    const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sStorage.token}`,
+      },
+      body: JSON.stringify({
+        symbol: symbol,
+        count: 1,
+        postId: id,
+      }),
+    });
+    if (res.ok) {
+      displaySinglePost(id, allPosts);
+    }
+  } catch (e) {
+    console.log(e, 'error in reactToPost()');
+  }
 }
 
 export async function post(req) {

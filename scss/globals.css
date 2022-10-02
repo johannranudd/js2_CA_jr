@@ -104,6 +104,13 @@
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input .comment-form .add-items-and-submit-btn-contianer .add-items-btns .custom-file-upload .fa-image {
   font-size: 1.5rem;
 }
+.feed .all-posts .single-post-feed .list-of-comments li {
+  display: flex;
+}
+.feed .all-posts .single-post-feed .list-of-comments li .profile-image {
+  width: 50px;
+  height: 50px;
+}
 .feed .load-more-btn-container {
   display: flex;
   justify-content: center;
