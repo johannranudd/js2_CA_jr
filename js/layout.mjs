@@ -159,9 +159,12 @@ if (globalSStorage) {
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
+      } else {
+        // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
       }
     } else {
       //**  display a warning here
+      // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
     }
   });
 
