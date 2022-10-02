@@ -22,6 +22,7 @@ const textareaPost = document.querySelector('.post-textarea');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
 const profileLink = document.querySelector('.profile-link');
+const logoutBtn = document.querySelector('.logout');
 
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
@@ -109,6 +110,13 @@ if (globalSStorage) {
   window.addEventListener('resize', () => {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
   });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.clear();
+      checkIfLoggedIn();
+    });
+  }
 
   profileLink.addEventListener('click', (e) => {
     // console.log('profile-link');

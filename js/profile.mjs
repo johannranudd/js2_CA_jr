@@ -30,7 +30,12 @@ const globalSStorage = getSessionStorage();
 
 export async function getProfileImage() {
   const user = await getUsers(globalSStorage.name, '');
-  profileImagePostComp.src = user.avatar;
+  if (user.avatar) {
+    profileImagePostComp.src = user.avatar;
+  } else {
+    profileImagePostComp.src =
+      'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
