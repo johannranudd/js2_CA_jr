@@ -153,9 +153,11 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 
 export function checkIfLoggedIn() {
   // console.log('checkIfLoggedIn() sStorage::', sStorage);
+  const sStorage = getSessionStorage();
   if (!window.location.href.includes('/login.html')) {
-    const sStorage = getSessionStorage();
-    if (!sStorage || !sStorage.isLoggedIn) {
+    if (window.location.href.includes('/register.html')) {
+      return;
+    } else if (!sStorage || !sStorage.isLoggedIn) {
       window.location.href = '../login.html';
     } else {
       console.log(`you are already logged in as ${sStorage.name}`);

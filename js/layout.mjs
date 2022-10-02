@@ -22,6 +22,7 @@ const textareaPost = document.querySelector('.post-textarea');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
 const profileLink = document.querySelector('.profile-link');
+const logoutBtn = document.querySelector('.logout');
 
 // const singlePostFeed = document.querySelectorAll('.single-post-feed');
 
@@ -110,6 +111,13 @@ if (globalSStorage) {
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
   });
 
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.clear();
+      checkIfLoggedIn();
+    });
+  }
+
   profileLink.addEventListener('click', (e) => {
     // console.log('profile-link');
     setSessionStorage(
@@ -159,9 +167,12 @@ if (globalSStorage) {
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
+      } else {
+        // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
       }
     } else {
       //**  display a warning here
+      // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
     }
   });
 
