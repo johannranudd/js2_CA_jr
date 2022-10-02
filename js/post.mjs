@@ -29,7 +29,9 @@ function adjustHomeComponent() {
   homeComponent.style.width = `${feedRect.width}px`;
 }
 window.addEventListener('DOMContentLoaded', () => {
-  adjustHomeComponent();
+  setTimeout(() => {
+    adjustHomeComponent();
+  }, 2000);
 });
 window.addEventListener('resize', () => {
   adjustHomeComponent();
