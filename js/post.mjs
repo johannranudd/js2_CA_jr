@@ -85,6 +85,7 @@ if (postForm) {
         title: titleInputValue, // Required
         body: textareaValue, // Required
         tags: ['test'], // Optional
+        // media: image ? image.src : '',
       };
 
       if (image) {
