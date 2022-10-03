@@ -269,6 +269,7 @@
 @media (min-width: 500px) {
   .home-component h4 {
     font-size: 1rem;
+    white-space: nowrap;
   }
 }
 .home-component h4 span {
