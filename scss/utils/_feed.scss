@@ -1,48 +1,46 @@
 @import 'variables';
 .feed {
-  // display: flex;
-  // flex-direction: column;
-  // flex: 1 1 0;
-  overflow-x: hidden;
-  .filter-and-search-posts {
-    button {
-      // color: red;
-    }
-  }
+  // overflow-x: hidden;
   .all-posts {
-    background: rgb(234, 159, 159);
+    // background: rgb(234, 159, 159);
+    // background: $primary-color;
     padding: 0.5rem;
-
-    // margin-bottom: 4rem;
     .single-post-feed {
+      display: flex;
       cursor: pointer;
       border: 1px solid $black;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      padding: 1rem;
+      background: $primary-color;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
       &:hover {
-        background: #fed;
+        background: $white;
       }
-      p {
-        // white-space: 'word-wrap';
-        // overflow-wrap: break-word;
-        // word-wrap: break-word;
-        hyphens: auto;
+      .profile-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 0.5rem;
       }
-      .post-author {
-        &:hover {
-          color: white;
+      .title-body-image {
+        margin-right: 2rem;
+        .post-author {
+          &:hover {
+            color: $secondary-color;
+          }
+        }
+        .post-body {
+          word-break: break-word;
+          hyphens: auto;
         }
       }
-      // .post-title {
-      // }
-      // .post-body {
-      // }
       .post-image-container {
         // min-width: 200px;
         .post-image {
           // object-fit: contain;
-          max-width: 100%;
+          width: 100%;
+          // max-width: 400px;
           // max-height: 100%;
         }
       }

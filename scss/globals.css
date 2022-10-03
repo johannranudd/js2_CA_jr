@@ -77,33 +77,43 @@
   transform: translateX(0%);
 }
 
-.feed {
-  overflow-x: hidden;
-}
 .feed .all-posts {
-  background: rgb(234, 159, 159);
   padding: 0.5rem;
 }
 .feed .all-posts .single-post-feed {
+  display: flex;
   cursor: pointer;
   border: 1px solid #000000;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  padding: 1rem;
+  background: #d476ab;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
 }
 .feed .all-posts .single-post-feed:hover {
-  background: #fed;
+  background: #ffffff;
 }
-.feed .all-posts .single-post-feed p {
+.feed .all-posts .single-post-feed .profile-image {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+.feed .all-posts .single-post-feed .title-body-image {
+  margin-right: 2rem;
+}
+.feed .all-posts .single-post-feed .title-body-image .post-author:hover {
+  color: #4973b1;
+}
+.feed .all-posts .single-post-feed .title-body-image .post-body {
+  word-break: break-word;
   -webkit-hyphens: auto;
       -ms-hyphens: auto;
           hyphens: auto;
 }
-.feed .all-posts .single-post-feed .post-author:hover {
-  color: white;
-}
 .feed .all-posts .single-post-feed .post-image-container .post-image {
-  max-width: 100%;
+  width: 100%;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
   display: flex;
@@ -229,7 +239,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #b14984;
+  background: #d476ab;
   z-index: 2;
 }
 @media (min-width: 500px) {
@@ -300,7 +310,7 @@
   outline: none;
 }
 .home-component .search-form-posts .search-btn {
-  background: #b14984;
+  background: #d476ab;
   border: none;
   padding: 0.8rem 0.5rem;
 }
@@ -363,6 +373,9 @@
   background: #000000;
   border-radius: 100px;
 }
+.post-component .profile-img-text-input .post-form .display-image-container img {
+  max-width: 400px;
+}
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer {
   display: flex;
   justify-content: space-between;
@@ -373,19 +386,20 @@
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .upload-img-input {
   width: 70%;
-  border: 1px dotted #000000;
+  border: 1.5px dotted #000000;
   height: 50px;
   background: transparent;
+  min-width: 50px;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .fa-image {
   font-size: 1.5rem;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn {
-  border: 2px solid #b14984;
+  border: 2px solid #d476ab;
   padding: 1rem;
   font-size: 1rem;
   border-radius: 5px;
-  background: #b14984;
+  background: #d476ab;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;

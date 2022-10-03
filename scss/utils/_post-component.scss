@@ -109,9 +109,9 @@
         }
       }
       .display-image-container {
-        // img {
-        //   // max-width: 400px;
-        // }
+        img {
+          max-width: 400px;
+        }
       }
       .add-items-and-submit-btn-contianer {
         display: flex;
@@ -122,10 +122,10 @@
           width: 100%;
           .upload-img-input {
             width: 70%;
-            // min-width
-            border: 1px dotted $black;
+            border: 1.5px dotted $black;
             height: 50px;
             background: transparent;
+            min-width: 50px;
           }
           .fa-image {
             font-size: 1.5rem;

@@ -274,31 +274,48 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
     spinner.remove();
     data.map((post) => {
       const { id, title, body, media, author } = post;
+      // console.log(author.avatar && author.avatar );
 
       const listItem = `
+      
     <li class="single-post-feed" data-id="${id}" data-user="${
         author && author.name
       }">
-    <p><strong>${id}</strong></p>
-      <div class="edit-delete-btn-container">
+      
+      <img
+                      class="profile-image"
+                      src="${author.avatar}"
+                      alt="Profile image of ${author && author.name}"
+                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                    />
+      
+
+      <div class="title-body-image">
+          <p class="post-author">
+          <strong>
+          ${author && author.name}
+          </strong>
+          </p>
+          <p class="post-title">${title && title}</p>
+          <p class="post-body">${body && body}</p>
+          <div class="post-image-container">
+          ${
+            media &&
+            `<img class="post-image" src=${media} alt="image posted by ${
+              author && author.name
+            }" onerror="this.style.display='none'" draggable="true"/>`
+          }
+          </div>
+          <div class="edit-delete-btn-container">
           ${
             sStorage.name === author.name
               ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
               : ''
           }
       </div>
-
-          <p class="post-author">${author && author.name}</p>
-          <p class="post-title">${title && title}</p>
-          <p class="post-body">${body && body}</p>
-          <div class="post-image-container">
-            ${
-              media &&
-              `<img class="post-image" src=${media} alt="image posted by ${
-                author && author.name
-              }" onerror="this.style.display='none'" draggable="true"/>`
-            }
       </div>
+
+      
     </li>`;
       list.innerHTML += listItem;
 
@@ -310,14 +327,18 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       if (deletePostBtns && editPostBtns) {
         deletePostBtns.forEach((btn) => {
           btn.addEventListener('click', (e) => {
-            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            const id = Number(
+              e.target.parentNode.parentNode.parentNode.dataset.id
+            );
             deletePost(id);
           });
         });
 
         editPostBtns.forEach((btn) => {
           btn.addEventListener('click', (e) => {
-            const id = Number(e.target.parentNode.parentNode.dataset.id);
+            const id = Number(
+              e.target.parentNode.parentNode.parentNode.dataset.id
+            );
             editID = id;
             isEditingPost = true;
             postTitleInput.focus();
@@ -377,47 +398,55 @@ export async function displaySinglePost(postID, list) {
               <li class="single-post-feed" data-id="${id}" data-user="${
       author && author.name
     }">
-           <p><strong>${id}</strong></p>
-                <div class="edit-delete-btn-container">
-                  ${
-                    sStorage.name === author.name
-                      ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
-                      : ''
-                  }
-                </div>
-                <p class="post-author">${author && author.name}</p>
-                <p class="post-title">${title && title}</p>
-                <p class="post-body">${body && body}</p>
-
-                <div class="post-image-container">
-                    ${
-                      media &&
-                      `<img class="post-image" src=${media} alt="image posted by ${
-                        author && author.name
-                      }" onerror="this.style.display='none'" draggable="true" />`
-                    }
-                </div>
-                <div class="react-comment-container"> </div>
-                 <div class="comment-component">
-                  <div class="profile-img-text-input">
-                              <img
+    <img
                       class="profile-image"
-                      src="${globalSStorage.avatar}"
+                      src="${author.avatar}"
                       alt="Profile image of ${author && author.name}"
                       onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                     />
-                    <form class="comment-form" data-id="${id}">
-                      <textarea
-                        class="comment-textarea"
-                        placeholder="Comment"
-                      ></textarea>
+                <div class="title-body-image">
+                          <p class="post-author">${author && author.name}</p>
+                          <p class="post-title">${title && title}</p>
+                          <p class="post-body">${body && body}</p>
 
-                        <button class="submit-comment-btn" type="submit">Comment</button>
-                    </form>
-                  </div>
-              </div>
+                          <div class="post-image-container">
+                              ${
+                                media &&
+                                `<img class="post-image" src=${media} alt="image posted by ${
+                                  author && author.name
+                                }" onerror="this.style.display='none'" draggable="true" />`
+                              }
+                          </div>
+                          <div class="edit-delete-btn-container">
+                            ${
+                              sStorage.name === author.name
+                                ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+                                : ''
+                            }
+                          </div>
+                          <div class="react-comment-container"></div>
+                <div class="comment-component">
+                    <div class="profile-img-text-input">
+                        <img
+                        class="profile-image"
+                        src="${globalSStorage.avatar}"
+                        alt="Profile image of ${author && author.name}"
+                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      />
+                      <form class="comment-form" data-id="${id}">
+                        <textarea
+                          class="comment-textarea"
+                          placeholder="Comment"
+                        ></textarea>
+
+                          <button class="submit-comment-btn" type="submit">Comment</button>
+                      </form>
+                    </div>
+                </div>
               
-              <ul class="list-of-comments"></ul>
+                <ul class="list-of-comments"></ul>
+                </div>
+                
               </li>`;
 
     list.innerHTML = singleListItem;
@@ -494,12 +523,16 @@ export async function displaySinglePost(postID, list) {
 
       if (deletePostBtn && editPostBtn) {
         deletePostBtn.addEventListener('click', (e) => {
-          const id = Number(e.target.parentNode.parentNode.dataset.id);
+          const id = Number(
+            e.target.parentNode.parentNode.parentNode.dataset.id
+          );
           deletePost(id);
         });
 
         editPostBtn.addEventListener('click', (e) => {
-          const id = Number(e.target.parentNode.dataset.id);
+          const id = Number(
+            e.target.parentNode.parentNode.parentNode.dataset.id
+          );
           editID = id;
           isEditingPost = true;
           postTitleInput.focus();
