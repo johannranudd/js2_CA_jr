@@ -10,16 +10,38 @@
   background: #ffffff;
   transition: 0.3s;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
 }
 @media (min-width: 500px) {
   .sidebar {
     transform: translateX(0%);
     width: 5rem;
+    align-items: center;
+  }
+  .sidebar .list-of-links {
+    align-items: center;
+  }
+  .sidebar .list-of-links li a span {
+    display: none;
+  }
+  .sidebar .list-of-links li button span {
+    display: none;
   }
 }
 @media (min-width: 768px) {
   .sidebar {
     width: 15rem;
+    align-items: flex-start;
+  }
+  .sidebar .list-of-links {
+    align-items: center;
+  }
+  .sidebar .list-of-links li a span {
+    display: inline;
+  }
+  .sidebar .list-of-links li button span {
+    display: inline;
   }
 }
 .sidebar .logo {
