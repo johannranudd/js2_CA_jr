@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap");
 .main-container .feed-and-contacts-container {
   display: grid;
+  border-left: 1px solid rgb(118, 118, 118);
+  border-right: 1px solid rgb(118, 118, 118);
 }
 .sidebar {
   position: fixed;
@@ -239,9 +241,9 @@
   cursor: pointer;
 }
 .mobilebar .menu-btn .line {
-  height: 3px;
-  width: 2rem;
-  margin-bottom: 6px;
+  height: 2.5px;
+  width: 30px;
+  margin: 5px 0;
   background: #000000;
 }
 .mobilebar .contacts-btn {
@@ -251,23 +253,53 @@
 
 .home-component {
   position: fixed;
-  width: 95%;
-  background: white;
-  height: 2.3rem;
-  border-bottom: 1px solid black;
+  width: 100%;
+  background: #ffffff;
+  padding: 0 0.5rem;
+  border-bottom: 2px solid #000000;
   z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.home-component h4 p {
+.home-component h4 {
+  font-size: 0.8rem;
+  margin-right: 1rem;
+}
+@media (min-width: 500px) {
+  .home-component h4 {
+    font-size: 1rem;
+  }
+}
+.home-component h4 span {
   display: inline;
-  color: grey;
+  color: rgb(118, 118, 118);
   font-style: italic;
+}
+.home-component .search-form-posts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.home-component .search-form-posts .search-posts-input {
+  padding: 0.6rem 0.2rem;
+  font-size: 1rem;
+  width: 100%;
+  flex: 1 1 0;
+}
+.home-component .search-form-posts .search-posts-input:focus {
+  outline: none;
+}
+.home-component .search-form-posts .search-btn {
+  background: #b14984;
+  border: none;
+  padding: 0.8rem 0.5rem;
 }
 
 .post-component {
-  margin-top: 2.3rem;
+  margin-top: 3.3rem;
 }
 .post-component .profile-img-text-input {
   display: flex;
@@ -393,12 +425,19 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: "Inter Tight", sans-serif;
+  background: #ffffff;
+  color: #000000;
 }
 
 a {
   text-decoration: none;
   display: inline-block;
   color: #000000;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
 }
 
 ul {

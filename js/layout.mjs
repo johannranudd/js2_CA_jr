@@ -102,7 +102,7 @@ if (globalSStorage) {
     displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
-    homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
+    homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
     displayContacts();
     // getProfileImage();
   });
