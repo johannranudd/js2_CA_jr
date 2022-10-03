@@ -11,10 +11,15 @@
   }
   .all-posts {
     background: rgb(234, 159, 159);
+    padding: 0.5rem;
+
     // margin-bottom: 4rem;
     .single-post-feed {
       cursor: pointer;
-
+      border: 1px solid $black;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      padding: 1rem;
       &:hover {
         background: #fed;
       }

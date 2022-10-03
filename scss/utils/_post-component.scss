@@ -13,15 +13,20 @@
   align-items: center;
   h4 {
     font-size: 0.8rem;
-    margin-right: 1rem;
+    min-width: 120px;
+    white-space: nowrap;
     @media (min-width: $mobile-500) {
       font-size: 1rem;
-      white-space: nowrap;
+      min-width: 130px;
     }
     span {
       display: inline;
       color: $grey;
       font-style: italic;
+      font-size: 0.7rem;
+      // @media (min-width: $mobile-500) {
+      //   font-size: 0.7rem;
+      // }
     }
   }
   .search-form-posts {
@@ -34,7 +39,6 @@
       padding: 0.6rem 0.2rem;
       font-size: 1rem;
       width: 100%;
-      flex: 1 1 0;
       &:focus {
         outline: none;
       }
@@ -47,36 +51,51 @@
   }
 }
 
+// post component
 .post-component {
   margin-top: 3.3rem;
+  padding: 1rem 0.5rem;
+
   .profile-img-text-input {
     display: flex;
     // margin-top: 2.3rem;
     .profile-image {
-      width: 70px;
-      height: 70px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
+      border-radius: 50%;
+      margin-right: 20px;
+      @media (min-width: $mobile-500) {
+        margin-right: 30px;
+      }
     }
     .post-form {
       width: 100%;
       .post-title-input {
         width: 100%;
-        max-width: 400px;
+        // max-width: 400px;
         padding: 0.5rem;
         font-weight: bold;
+        border: none;
+        border-bottom: 1px solid $black;
+        &:focus {
+          outline: none;
+          border-bottom: 2px solid $black;
+        }
       }
       .post-textarea {
         width: 100%;
-        max-width: 400px;
+        // max-width: 400px;
         max-height: 350px;
         font-size: 1rem;
         border: none;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid $black;
         padding: 0.5rem;
+        margin-bottom: 1rem;
         resize: none;
         &:focus {
           outline: none;
-          border-bottom: 2px solid black;
+          border-bottom: 2px solid $black;
         }
         &::-webkit-scrollbar {
           width: 3px;
@@ -85,27 +104,26 @@
         &::-webkit-scrollbar-thumb {
           width: 10px;
           height: 10px;
-          background: black;
+          background: $black;
           border-radius: 100px;
         }
       }
       .display-image-container {
-        img {
-          max-width: 400px;
-        }
+        // img {
+        //   // max-width: 400px;
+        // }
       }
       .add-items-and-submit-btn-contianer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        max-width: 400px;
+        // max-width: 400px;
         .add-items-btns {
-          cursor: pointer;
           width: 100%;
           .upload-img-input {
             width: 70%;
             // min-width
-            border: 1px dotted black;
+            border: 1px dotted $black;
             height: 50px;
             background: transparent;
           }
@@ -115,6 +133,14 @@
         }
 
         .submit-post-btn {
+          border: 2px solid $primary-color;
+          padding: 1rem;
+          font-size: 1rem;
+          border-radius: 5px;
+          background: $primary-color;
+          &:hover {
+            background: $white;
+          }
         }
       }
     }
