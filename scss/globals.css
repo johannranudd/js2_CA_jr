@@ -27,11 +27,19 @@
 }
 .sidebar .list-of-links li {
   font-size: 1.3rem;
+  padding: 0.3rem 0;
+}
+.sidebar .list-of-links li a span {
+  margin-left: 1.3rem;
 }
 .sidebar .list-of-links li button {
-  border: none;
   font-size: 1.3rem;
+  border: none;
 }
+.sidebar .list-of-links li button span {
+  margin-left: 1rem;
+}
+
 .show-sidebar {
   transition: 0.3s;
   transform: translateX(0%);

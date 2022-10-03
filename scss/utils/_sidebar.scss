@@ -22,16 +22,33 @@
   .list-of-links {
     li {
       font-size: 1.3rem;
+      padding: 0.3rem 0;
       a {
         i {
         }
-      }
-      button {
-        border: none;
-        font-size: 1.3rem;
-        i {
+        span {
+          margin-left: 1.3rem;
         }
       }
+      button {
+        font-size: 1.3rem;
+        border: none;
+        // background: transparent;
+        i {
+        }
+        span {
+          margin-left: 1rem;
+        }
+      }
+      // .hoverAnimation {
+      //   padding: 5px;
+      //   border-radius: 50px;
+      //   background: transparent;
+      //   cursor: pointer;
+      // }
+      // .hoverAnimation:hover {
+      //   background: $hoverAnimationColor;
+      // }
     }
   }
 }
