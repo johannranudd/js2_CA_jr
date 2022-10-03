@@ -318,14 +318,14 @@ export function contactsElementPositioning(contacts, mainContainer) {
     contacts.className.includes('show-contacts') &&
     window.innerWidth < 1024
   ) {
-    contacts.style.right = `2.5%`;
+    contacts.style.right = `0%`;
   } else if (
     !contacts.className.includes('show-contacts') &&
     window.innerWidth < 1024
   ) {
     contacts.style.right = `-200%`;
   } else if (window.innerWidth > 1024) {
-    contacts.style.right = `2.5%`;
+    contacts.style.right = `0%`;
   }
   if (mainContainerRect.width >= 1280) {
     contacts.style.right = `${mainContainerRect.left}px`;
@@ -361,7 +361,6 @@ export function adjustForSidebar(
 }
 
 export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
-  console.log(e.currentTarget);
   if (e.currentTarget.className.includes('contacts-btn')) {
     if (!contacts.className.includes('show-contacts')) {
       contacts.classList.add('show-contacts');

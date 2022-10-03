@@ -3,19 +3,21 @@
 .sidebar {
   position: fixed;
   height: 100vh;
-  width: 95%;
+  width: 100%;
   transform: translateX(-200%);
   background: $white;
   transition: 0.3s;
   z-index: 2;
   display: flex;
   flex-direction: column;
+  padding: 0.5rem 1rem;
   // justify-content: center;
   @media (min-width: $mobile-500) {
     transform: translateX(0%);
     width: 5rem;
     align-items: center;
     .logo {
+      align-self: center !important;
     }
     .list-of-links {
       align-items: center;
@@ -36,6 +38,9 @@
   @media (min-width: $tablet) {
     width: 15rem;
     align-items: flex-start;
+    .logo {
+      align-self: flex-start !important;
+    }
     .list-of-links {
       align-items: center;
       li {
@@ -54,7 +59,7 @@
   }
   .logo {
     font-size: 2rem;
-    // padding: 0.5rem 1rem;
+    align-self: flex-start;
   }
   .list-of-links {
     li {

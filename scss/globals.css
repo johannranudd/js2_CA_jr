@@ -5,19 +5,23 @@
 .sidebar {
   position: fixed;
   height: 100vh;
-  width: 95%;
+  width: 100%;
   transform: translateX(-200%);
   background: #ffffff;
   transition: 0.3s;
   z-index: 2;
   display: flex;
   flex-direction: column;
+  padding: 0.5rem 1rem;
 }
 @media (min-width: 500px) {
   .sidebar {
     transform: translateX(0%);
     width: 5rem;
     align-items: center;
+  }
+  .sidebar .logo {
+    align-self: center !important;
   }
   .sidebar .list-of-links {
     align-items: center;
@@ -34,6 +38,9 @@
     width: 15rem;
     align-items: flex-start;
   }
+  .sidebar .logo {
+    align-self: flex-start !important;
+  }
   .sidebar .list-of-links {
     align-items: center;
   }
@@ -46,6 +53,7 @@
 }
 .sidebar .logo {
   font-size: 2rem;
+  align-self: flex-start;
 }
 .sidebar .list-of-links li {
   font-size: 1.3rem;
@@ -212,14 +220,18 @@
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem;
-  background: rgb(147, 53, 133);
+  background: #b14984;
   z-index: 2;
 }
 @media (min-width: 500px) {
   .mobilebar {
     display: none;
   }
+}
+.mobilebar .logo {
+  font-size: 1.5rem;
 }
 .mobilebar .menu-btn {
   background: transparent;
@@ -229,8 +241,12 @@
 .mobilebar .menu-btn .line {
   height: 3px;
   width: 2rem;
-  margin-bottom: 7px;
+  margin-bottom: 6px;
   background: #000000;
+}
+.mobilebar .contacts-btn {
+  font-size: 1.3rem;
+  border: none;
 }
 
 .home-component {
@@ -394,7 +410,7 @@ img {
 }
 
 .container-1280 {
-  width: 95%;
+  width: 100%;
   max-width: 1280px;
   margin: auto;
 }

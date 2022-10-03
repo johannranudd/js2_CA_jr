@@ -6,13 +6,15 @@
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem;
-  background: rgb(147, 53, 133);
+  background: $primary-color;
   z-index: 2;
   @media (min-width: $mobile-500) {
     display: none;
   }
   .logo {
+    font-size: 1.5rem;
   }
   .menu-btn {
     background: transparent;
@@ -21,9 +23,13 @@
     .line {
       height: 3px;
       width: 2rem;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
       background: $black;
     }
     // line-1
+  }
+  .contacts-btn {
+    font-size: 1.3rem;
+    border: none;
   }
 }
