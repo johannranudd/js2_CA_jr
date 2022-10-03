@@ -7,7 +7,7 @@
   height: 100vh;
   width: 95%;
   transform: translateX(-200%);
-  background: #def;
+  background: #ffffff;
   transition: 0.3s;
   z-index: 2;
 }
@@ -32,7 +32,6 @@
   border: none;
   font-size: 1.3rem;
 }
-
 .show-sidebar {
   transition: 0.3s;
   transform: translateX(0%);

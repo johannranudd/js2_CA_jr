@@ -240,8 +240,9 @@ if (globalSStorage) {
           true
         );
       }
-    } else {
-      console.log('wanring: there are no mote posts lodamore eventlistener');
+    }
+    if (currentOffset >= data.length) {
+      loadMoreBtn.remove();
     }
   });
 }
