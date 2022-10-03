@@ -16,6 +16,22 @@
     width: 15rem;
   }
   .logo {
+    font-size: 2rem;
+    // padding: 0.5rem 1rem;
+  }
+  .list-of-links {
+    li {
+      font-size: 1.3rem;
+      // padding: 0.5rem 1rem;
+
+      a {
+      }
+      button {
+        border: none;
+
+        font-size: 1.3rem;
+      }
+    }
   }
 }
 

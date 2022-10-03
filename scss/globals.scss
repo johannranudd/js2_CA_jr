@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap');
 @import './pages/index';
 @import './utils/sidebar';
 @import './utils/feed';
@@ -15,11 +16,13 @@
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: 'Inter Tight', sans-serif;
 }
 
 a {
   text-decoration: none;
   display: inline-block;
+  color: $black;
 }
 
 ul {
@@ -48,11 +51,11 @@ img {
 .spinner:after {
   content: ' ';
   display: block;
-  width: 64px;
   height: 64px;
+  width: 64px;
   margin: 8px;
-  border-radius: 50%;
   border: 6px solid #000;
+  border-radius: 50%;
   border-color: #000 transparent #000 transparent;
   animation: spinn 1.2s linear infinite;
 }
@@ -63,4 +66,14 @@ img {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.hoverAnimation {
+  padding: 5px;
+  border-radius: 50px;
+  background: transparent;
+  cursor: pointer;
+}
+.hoverAnimation:hover {
+  background: $hoverAnimationColor;
 }
