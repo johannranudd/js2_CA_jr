@@ -104,11 +104,19 @@ if (globalSStorage) {
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
     displayContacts();
+
     // getProfileImage();
   });
 
   window.addEventListener('resize', () => {
-    adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
+    setTimeout(() => {
+      adjustForSidebar(
+        sidebar,
+        feedAndContactsContaier,
+        contacts,
+        mainContainer
+      );
+    }, 300);
   });
 
   if (logoutBtn) {
@@ -309,7 +317,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           <div class="edit-delete-btn-container">
           ${
             sStorage.name === author.name
-              ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+              ? '<button class="delete-post-btn" type="button"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>'
               : ''
           }
       </div>
@@ -420,7 +428,7 @@ export async function displaySinglePost(postID, list) {
                           <div class="edit-delete-btn-container">
                             ${
                               sStorage.name === author.name
-                                ? '<button class="delete-post-btn" type="button">delete</button><button class="edit-post-btn" type="button">edit</button>'
+                                ? '<button class="delete-post-btn" type="button"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
                           </div>

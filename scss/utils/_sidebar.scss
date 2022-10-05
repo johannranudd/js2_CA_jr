@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   padding: 0.5rem 1rem;
+
   // justify-content: center;
   @media (min-width: $mobile-500) {
     transform: translateX(0%);
@@ -60,17 +61,20 @@
   .logo {
     font-size: 2rem;
     align-self: flex-start;
+    color: $primary-color;
   }
   .list-of-links {
     li {
       font-size: 1.3rem;
       padding: 0.3rem 0;
       a {
+        color: $primary-color;
         span {
           margin-left: 1.3rem;
         }
       }
       button {
+        color: $primary-color;
         font-size: 1.3rem;
         border: none;
         span {

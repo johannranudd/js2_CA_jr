@@ -56,15 +56,20 @@
 .sidebar .logo {
   font-size: 2rem;
   align-self: flex-start;
+  color: #04579b;
 }
 .sidebar .list-of-links li {
   font-size: 1.3rem;
   padding: 0.3rem 0;
 }
+.sidebar .list-of-links li a {
+  color: #04579b;
+}
 .sidebar .list-of-links li a span {
   margin-left: 1.3rem;
 }
 .sidebar .list-of-links li button {
+  color: #04579b;
   font-size: 1.3rem;
   border: none;
 }
@@ -83,14 +88,10 @@
 .feed .all-posts .single-post-feed {
   display: flex;
   cursor: pointer;
-  border: 1px solid #000000;
-  background: #d476ab;
+  border: 1px solid #04579b;
   border-radius: 5px;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-}
-.feed .all-posts .single-post-feed:hover {
-  background: #ffffff;
 }
 .feed .all-posts .single-post-feed .profile-image {
   width: 50px;
@@ -100,11 +101,16 @@
   border-radius: 50%;
   margin-right: 0.5rem;
 }
-.feed .all-posts .single-post-feed .title-body-image {
-  margin-right: 2rem;
+@media (min-width: 600px) {
+  .feed .all-posts .single-post-feed .title-body-image {
+    margin-right: 2rem;
+  }
+}
+.feed .all-posts .single-post-feed .title-body-image .post-author {
+  color: #04579b;
 }
 .feed .all-posts .single-post-feed .title-body-image .post-author:hover {
-  color: #4973b1;
+  opacity: 0.7;
 }
 .feed .all-posts .single-post-feed .title-body-image .post-body {
   word-break: break-word;
@@ -114,6 +120,17 @@
 }
 .feed .all-posts .single-post-feed .post-image-container .post-image {
   width: 100%;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container button {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn {
+  color: #4973b1;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn {
+  color: #4973b1;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
   display: flex;
@@ -239,7 +256,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #d476ab;
+  background: #04579b;
   z-index: 2;
 }
 @media (min-width: 500px) {
@@ -310,7 +327,7 @@
   outline: none;
 }
 .home-component .search-form-posts .search-btn {
-  background: #d476ab;
+  background: #04579b;
   border: none;
   padding: 0.8rem 0.5rem;
 }
@@ -329,6 +346,7 @@
      object-fit: cover;
   border-radius: 50%;
   margin-right: 20px;
+  border: 2px solid #04579b;
 }
 @media (min-width: 500px) {
   .post-component .profile-img-text-input .profile-image {
@@ -395,11 +413,11 @@
   font-size: 1.5rem;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn {
-  border: 2px solid #d476ab;
+  border: 2px solid #04579b;
   padding: 1rem;
   font-size: 1rem;
   border-radius: 5px;
-  background: #d476ab;
+  background: #04579b;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;

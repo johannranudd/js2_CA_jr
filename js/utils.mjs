@@ -314,6 +314,11 @@ export function deletePost(id) {
 
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();
+
+  if (window.innerWidth >= 1024) {
+    contacts.style.right = `0%`;
+  }
+
   if (
     contacts.className.includes('show-contacts') &&
     window.innerWidth < 1024
@@ -324,9 +329,8 @@ export function contactsElementPositioning(contacts, mainContainer) {
     window.innerWidth < 1024
   ) {
     contacts.style.right = `-200%`;
-  } else if (window.innerWidth > 1024) {
-    contacts.style.right = `0%`;
   }
+
   if (mainContainerRect.width >= 1280) {
     contacts.style.right = `${mainContainerRect.left}px`;
   }
