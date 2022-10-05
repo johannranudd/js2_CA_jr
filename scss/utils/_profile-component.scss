@@ -2,16 +2,17 @@
 
 .profile-component {
   margin-top: 2.3rem;
-  background: rgb(247, 170, 242);
+  background: #d49a89;
   .banner {
     height: 10rem;
     background: #333
       url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg/1200px-Altja_j%C3%B5gi_Lahemaal.jpg')
       no-repeat center center/cover;
   }
-  .profile-image-edit-profile-btn-container {
+
+  .profile-image-edit-follow-btns {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: flex-end;
     translate: 0 -50%;
     padding: 0 1rem;
@@ -22,18 +23,36 @@
       border-radius: 50%;
       border: 2px solid white;
     }
+    .follow-statistics-contianer {
+      width: 50%;
+      display: flex;
+      justify-content: space-between;
+      button {
+        background: transparent;
+        border: none;
+        color: white;
+        strong {
+          font-size: 1rem;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .name-and-edit-profile {
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    .username {
+    }
     .edit-profile-btn {
       padding: 0.25rem;
       margin-bottom: 1rem;
-    }
-  }
-  .username {
-  }
-
-  .follow-statistics-contianer {
-    button {
-      strong {
-      }
+      background: $third-color;
+      border: none;
+      padding: 0.5rem;
+      color: $black;
+      border-radius: 5px;
     }
   }
 

@@ -79,6 +79,8 @@
         font-weight: bold;
         border: none;
         border-bottom: 1px solid $black;
+        background: $background-color;
+
         &:focus {
           outline: none;
           border-bottom: 2px solid $black;
@@ -94,6 +96,7 @@
         padding: 0.5rem;
         margin-bottom: 1rem;
         resize: none;
+        background: $background-color;
         &:focus {
           outline: none;
           border-bottom: 2px solid $black;

@@ -5,7 +5,8 @@
   height: 100vh;
   width: 100%;
   transform: translateX(-200%);
-  background: $white;
+  background: $background-color;
+  border-right: 1px solid $primary-color;
   transition: 0.3s;
   z-index: 2;
   display: flex;
@@ -59,7 +60,7 @@
     }
   }
   .logo {
-    font-size: 2rem;
+    font-size: 1.3rem;
     align-self: flex-start;
     color: $primary-color;
   }

@@ -99,37 +99,48 @@ export async function displayProfileInfo(
   if (profileComponent) {
     profileComponent.innerHTML = `
           <div class="banner"></div>
-          <div class="profile-image-edit-profile-btn-container">
+          
+          
+          <div class="profile-image-edit-follow-btns">
             <img
               class="profile-image"
               src="${avatar}"
               alt="Profile image of ${name}"
               onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
             />
-            ${
-              name === globalSStorage.name
-                ? '<button class="edit-profile-btn">Edit profile</button>'
-                : ''
-            }
+            
+                    <div class="follow-statistics-contianer">
+                              <button class="post-count" data-username="${name}">
+
+
+                              <strong>${_count.posts}</strong>Posts
+    
+    </button>
+                      <button class="following"><strong>${
+                        _count.following
+                      }</strong>Following</button>
+                      <button class="followers"><strong>${
+                        _count.followers
+                      }</strong>Followers</button>
+                      ${
+                        name !== globalSStorage.name
+                          ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
+                          : ''
+                      }              
+                  </div>
+                    
             
           </div>
-          <h2 class="username">${name}</h2>
-          <div class="follow-statistics-contianer">
-            <button class="post-count" data-username="${name}"><strong>${
-      _count.posts
-    }</strong>Posts</button>
-              <button class="following"><strong>${
-                _count.following
-              }</strong>Following</button>
-              <button class="followers"><strong>${
-                _count.followers
-              }</strong>Followers</button>
+          <div class="name-and-edit-profile">
+              <h2 class="username">${name}</h2>
               ${
-                name !== globalSStorage.name
-                  ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
+                name === globalSStorage.name
+                  ? '<button class="edit-profile-btn">Edit profile</button>'
                   : ''
-              }              
+              }
           </div>
+          
+          
     `;
     // profileDisplayed = name;
 

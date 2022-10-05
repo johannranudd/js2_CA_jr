@@ -4,8 +4,8 @@
   // grid-template-columns: repeat(3, 1fr);
   .feed-and-contacts-container {
     display: grid;
-    border-left: 1px solid $grey;
-    border-right: 1px solid $grey;
+    // border-left: 1px solid $grey;
+    // border-right: 1px solid $grey;
 
     // grid-template-columns: 100% 0%;
     @media (min-width: $laptop-s) {

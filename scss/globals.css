@@ -1,15 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Domine&family=Inter+Tight&display=swap");
 .main-container .feed-and-contacts-container {
   display: grid;
-  border-left: 1px solid rgb(118, 118, 118);
-  border-right: 1px solid rgb(118, 118, 118);
 }
 .sidebar {
   position: fixed;
   height: 100vh;
   width: 100%;
   transform: translateX(-200%);
-  background: #ffffff;
+  background: #f4f4f4;
+  border-right: 1px solid #557571;
   transition: 0.3s;
   z-index: 2;
   display: flex;
@@ -54,22 +53,22 @@
   }
 }
 .sidebar .logo {
-  font-size: 2rem;
+  font-size: 1.3rem;
   align-self: flex-start;
-  color: #04579b;
+  color: #557571;
 }
 .sidebar .list-of-links li {
   font-size: 1.3rem;
   padding: 0.3rem 0;
 }
 .sidebar .list-of-links li a {
-  color: #04579b;
+  color: #557571;
 }
 .sidebar .list-of-links li a span {
   margin-left: 1.3rem;
 }
 .sidebar .list-of-links li button {
-  color: #04579b;
+  color: #557571;
   font-size: 1.3rem;
   border: none;
 }
@@ -88,7 +87,7 @@
 .feed .all-posts .single-post-feed {
   display: flex;
   cursor: pointer;
-  border: 1px solid #04579b;
+  border: 1px solid #557571;
   border-radius: 5px;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
@@ -107,7 +106,7 @@
   }
 }
 .feed .all-posts .single-post-feed .title-body-image .post-author {
-  color: #04579b;
+  color: #557571;
 }
 .feed .all-posts .single-post-feed .title-body-image .post-author:hover {
   opacity: 0.7;
@@ -212,7 +211,8 @@
   width: 15rem;
   overflow-y: scroll;
   overflow-x: hidden;
-  background: #fed;
+  background: #f4f4f4;
+  border-left: 1px solid #557571;
   transition: 0.3s;
   padding-bottom: 10rem;
   z-index: 2;
@@ -220,24 +220,18 @@
 .contacts .list-of-contacts {
   padding: 1rem 0 4rem 0;
 }
-.contacts .list-of-contacts h4 {
-  text-align: center;
-  margin-bottom: 1rem;
-}
 .contacts .list-of-contacts li {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
   cursor: pointer;
-}
-.contacts .list-of-contacts li:hover {
-  background: red;
 }
 .contacts .list-of-contacts li img {
   width: 50px;
   height: 50px;
   -o-object-fit: cover;
      object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #557571;
 }
 .contacts .list-of-contacts li p {
   margin-left: 1rem;
@@ -256,7 +250,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #04579b;
+  background: #557571;
   z-index: 2;
 }
 @media (min-width: 500px) {
@@ -327,7 +321,7 @@
   outline: none;
 }
 .home-component .search-form-posts .search-btn {
-  background: #04579b;
+  background: #557571;
   border: none;
   padding: 0.8rem 0.5rem;
 }
@@ -346,7 +340,7 @@
      object-fit: cover;
   border-radius: 50%;
   margin-right: 20px;
-  border: 2px solid #04579b;
+  border: 2px solid #557571;
 }
 @media (min-width: 500px) {
   .post-component .profile-img-text-input .profile-image {
@@ -362,6 +356,7 @@
   font-weight: bold;
   border: none;
   border-bottom: 1px solid #000000;
+  background: #f4f4f4;
 }
 .post-component .profile-img-text-input .post-form .post-title-input:focus {
   outline: none;
@@ -376,6 +371,7 @@
   padding: 0.5rem;
   margin-bottom: 1rem;
   resize: none;
+  background: #f4f4f4;
 }
 .post-component .profile-img-text-input .post-form .post-textarea:focus {
   outline: none;
@@ -413,11 +409,11 @@
   font-size: 1.5rem;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn {
-  border: 2px solid #04579b;
+  border: 2px solid #557571;
   padding: 1rem;
   font-size: 1rem;
   border-radius: 5px;
-  background: #04579b;
+  background: #557571;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;
@@ -425,20 +421,19 @@
 
 .profile-component {
   margin-top: 2.3rem;
-  background: rgb(247, 170, 242);
+  background: #d49a89;
 }
 .profile-component .banner {
   height: 10rem;
   background: #333 url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Altja_j%C3%B5gi_Lahemaal.jpg/1200px-Altja_j%C3%B5gi_Lahemaal.jpg") no-repeat center center/cover;
 }
-.profile-component .profile-image-edit-profile-btn-container {
+.profile-component .profile-image-edit-follow-btns {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
   translate: 0 -50%;
   padding: 0 1rem;
 }
-.profile-component .profile-image-edit-profile-btn-container .profile-image {
+.profile-component .profile-image-edit-follow-btns .profile-image {
   width: 100px;
   height: 100px;
   -o-object-fit: cover;
@@ -446,10 +441,35 @@
   border-radius: 50%;
   border: 2px solid white;
 }
-.profile-component .profile-image-edit-profile-btn-container .edit-profile-btn {
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer button {
+  background: transparent;
+  border: none;
+  color: white;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer button strong {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+.profile-component .name-and-edit-profile {
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.profile-component .name-and-edit-profile .edit-profile-btn {
   padding: 0.25rem;
   margin-bottom: 1rem;
+  background: #f7d1ba;
+  border: none;
+  padding: 0.5rem;
+  color: #000000;
+  border-radius: 5px;
 }
+
 .edit-profile-modal {
   display: none;
 }
@@ -482,8 +502,8 @@
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: "Inter Tight", sans-serif;
-  background: #ffffff;
+  font-family: "Domine", serif;
+  background: #f4f4f4;
   color: #000000;
 }
 

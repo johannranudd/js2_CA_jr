@@ -58,7 +58,7 @@ export async function displayContacts() {
   if (user) {
     user.following.map((item) => {
       const { avatar, name } = item;
-      listOfContacts.innerHTML += `<li class="contact-list-item" data-username="${name}">
+      listOfContacts.innerHTML += `<li class="contact-list-item hoverAnimation" data-username="${name}">
         <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
                 alt="Profile image ${name}"
                 onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
