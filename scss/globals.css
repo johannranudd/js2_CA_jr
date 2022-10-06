@@ -82,15 +82,19 @@
 }
 
 .feed .all-posts {
-  padding: 0.5rem;
+  padding: 1rem;
 }
 .feed .all-posts .single-post-feed {
   display: flex;
   cursor: pointer;
   border: 1px solid #557571;
+  background: #ebeded;
   border-radius: 5px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   padding: 0.5rem;
+}
+.feed .all-posts .single-post-feed:hover {
+  background: #f4f4f4;
 }
 .feed .all-posts .single-post-feed .profile-image {
   width: 50px;
@@ -202,7 +206,13 @@
 .feed .load-more-btn-container .load-more-btn {
   padding: 0.5rem 1rem;
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid #000000;
+  color: #000000;
+  transition: 0.2s;
+}
+.feed .load-more-btn-container .load-more-btn:hover {
+  background: #557571;
+  color: #ffffff;
 }
 
 .contacts {
@@ -281,7 +291,7 @@
   position: fixed;
   width: 100%;
   background: #ffffff;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   border-bottom: 2px solid #000000;
   z-index: 1;
   display: flex;
@@ -328,7 +338,7 @@
 
 .post-component {
   margin-top: 3.3rem;
-  padding: 1rem 0.5rem;
+  padding: 1rem;
 }
 .post-component .profile-img-text-input {
   display: flex;
@@ -352,6 +362,7 @@
 }
 .post-component .profile-img-text-input .post-form .post-title-input {
   width: 100%;
+  max-width: 200px;
   padding: 0.5rem;
   font-weight: bold;
   border: none;
@@ -414,9 +425,12 @@
   font-size: 1rem;
   border-radius: 5px;
   background: #557571;
+  color: #ffffff;
+  transition: 0.2s;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;
+  color: #000000;
 }
 
 .profile-component {
@@ -443,32 +457,58 @@
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
   display: flex;
-  justify-content: space-between;
-  width: 50%;
-  max-width: 400px;
+  flex-direction: column;
+  align-items: flex-start;
+  translate: 0 1rem;
 }
-.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer button {
+@media (min-width: 375px) {
+  .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
+    translate: 0 -1rem;
+    flex-direction: row;
+  }
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .stat-btn {
   background: transparent;
   border: none;
-  color: white;
-}
-.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer button strong {
+  color: #ffffff;
+  margin-right: 0.7rem;
   font-size: 1rem;
-  margin-right: 0.5rem;
+  font-family: "Inter Tight", sans-serif;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .stat-btn strong {
+  font-size: 1rem;
+  margin-right: 0.2rem;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .post-count {
+  transition: 0.3s;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .post-count:hover {
+  color: #000000;
 }
 .profile-component .name-and-edit-profile {
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
+}
+.profile-component .name-and-edit-profile .username {
+  margin-left: 0.5rem;
+  font-size: 2rem;
+  letter-spacing: 2px;
 }
 .profile-component .name-and-edit-profile .edit-profile-btn {
   padding: 0.25rem;
   margin-bottom: 1rem;
-  background: #f7d1ba;
+  background: #d49a89;
   border: none;
   padding: 0.5rem;
-  color: #000000;
+  color: #ffffff;
   border-radius: 5px;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+.profile-component .name-and-edit-profile .edit-profile-btn:hover {
+  border: 2px solid #f7d1ba;
+  color: #ffffff;
 }
 
 .edit-profile-modal {
@@ -506,6 +546,15 @@ body {
   font-family: "Domine", serif;
   background: #f4f4f4;
   color: #000000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Inter Tight", sans-serif;
 }
 
 a {

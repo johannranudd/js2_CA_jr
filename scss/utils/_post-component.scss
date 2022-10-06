@@ -5,7 +5,7 @@
   width: 100%;
   background: $white;
   // height: 2.3rem;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   border-bottom: 2px solid $black;
   z-index: 1;
   display: flex;
@@ -54,7 +54,7 @@
 // post component
 .post-component {
   margin-top: 3.3rem;
-  padding: 1rem 0.5rem;
+  padding: 1rem;
 
   .profile-img-text-input {
     display: flex;
@@ -74,7 +74,7 @@
       width: 100%;
       .post-title-input {
         width: 100%;
-        // max-width: 400px;
+        max-width: 200px;
         padding: 0.5rem;
         font-weight: bold;
         border: none;
@@ -142,8 +142,11 @@
           font-size: 1rem;
           border-radius: 5px;
           background: $primary-color;
+          color: $white;
+          transition: 0.2s;
           &:hover {
             background: $white;
+            color: $black;
           }
         }
       }

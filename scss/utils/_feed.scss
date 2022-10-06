@@ -4,17 +4,17 @@
   .all-posts {
     // background: rgb(234, 159, 159);
     // background: $primary-color;
-    padding: 0.5rem;
+    padding: 1rem;
     .single-post-feed {
       display: flex;
       cursor: pointer;
       border: 1px solid $primary-color;
-      // background: $primary-color;
+      background: $light-green;
       border-radius: 5px;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       padding: 0.5rem;
       &:hover {
-        // background: $white;
+        background: $background-color;
       }
       .profile-image {
         width: 50px;
@@ -147,7 +147,13 @@
     .load-more-btn {
       padding: 0.5rem 1rem;
       cursor: pointer;
-      border: 1px solid #000;
+      border: 1px solid $black;
+      color: $black;
+      transition: 0.2s;
+      &:hover {
+        background: $primary-color;
+        color: $white;
+      }
     }
   }
 }

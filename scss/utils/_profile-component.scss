@@ -25,36 +25,63 @@
     }
     .follow-statistics-contianer {
       display: flex;
-      justify-content: space-between;
-      width: 50%;
-      max-width: 400px;
-
-      button {
+      // justify-content: space-between;
+      flex-direction: column;
+      align-items: flex-start;
+      // margin-top: 10rem;
+      translate: 0 1rem;
+      @media (min-width: $mobile-m) {
+        translate: 0 -1rem;
+        flex-direction: row;
+      }
+      // width: 50%;
+      // max-width: 400px;
+      .stat-btn {
         background: transparent;
         border: none;
-        color: white;
+        color: $white;
+        margin-right: 0.7rem;
+        font-size: 1rem;
+        font-family: 'Inter Tight', sans-serif;
+        // font-family: 'Domine', serif;
         strong {
           font-size: 1rem;
-          margin-right: 0.5rem;
+          margin-right: 0.2rem;
+        }
+      }
+      .post-count {
+        transition: 0.3s;
+        &:hover {
+          color: $black;
         }
       }
     }
   }
 
   .name-and-edit-profile {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     .username {
+      margin-left: 0.5rem;
+      font-size: 2rem;
+      letter-spacing: 2px;
     }
     .edit-profile-btn {
       padding: 0.25rem;
       margin-bottom: 1rem;
-      background: $third-color;
+      background: $banner-background;
       border: none;
       padding: 0.5rem;
-      color: $black;
+      color: $white;
       border-radius: 5px;
+      border: 2px solid transparent;
+      transition: 0.2s;
+      &:hover {
+        border: 2px solid $third-color;
+
+        color: $white;
+      }
     }
   }
 

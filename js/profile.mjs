@@ -110,18 +110,18 @@ export async function displayProfileInfo(
             />
             
                     <div class="follow-statistics-contianer">
-                              <button class="post-count" data-username="${name}">
+                              <button class="post-count stat-btn" data-username="${name}">
 
 
                               <strong>${_count.posts}</strong>Posts
     
     </button>
-                      <button class="following"><strong>${
+                      <div class="following stat-btn"><strong>${
                         _count.following
-                      }</strong>Following</button>
-                      <button class="followers"><strong>${
+                      }</strong>Following</div>
+                      <div class="followers stat-btn"><strong>${
                         _count.followers
-                      }</strong>Followers</button>
+                      }</strong>Followers</div>
                       ${
                         name !== globalSStorage.name
                           ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
