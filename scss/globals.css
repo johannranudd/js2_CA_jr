@@ -442,9 +442,10 @@
   border: 2px solid white;
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
-  width: 50%;
   display: flex;
   justify-content: space-between;
+  width: 50%;
+  max-width: 400px;
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer button {
   background: transparent;

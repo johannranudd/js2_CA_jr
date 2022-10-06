@@ -24,9 +24,11 @@
       border: 2px solid white;
     }
     .follow-statistics-contianer {
-      width: 50%;
       display: flex;
       justify-content: space-between;
+      width: 50%;
+      max-width: 400px;
+
       button {
         background: transparent;
         border: none;
