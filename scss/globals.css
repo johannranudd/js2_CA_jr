@@ -600,15 +600,15 @@
   flex-direction: column;
   padding: 2rem;
   background: lightblue;
+  z-index: 3;
+  width: 90%;
+  max-width: 400px;
 }
-.show-edit-profile-modal .custom-file-upload {
-  cursor: pointer;
+.show-edit-profile-modal label {
+  margin-bottom: 0.5rem;
 }
-.show-edit-profile-modal .custom-file-upload input[type=file] {
-  display: none;
-}
-.show-edit-profile-modal .custom-file-upload .fa-image {
-  font-size: 1.5rem;
+.show-edit-profile-modal input {
+  margin-bottom: 1rem;
 }
 * {
   padding: 0;

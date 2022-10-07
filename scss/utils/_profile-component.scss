@@ -111,18 +111,27 @@
   flex-direction: column;
   padding: 2rem;
   background: lightblue;
+  z-index: 3;
+  width: 90%;
+  max-width: 400px;
+  // &::after {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   content: 'gergsrfgrfe';
+  //   height: 100vh;
+  //   width: 100vw;
+  //   background: black;
+  // }
   label {
+    margin-bottom: 0.5rem;
   }
-  .custom-file-upload {
-    cursor: pointer;
-    input[type='file'] {
-      display: none;
-    }
-    .fa-image {
-      font-size: 1.5rem;
-    }
+  input {
+    margin-bottom: 1rem;
   }
   .uploaded-banner {
+  }
+  .uploaded-avatar {
   }
 }
 
