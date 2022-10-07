@@ -3,10 +3,11 @@
 .home-component {
   position: fixed;
   width: 100%;
-  background: $white;
+  background: $background-color;
   // height: 2.3rem;
   padding: 0 1rem;
-  border-bottom: 2px solid $black;
+  border-bottom: 1px solid $primary-color;
+  box-shadow: $box-shadow-3;
   z-index: 1;
   display: flex;
   justify-content: space-between;
@@ -39,6 +40,7 @@
       padding: 0.6rem 0.2rem;
       font-size: 1rem;
       width: 100%;
+      border: none;
       &:focus {
         outline: none;
       }
@@ -73,6 +75,7 @@
       border-radius: 50%;
       margin-right: 20px;
       border: 2px solid $primary-color;
+      box-shadow: $box-shadow-2;
       @media (min-width: $mobile-500) {
         margin-right: 30px;
       }
@@ -151,6 +154,7 @@
           background: $primary-color;
           color: $white;
           transition: 0.2s;
+          box-shadow: $box-shadow-1;
           &:hover {
             background: $white;
             color: $primary-color;

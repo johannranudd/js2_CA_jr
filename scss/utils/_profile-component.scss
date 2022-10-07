@@ -22,6 +22,7 @@
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid white;
+      box-shadow: $box-shadow-2;
     }
     .follow-statistics-contianer {
       display: flex;
@@ -76,6 +77,7 @@
       color: $white;
       border-radius: 5px;
       border: 2px solid transparent;
+      font-family: 'Inter Tight', sans-serif;
       transition: 0.2s;
       &:hover {
         border: 2px solid $third-color;

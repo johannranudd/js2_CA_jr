@@ -149,6 +149,12 @@ if (globalSStorage) {
     keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
   });
 
+  submitPostBtn.addEventListener('click', () => {
+    setTimeout(() => {
+      isEditingPost = false;
+    }, 1000);
+  });
+
   contactBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
@@ -322,13 +328,13 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
             }" onerror="this.style.display='none'" draggable="true"/>`
           }
           </div>
-          <div class="edit-delete-btn-container">
-          ${
-            sStorage.name === author.name
-              ? '<button class="delete-post-btn" type="button"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>'
-              : ''
-          }
-      </div>
+          <div class="react-comment-container">
+                            ${
+                              sStorage.name === author.name
+                                ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
+                                : ''
+                            }
+                          </div>
       </div>
 
       
@@ -433,14 +439,14 @@ export async function displaySinglePost(postID, list) {
                                 }" onerror="this.style.display='none'" draggable="true" />`
                               }
                           </div>
-                          <div class="edit-delete-btn-container">
+                          
+                          <div class="react-comment-container">
                             ${
                               sStorage.name === author.name
-                                ? '<button class="delete-post-btn" type="button"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button"><i class="fa-regular fa-pen-to-square"></i></button>'
+                                ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
                           </div>
-                          <div class="react-comment-container"></div>
                 <div class="comment-component">
                     <div class="profile-img-text-input">
                         <img
@@ -466,23 +472,23 @@ export async function displaySinglePost(postID, list) {
               </li>`;
 
     list.innerHTML = singleListItem;
-
+    // <div class="edit-delete-btn-container"></div>
     const listOfComments = document.querySelector('.list-of-comments');
     const reactOrCommentComponent = document.querySelector(
       '.react-comment-container'
     );
 
     reactOrCommentComponent.innerHTML += `
-              <button class="react-btn">
+              <button class="react-btn" data-hoverMessage="React">
               <p>${_count.reactions}</p>
               <span>
-                <i class="fa-solid fa-heart"></i>
+                <i class="fa-regular fa-thumbs-up"></i>
               </span>
               </button>
-              <button class="comment-btn">
+              <button class="comment-btn" data-hoverMessage="Comment">
                 <p>${_count.comments}</p>
               <span>
-                <i class="fa-solid fa-comment"></i>
+                <i class="fa-regular fa-comment"></i>
               </span>
               </button>
               `;

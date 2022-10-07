@@ -22,8 +22,12 @@
     background: $black;
     border-radius: 100px;
   }
+  h4 {
+    text-align: center;
+    padding: 1rem;
+  }
   .list-of-contacts {
-    padding: 1rem 0 4rem 0;
+    padding-bottom: 4rem;
     // h4 {
     //   text-align: center;
     //   margin-bottom: 1rem;
@@ -32,15 +36,16 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-
       img {
         width: 50px;
         height: 50px;
         object-fit: cover;
         border-radius: 50%;
         border: 2px solid $primary-color;
+        box-shadow: $box-shadow-3;
       }
       p {
+        font-family: 'Inter Tight', sans-serif;
         margin-left: 1rem;
       }
     }
@@ -48,8 +53,5 @@
 }
 
 .show-contacts {
-  // width: 15rem;
-  // position: fixed;
-  // right: 2.5%;
   transition: 0.3s;
 }

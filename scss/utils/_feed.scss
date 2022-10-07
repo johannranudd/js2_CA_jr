@@ -13,6 +13,7 @@
       border-radius: 5px;
       margin-bottom: 1rem;
       padding: 0.5rem;
+      box-shadow: $box-shadow-1;
       &:hover {
         background: $background-color;
       }
@@ -22,6 +23,7 @@
         object-fit: cover;
         border-radius: 50%;
         margin-right: 0.5rem;
+        box-shadow: $box-shadow-3;
       }
       .title-body-image {
         @media (min-width: $mobile-600) {
@@ -51,93 +53,54 @@
       }
 
       // POST
-      .edit-delete-btn-container {
-        margin-bottom: 0.5rem;
+
+      // react
+      .react-comment-container {
+        display: flex;
+        justify-content: space-around;
         button {
+          position: relative;
           border: none;
           background: transparent;
           font-size: 1rem;
-          position: relative;
           &:hover {
             opacity: 0.8;
+          }
+          &::before {
+            content: attr(data-hoverMessage);
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 1rem;
+            background: $black;
+            color: $white;
+            padding: 0.2rem;
+            visibility: hidden;
+          }
+          &:hover:before {
+            visibility: visible;
+          }
+          p {
+            margin-right: 0.3rem;
           }
         }
         .delete-post-btn {
           margin-right: 2rem;
           color: $danger;
-          &::before {
-            content: 'Delete';
-            position: absolute;
-            top: -25px;
-            left: 20px;
-            font-size: 1rem;
-            background: $black;
-            color: $white;
-            padding: 0.2rem;
-            visibility: hidden;
-          }
-          &:hover:before {
-            visibility: visible;
-          }
         }
         .edit-post-btn {
           color: $success;
-          &::before {
-            content: 'Edit';
-            position: absolute;
-            top: -25px;
-            left: 20px;
-            font-size: 1rem;
-            background: $black;
-            color: $white;
-            padding: 0.2rem;
-            visibility: hidden;
-          }
-          &:hover:before {
-            visibility: visible;
-          }
-        }
-      }
-      // react
-      .react-comment-container {
-        button {
-          position: relative;
-          border: none;
-          background: transparent;
-          font-size: 1rem;
         }
         .react-btn {
-          margin-right: 2rem;
-          &::before {
-            content: 'React';
-            position: absolute;
-            top: -25px;
-            left: 20px;
-            font-size: 1rem;
-            background: $black;
-            color: $white;
-            padding: 0.2rem;
-            visibility: hidden;
-          }
-          &:hover:before {
-            visibility: visible;
-          }
+          display: flex;
+          align-items: center;
+          margin-right: 1.6rem;
+          color: $blue-color;
         }
         .comment-btn {
-          &::before {
-            content: 'Comment';
-            position: absolute;
-            top: -25px;
-            left: 20px;
-            font-size: 1rem;
-            background: $black;
-            color: $white;
-            padding: 0.2rem;
-            visibility: hidden;
-          }
-          &:hover:before {
-            visibility: visible;
-          }
+          display: flex;
+          align-items: center;
+          color: $orange;
         }
       }
 

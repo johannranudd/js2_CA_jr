@@ -92,6 +92,7 @@
   border-radius: 5px;
   margin-bottom: 1rem;
   padding: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .feed .all-posts .single-post-feed:hover {
   background: #f4f4f4;
@@ -103,6 +104,7 @@
      object-fit: cover;
   border-radius: 50%;
   margin-right: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 @media (min-width: 600px) {
   .feed .all-posts .single-post-feed .title-body-image {
@@ -132,52 +134,9 @@
 .feed .all-posts .single-post-feed .post-image-container .post-image {
   width: 100%;
 }
-.feed .all-posts .single-post-feed .edit-delete-btn-container {
-  margin-bottom: 0.5rem;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container button {
-  border: none;
-  background: transparent;
-  font-size: 1rem;
-  position: relative;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container button:hover {
-  opacity: 0.8;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn {
-  margin-right: 2rem;
-  color: #eb6262;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn::before {
-  content: "Delete";
-  position: absolute;
-  top: -25px;
-  left: 20px;
-  font-size: 1rem;
-  background: #000000;
-  color: #ffffff;
-  padding: 0.2rem;
-  visibility: hidden;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn:hover:before {
-  visibility: visible;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn {
-  color: #1b6d09;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn::before {
-  content: "Edit";
-  position: absolute;
-  top: -25px;
-  left: 20px;
-  font-size: 1rem;
-  background: #000000;
-  color: #ffffff;
-  padding: 0.2rem;
-  visibility: hidden;
-}
-.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn:hover:before {
-  visibility: visible;
+.feed .all-posts .single-post-feed .react-comment-container {
+  display: flex;
+  justify-content: space-around;
 }
 .feed .all-posts .single-post-feed .react-comment-container button {
   position: relative;
@@ -185,36 +144,43 @@
   background: transparent;
   font-size: 1rem;
 }
-.feed .all-posts .single-post-feed .react-comment-container .react-btn {
+.feed .all-posts .single-post-feed .react-comment-container button:hover {
+  opacity: 0.8;
+}
+.feed .all-posts .single-post-feed .react-comment-container button::before {
+  content: attr(data-hoverMessage);
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  font-size: 1rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.2rem;
+  visibility: hidden;
+}
+.feed .all-posts .single-post-feed .react-comment-container button:hover:before {
+  visibility: visible;
+}
+.feed .all-posts .single-post-feed .react-comment-container button p {
+  margin-right: 0.3rem;
+}
+.feed .all-posts .single-post-feed .react-comment-container .delete-post-btn {
   margin-right: 2rem;
+  color: #eb6262;
 }
-.feed .all-posts .single-post-feed .react-comment-container .react-btn::before {
-  content: "React";
-  position: absolute;
-  top: -25px;
-  left: 20px;
-  font-size: 1rem;
-  background: #000000;
-  color: #ffffff;
-  padding: 0.2rem;
-  visibility: hidden;
+.feed .all-posts .single-post-feed .react-comment-container .edit-post-btn {
+  color: #1b6d09;
 }
-.feed .all-posts .single-post-feed .react-comment-container .react-btn:hover:before {
-  visibility: visible;
+.feed .all-posts .single-post-feed .react-comment-container .react-btn {
+  display: flex;
+  align-items: center;
+  margin-right: 1.6rem;
+  color: #4973b1;
 }
-.feed .all-posts .single-post-feed .react-comment-container .comment-btn::before {
-  content: "Comment";
-  position: absolute;
-  top: -25px;
-  left: 20px;
-  font-size: 1rem;
-  background: #000000;
-  color: #ffffff;
-  padding: 0.2rem;
-  visibility: hidden;
-}
-.feed .all-posts .single-post-feed .react-comment-container .comment-btn:hover:before {
-  visibility: visible;
+.feed .all-posts .single-post-feed .react-comment-container .comment-btn {
+  display: flex;
+  align-items: center;
+  color: #ad0fe6;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
   display: flex;
@@ -318,8 +284,12 @@
   background: #000000;
   border-radius: 100px;
 }
+.contacts h4 {
+  text-align: center;
+  padding: 1rem;
+}
 .contacts .list-of-contacts {
-  padding: 1rem 0 4rem 0;
+  padding-bottom: 4rem;
 }
 .contacts .list-of-contacts li {
   display: flex;
@@ -333,8 +303,10 @@
      object-fit: cover;
   border-radius: 50%;
   border: 2px solid #557571;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .contacts .list-of-contacts li p {
+  font-family: "Inter Tight", sans-serif;
   margin-left: 1rem;
 }
 
@@ -381,9 +353,10 @@
 .home-component {
   position: fixed;
   width: 100%;
-  background: #ffffff;
+  background: #f4f4f4;
   padding: 0 1rem;
-  border-bottom: 2px solid #000000;
+  border-bottom: 1px solid #557571;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 1;
   display: flex;
   justify-content: space-between;
@@ -417,6 +390,7 @@
   padding: 0.6rem 0.2rem;
   font-size: 1rem;
   width: 100%;
+  border: none;
 }
 .home-component .search-form-posts .search-posts-input:focus {
   outline: none;
@@ -449,6 +423,7 @@
   border-radius: 50%;
   margin-right: 20px;
   border: 2px solid #557571;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 @media (min-width: 500px) {
   .post-component .profile-img-text-input .profile-image {
@@ -525,6 +500,7 @@
   background: #557571;
   color: #ffffff;
   transition: 0.2s;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;
@@ -552,6 +528,7 @@
      object-fit: cover;
   border-radius: 50%;
   border: 2px solid white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
   display: flex;
@@ -602,6 +579,7 @@
   color: #ffffff;
   border-radius: 5px;
   border: 2px solid transparent;
+  font-family: "Inter Tight", sans-serif;
   transition: 0.2s;
 }
 .profile-component .name-and-edit-profile .edit-profile-btn:hover {
