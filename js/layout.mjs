@@ -171,14 +171,14 @@ if (globalSStorage) {
     e.preventDefault();
     const sStorage = getSessionStorage();
     const searchValue = searchPostsInput.value;
-    const searchValueLowerCase = searchPostsInput.value.toLowerCase();
+    // const searchValueLowerCase = searchPostsInput.value.toLowerCase();
     if (searchValue) {
       const data = await getPosts(sStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
         if (
-          item.title.includes(searchValue) ||
-          item.body.includes(searchValue) ||
-          item.author.name.includes(searchValue)
+          item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+          item.body.toLowerCase().includes(searchValue.toLowerCase()) ||
+          item.author.name.toLowerCase().includes(searchValue.toLowerCase())
         ) {
           return item;
         }
