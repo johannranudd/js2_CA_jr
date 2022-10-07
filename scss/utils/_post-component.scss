@@ -46,7 +46,14 @@
     .search-btn {
       background: $primary-color;
       border: none;
-      padding: 0.8rem 0.5rem;
+      padding: 0.7rem;
+      border: 2px solid transparent;
+      color: $white;
+      &:hover {
+        background: $white;
+        border: 2px solid $primary-color;
+        color: $primary-color;
+      }
     }
   }
 }
@@ -146,7 +153,7 @@
           transition: 0.2s;
           &:hover {
             background: $white;
-            color: $black;
+            color: $primary-color;
           }
         }
       }

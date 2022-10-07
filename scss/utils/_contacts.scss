@@ -12,6 +12,16 @@
   transition: 0.3s;
   padding-bottom: 10rem;
   z-index: 2;
+  &::-webkit-scrollbar {
+    width: 3px;
+    background: $light-grey;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    height: 10px;
+    background: $black;
+    border-radius: 100px;
+  }
   .list-of-contacts {
     padding: 1rem 0 4rem 0;
     // h4 {

@@ -105,7 +105,14 @@ if (globalSStorage) {
     homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
     displayContacts();
 
-    // getProfileImage();
+    setTimeout(() => {
+      adjustForSidebar(
+        sidebar,
+        feedAndContactsContaier,
+        contacts,
+        mainContainer
+      );
+    }, 2000);
   });
 
   window.addEventListener('resize', () => {
@@ -158,6 +165,7 @@ if (globalSStorage) {
     e.preventDefault();
     const sStorage = getSessionStorage();
     const searchValue = searchPostsInput.value;
+    const searchValueLowerCase = searchPostsInput.value.toLowerCase();
     if (searchValue) {
       const data = await getPosts(sStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
@@ -336,7 +344,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         deletePostBtns.forEach((btn) => {
           btn.addEventListener('click', (e) => {
             const id = Number(
-              e.target.parentNode.parentNode.parentNode.dataset.id
+              e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
             );
             deletePost(id);
           });
@@ -345,7 +353,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         editPostBtns.forEach((btn) => {
           btn.addEventListener('click', (e) => {
             const id = Number(
-              e.target.parentNode.parentNode.parentNode.dataset.id
+              e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
             );
             editID = id;
             isEditingPost = true;
@@ -532,14 +540,14 @@ export async function displaySinglePost(postID, list) {
       if (deletePostBtn && editPostBtn) {
         deletePostBtn.addEventListener('click', (e) => {
           const id = Number(
-            e.target.parentNode.parentNode.parentNode.dataset.id
+            e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
           );
           deletePost(id);
         });
 
         editPostBtn.addEventListener('click', (e) => {
           const id = Number(
-            e.target.parentNode.parentNode.parentNode.dataset.id
+            e.target.parentNode.parentNode.parentNode.parentNode.dataset.id
           );
           editID = id;
           isEditingPost = true;

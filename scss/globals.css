@@ -111,29 +111,110 @@
 }
 .feed .all-posts .single-post-feed .title-body-image .post-author {
   color: #557571;
+  margin-bottom: 0.5rem;
 }
 .feed .all-posts .single-post-feed .title-body-image .post-author:hover {
   opacity: 0.7;
+}
+.feed .all-posts .single-post-feed .title-body-image .post-title {
+  margin-bottom: 0.5rem;
 }
 .feed .all-posts .single-post-feed .title-body-image .post-body {
   word-break: break-word;
   -webkit-hyphens: auto;
       -ms-hyphens: auto;
           hyphens: auto;
+  margin-bottom: 0.5rem;
+}
+.feed .all-posts .single-post-feed .post-image-container {
+  margin-bottom: 0.5rem;
 }
 .feed .all-posts .single-post-feed .post-image-container .post-image {
   width: 100%;
 }
+.feed .all-posts .single-post-feed .edit-delete-btn-container {
+  margin-bottom: 0.5rem;
+}
 .feed .all-posts .single-post-feed .edit-delete-btn-container button {
   border: none;
   background: transparent;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  position: relative;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container button:hover {
+  opacity: 0.8;
 }
 .feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn {
-  color: #4973b1;
+  margin-right: 2rem;
+  color: #eb6262;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn::before {
+  content: "Delete";
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  font-size: 1rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.2rem;
+  visibility: hidden;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .delete-post-btn:hover:before {
+  visibility: visible;
 }
 .feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn {
-  color: #4973b1;
+  color: #1b6d09;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn::before {
+  content: "Edit";
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  font-size: 1rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.2rem;
+  visibility: hidden;
+}
+.feed .all-posts .single-post-feed .edit-delete-btn-container .edit-post-btn:hover:before {
+  visibility: visible;
+}
+.feed .all-posts .single-post-feed .react-comment-container button {
+  position: relative;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+}
+.feed .all-posts .single-post-feed .react-comment-container .react-btn {
+  margin-right: 2rem;
+}
+.feed .all-posts .single-post-feed .react-comment-container .react-btn::before {
+  content: "React";
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  font-size: 1rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.2rem;
+  visibility: hidden;
+}
+.feed .all-posts .single-post-feed .react-comment-container .react-btn:hover:before {
+  visibility: visible;
+}
+.feed .all-posts .single-post-feed .react-comment-container .comment-btn::before {
+  content: "Comment";
+  position: absolute;
+  top: -25px;
+  left: 20px;
+  font-size: 1rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.2rem;
+  visibility: hidden;
+}
+.feed .all-posts .single-post-feed .react-comment-container .comment-btn:hover:before {
+  visibility: visible;
 }
 .feed .all-posts .single-post-feed .comment-component .profile-img-text-input {
   display: flex;
@@ -226,6 +307,16 @@
   transition: 0.3s;
   padding-bottom: 10rem;
   z-index: 2;
+}
+.contacts::-webkit-scrollbar {
+  width: 3px;
+  background: rgb(195, 195, 195);
+}
+.contacts::-webkit-scrollbar-thumb {
+  width: 10px;
+  height: 10px;
+  background: #000000;
+  border-radius: 100px;
 }
 .contacts .list-of-contacts {
   padding: 1rem 0 4rem 0;
@@ -333,7 +424,14 @@
 .home-component .search-form-posts .search-btn {
   background: #557571;
   border: none;
-  padding: 0.8rem 0.5rem;
+  padding: 0.7rem;
+  border: 2px solid transparent;
+  color: #ffffff;
+}
+.home-component .search-form-posts .search-btn:hover {
+  background: #ffffff;
+  border: 2px solid #557571;
+  color: #557571;
 }
 
 .post-component {
@@ -430,7 +528,7 @@
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn:hover {
   background: #ffffff;
-  color: #000000;
+  color: #557571;
 }
 
 .profile-component {
