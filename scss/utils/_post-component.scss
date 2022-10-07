@@ -68,6 +68,8 @@
   .profile-img-text-input {
     display: flex;
     // margin-top: 2.3rem;
+    // display: grid;
+    // grid-template-columns: 24.5% 75.5%;
     .profile-image {
       width: 100px;
       height: 100px;
@@ -81,7 +83,7 @@
       }
     }
     .post-form {
-      width: 100%;
+      flex: 1 1 0;
       .post-title-input {
         width: 100%;
         max-width: 200px;

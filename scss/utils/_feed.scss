@@ -85,7 +85,6 @@
           }
         }
         .delete-post-btn {
-          margin-right: 2rem;
           color: $danger;
         }
         .edit-post-btn {
@@ -94,7 +93,6 @@
         .react-btn {
           display: flex;
           align-items: center;
-          margin-right: 1.6rem;
           color: $blue-color;
         }
         .comment-btn {
@@ -203,31 +201,3 @@
 //
 //
 //
-//
-// .react-comment-container {
-//         display: flex;
-//         align-items: center;
-//         justify-content: space-around;
-//         button {
-//           border: none;
-//           background: transparent;
-//           cursor: pointer;
-//         }
-//         // react-btn
-//         // comment-btn
-//       }
-//       .comment-form {
-//         display: flex;
-//         justify-content: space-between;
-//         // align-items: center;
-//         .profile-image {
-//           width: 50px;
-//           height: 50px;
-//           object-fit: cover;
-//         }
-//         .comment-input {
-//           width: 100%;
-//         }
-//         .submit-comment-btn {
-//         }
-//       }

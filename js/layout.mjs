@@ -394,8 +394,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       const singlePostFeed = document.querySelectorAll('.single-post-feed');
       singlePostFeed.forEach((post) => {
         post.addEventListener('click', async (e) => {
-          const postID = Number(e.currentTarget.dataset.id);
-          displaySinglePost(postID, list);
+          if (e.target.parentNode.className.includes('delete-post-btn')) {
+            return;
+          } else if (e.target.parentNode.className.includes('edit-post-btn')) {
+            return;
+          } else {
+            const postID = Number(e.currentTarget.dataset.id);
+            displaySinglePost(postID, list);
+          }
         });
       });
     });

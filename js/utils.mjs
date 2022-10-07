@@ -278,8 +278,6 @@ export async function post(req) {
 // post();
 export function editPost(id, req) {
   const sStorage = getSessionStorage();
-  console.log(id);
-  console.log(req);
   fetch(`${baseURL}/posts/${id}`, {
     method: 'PUT',
     headers: {
