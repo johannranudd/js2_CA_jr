@@ -75,8 +75,6 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
 
   editProfileForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const newBannerInput = document.querySelector('#new-banner');
-    const newAvatarInput = document.querySelector('#new-avatar');
     const bannerImage = uploadedBanner.querySelector('img');
     const avatarImage = uploadedAvatar.querySelector('img');
     const submitObject = {};
@@ -87,8 +85,8 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
       submitObject.avatar = avatarImage.src;
     }
     updateProfileInfo(globalSStorage.name, submitObject);
-    // newBannerInput.value = '';
-    // newAvatarInput.value = '';
+    uploadedBanner.innerHTML = '';
+    uploadedAvatar.innerHTML = '';
     editProfileForm.reset();
     editProfileForm.classList.remove('show-edit-profile-modal');
     modalBackdrop.classList.remove('show-modal-backdrop');
