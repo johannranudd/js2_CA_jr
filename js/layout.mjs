@@ -505,7 +505,8 @@ export async function displaySinglePost(postID, list) {
     const commentBtn = document.querySelector('.comment-btn');
     const reactBtn = document.querySelector('.react-btn');
     if (listOfComments) {
-      const reversedComments = singleData.comments.reverse();
+      const sliceComments = singleData.comments.slice();
+      const reversedComments = sliceComments.reverse();
       reversedComments.map(async (comment) => {
         listOfComments.innerHTML = '';
         const { body, owner } = comment;
