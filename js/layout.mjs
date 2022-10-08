@@ -185,9 +185,9 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
-        // loadMoreBtn.remove();
+        loadMoreBtn.remove();
         // console.log(filteredData);
-        // currentOffset = 0;
+        currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
         // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
@@ -234,7 +234,7 @@ if (globalSStorage) {
   // load more
   loadMoreBtn.addEventListener('click', async () => {
     const sStorage = getSessionStorage();
-    const data = await getPosts(sStorage.token, '', '');
+    const data = await getPosts(sStorage.token, '', 99999);
     if (currentOffset < data.length) {
       currentOffset += 20;
       if (isDescending) {
@@ -548,7 +548,7 @@ export async function displaySinglePost(postID, list) {
         textareaComment.style.height = `${e.target.scrollHeight}px`;
       });
 
-      loadMoreBtn.remove();
+      // loadMoreBtn.remove();
       const deletePostBtn = document.querySelector('.delete-post-btn');
       const editPostBtn = document.querySelector('.edit-post-btn');
       const postAuthor = document.querySelector('.post-author');
