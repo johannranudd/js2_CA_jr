@@ -216,7 +216,7 @@ if (globalSStorage) {
     isDescending = false;
     sidebar.classList.remove('show-sidebar');
     const onPageText = homeComponentHeading.textContent.split('/')[0];
-    homeComponentHeading.innerHTML = `${onPageText}<p> / Oldest posts</p>`;
+    homeComponentHeading.innerHTML = `${onPageText}<span> / Oldest posts</span>`;
   });
   // sort by descending
   sortByNewestBtn.addEventListener('click', async () => {
@@ -230,7 +230,7 @@ if (globalSStorage) {
     isDescending = true;
     sidebar.classList.remove('show-sidebar');
     const onPageText = homeComponentHeading.textContent.split('/')[0];
-    homeComponentHeading.innerHTML = `${onPageText}<p> / Newest posts</p>`;
+    homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
   });
 
   //
