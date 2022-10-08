@@ -178,7 +178,11 @@ if (globalSStorage) {
         if (
           item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
           item.body.toLowerCase().includes(searchValue.toLowerCase()) ||
-          item.author.name.toLowerCase().includes(searchValue.toLowerCase())
+          item.author.name
+            .toLowerCase()
+            .includes(
+              searchValue.toLowerCase() || item.id.includes(searchValue)
+            )
         ) {
           return item;
         }
