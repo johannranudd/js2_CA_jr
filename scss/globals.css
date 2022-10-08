@@ -349,6 +349,7 @@
 }
 .mobilebar .logo {
   font-size: 1.5rem;
+  color: #f4f4f4;
 }
 .mobilebar .menu-btn {
   background: transparent;
@@ -359,11 +360,12 @@
   height: 2.5px;
   width: 30px;
   margin: 5px 0;
-  background: #000000;
+  background: #f4f4f4;
 }
 .mobilebar .contacts-btn {
   font-size: 1.3rem;
   border: none;
+  color: #f4f4f4;
 }
 
 .home-component {

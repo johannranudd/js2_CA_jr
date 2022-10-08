@@ -185,9 +185,9 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
-        loadMoreBtn.remove();
+        // loadMoreBtn.remove();
         // console.log(filteredData);
-        currentOffset = 0;
+        // currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
         // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
@@ -313,10 +313,9 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       
 
       <div class="title-body-image">
-          <p class="post-author">
-          <strong>
+          <p>${id}</p>
+          <p class="post-author" data-name="${author && author.name}">
           ${author && author.name}
-          </strong>
           </p>
           <p class="post-title">${title && title}</p>
           <p class="post-body">${body && body}</p>
@@ -369,8 +368,9 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         });
       }
       postAuthor.forEach((author) => {
+        // !RETURN
         author.addEventListener('click', (e) => {
-          const profileName = e.target.textContent;
+          const profileName = e.target.dataset.name;
           setSessionStorage(
             true,
             globalSStorage.token,
@@ -433,7 +433,11 @@ export async function displaySinglePost(postID, list) {
                       onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                     />
                 <div class="title-body-image">
-                          <p class="post-author">${author && author.name}</p>
+                         <p class="post-author" data-name="${
+                           author && author.name
+                         }">
+                            ${author && author.name}
+                          </p>
                           <p class="post-title">${title && title}</p>
                           <p class="post-body">${body && body}</p>
 
@@ -568,7 +572,7 @@ export async function displaySinglePost(postID, list) {
         });
       }
       postAuthor.addEventListener('click', (e) => {
-        const profileName = e.target.textContent;
+        const profileName = e.target.dataset.name;
         setSessionStorage(
           true,
           globalSStorage.token,

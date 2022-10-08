@@ -9,12 +9,14 @@
   align-items: center;
   padding: 1rem;
   background: $primary-color;
+
   z-index: 2;
   @media (min-width: $mobile-500) {
     display: none;
   }
   .logo {
     font-size: 1.5rem;
+    color: $background-color;
   }
   .menu-btn {
     background: transparent;
@@ -24,12 +26,13 @@
       height: 2.5px;
       width: 30px;
       margin: 5px 0;
-      background: $black;
+      background: $background-color;
     }
     // line-1
   }
   .contacts-btn {
     font-size: 1.3rem;
     border: none;
+    color: $background-color;
   }
 }
