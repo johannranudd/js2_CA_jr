@@ -8,6 +8,10 @@ import {
 } from './layout.mjs';
 import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
+/**
+ * gets local storage
+ * @returns {object} current state of localStorage
+ */
 export function getLocalStorage() {
   const locStorage = localStorage.getItem('isLoggedIn')
     ? JSON.parse(localStorage.getItem('isLoggedIn'))
@@ -15,6 +19,16 @@ export function getLocalStorage() {
   return locStorage;
 }
 
+/**
+ * sets the local stoarage to an object with user information,
+ * access token, and other helps view other profiles in the profile.html page.
+ * @param {boolean} isLoggedIn boolean, check if loged in or not
+ * @param {string} token string, JWT access token
+ * @param {string} name string, users name
+ * @param {string} email string, users email
+ * @param {string} avatar string, users avatar
+ * @param {string} profileDisplayed string, profile displayed on profile.html page
+ */
 export function setLocalStorage(
   isLoggedIn,
   token,
@@ -36,6 +50,16 @@ export function setLocalStorage(
   );
 }
 
+/**
+ * used to create a search parameter to fetch limited amounts of data in order to handle loading process.
+ * @param {number} limit number
+ * @returns {string} string
+ * @example
+ * ```js
+ * setFetchLimitURL(20)
+ * // expect return: "&limit=20"
+ * ```
+ */
 export function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
