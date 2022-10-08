@@ -125,7 +125,7 @@ if (globalLocalStorage) {
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      sessionStorage.clear();
+      localStorage.clear();
       checkIfLoggedIn();
     });
   }
