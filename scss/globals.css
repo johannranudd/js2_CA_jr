@@ -2,6 +2,7 @@
 .main-container .feed-and-contacts-container {
   display: grid;
 }
+
 .sidebar {
   position: fixed;
   height: 100vh;
@@ -552,12 +553,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  translate: 0 1rem;
+  translate: 0.5rem 2rem;
 }
-@media (min-width: 375px) {
+@media (min-width: 425px) {
   .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer {
-    translate: 0 -1rem;
+    translate: 0.5rem -0.6rem;
     flex-direction: row;
+    align-items: center;
   }
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .stat-btn {
@@ -565,7 +567,7 @@
   border: none;
   color: #ffffff;
   margin-right: 0.7rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-family: "Inter Tight", sans-serif;
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .stat-btn strong {
@@ -576,6 +578,18 @@
   transition: 0.3s;
 }
 .profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .post-count:hover {
+  color: #000000;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .follow-btn {
+  padding: 0.2rem;
+  border: 2px solid #f7d1ba;
+  border-radius: 5px;
+  background: #d49a89;
+  color: #ffffff;
+  transition: 0.2s;
+}
+.profile-component .profile-image-edit-follow-btns .follow-statistics-contianer .follow-btn:hover {
+  border: 2px solid transparent;
   color: #000000;
 }
 .profile-component .name-and-edit-profile {

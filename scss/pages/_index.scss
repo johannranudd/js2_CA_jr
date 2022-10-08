@@ -1,20 +1,6 @@
 @import '../utils/variables';
 .main-container {
-  // display: grid;
-  // grid-template-columns: repeat(3, 1fr);
   .feed-and-contacts-container {
     display: grid;
-    // border-left: 1px solid $grey;
-    // border-right: 1px solid $grey;
-
-    // grid-template-columns: 100% 0%;
-    @media (min-width: $laptop-s) {
-      // display: flex;
-      // flex-direction: column;
-      // grid-template-columns: 70% 30%;
-    }
   }
-  // .feed-and-contacts-container-profile-page {
-  //   background: red;
-  // }
 }

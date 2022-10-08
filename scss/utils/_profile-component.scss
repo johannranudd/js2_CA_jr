@@ -26,23 +26,21 @@
     }
     .follow-statistics-contianer {
       display: flex;
-      // justify-content: space-between;
       flex-direction: column;
       align-items: flex-start;
-      // margin-top: 10rem;
-      translate: 0 1rem;
-      @media (min-width: $mobile-m) {
-        translate: 0 -1rem;
+      translate: 0.5rem 2rem;
+      @media (min-width: $mobile-l) {
+        // translate: 0 -1rem;
+        translate: 0.5rem -0.6rem;
         flex-direction: row;
+        align-items: center;
       }
-      // width: 50%;
-      // max-width: 400px;
       .stat-btn {
         background: transparent;
         border: none;
         color: $white;
         margin-right: 0.7rem;
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-family: 'Inter Tight', sans-serif;
         // font-family: 'Domine', serif;
         strong {
@@ -53,6 +51,18 @@
       .post-count {
         transition: 0.3s;
         &:hover {
+          color: $black;
+        }
+      }
+      .follow-btn {
+        padding: 0.2rem;
+        border: 2px solid $third-color;
+        border-radius: 5px;
+        background: $banner-background;
+        color: $white;
+        transition: 0.2s;
+        &:hover {
+          border: 2px solid transparent;
           color: $black;
         }
       }
