@@ -317,7 +317,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
       
 
       <div class="title-body-image">
-          <p>${id}</p>
           <p class="post-author" data-name="${author && author.name}">
           ${author && author.name}
           </p>
