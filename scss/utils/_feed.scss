@@ -208,6 +208,7 @@
     align-items: center;
     margin-bottom: 7rem;
     .load-more-btn {
+      display: block;
       padding: 0.5rem 1rem;
       cursor: pointer;
       border: 1px solid $black;

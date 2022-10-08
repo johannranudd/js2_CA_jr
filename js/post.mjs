@@ -1,7 +1,7 @@
 import {
   post,
   getPosts,
-  getSessionStorage,
+  getLocalStorage,
   editPost,
   uploadImageToContainer,
 } from './utils.mjs';

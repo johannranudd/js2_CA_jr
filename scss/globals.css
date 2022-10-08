@@ -274,6 +274,7 @@
   margin-bottom: 7rem;
 }
 .feed .load-more-btn-container .load-more-btn {
+  display: block;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border: 1px solid #000000;
@@ -441,8 +442,8 @@
   display: flex;
 }
 .post-component .profile-img-text-input .profile-image {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 50%;
@@ -450,9 +451,11 @@
   border: 2px solid #557571;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-@media (min-width: 500px) {
+@media (min-width: 375px) {
   .post-component .profile-img-text-input .profile-image {
     margin-right: 30px;
+    width: 100px;
+    height: 100px;
   }
 }
 .post-component .profile-img-text-input .post-form {
@@ -499,23 +502,29 @@
 .post-component .profile-img-text-input .post-form .display-image-container img {
   max-width: 400px;
 }
-.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+@media (min-width: 500px) {
+  .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns {
   width: 100%;
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .upload-img-input {
-  width: 70%;
+  width: 100%;
   border: 1.5px dotted #000000;
   height: 50px;
   background: transparent;
   min-width: 50px;
+  margin-bottom: 1rem;
 }
-.post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .fa-image {
-  font-size: 1.5rem;
+@media (min-width: 500px) {
+  .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .add-items-btns .upload-img-input {
+    margin: 0;
+    width: 90%;
+  }
 }
 .post-component .profile-img-text-input .post-form .add-items-and-submit-btn-contianer .submit-post-btn {
   border: 2px solid #557571;

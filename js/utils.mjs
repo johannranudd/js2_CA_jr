@@ -4,17 +4,18 @@ import {
   displayAllPosts,
   displayContacts,
   displaySinglePost,
+  loadMoreBtn,
 } from './layout.mjs';
 import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
-export function getSessionStorage() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+export function getLocalStorage() {
+  const locStorage = localStorage.getItem('isLoggedIn')
+    ? JSON.parse(localStorage.getItem('isLoggedIn'))
     : null;
-  return sStorage;
+  return locStorage;
 }
 
-export function setSessionStorage(
+export function setLocalStorage(
   isLoggedIn,
   token,
   name,
@@ -22,7 +23,7 @@ export function setSessionStorage(
   avatar,
   profileDisplayed
 ) {
-  sessionStorage.setItem(
+  localStorage.setItem(
     'isLoggedIn',
     JSON.stringify({
       isLoggedIn: isLoggedIn,
@@ -45,7 +46,7 @@ export function setFetchLimitURL(limit) {
 }
 
 export async function commentOnPost(payload) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   const { postID, body, list } = payload;
   console.log(postID);
   try {
@@ -54,7 +55,7 @@ export async function commentOnPost(payload) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify({
         body: body, // Required
@@ -97,7 +98,7 @@ export function uploadImageToContainer(container, input) {
 }
 
 export async function getUsers(userName = '', limit = '') {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   const limitQuery = setFetchLimitURL(limit);
   const res = await fetch(
     `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
@@ -105,7 +106,7 @@ export async function getUsers(userName = '', limit = '') {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage && sStorage.token}`,
+        Authorization: `Bearer ${locStorage && locStorage.token}`,
       },
     }
   );
@@ -135,6 +136,7 @@ export async function getPosts(token, searchParams = '', limit = '') {
 // `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
 
 export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
+  loadMoreBtn.style.display = 'block';
   const limitQuery = setFetchLimitURL(limit);
   const res = await fetch(
     `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
@@ -152,15 +154,15 @@ export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
 }
 
 export function checkIfLoggedIn() {
-  // console.log('checkIfLoggedIn() sStorage::', sStorage);
-  const sStorage = getSessionStorage();
+  // console.log('checkIfLoggedIn() locStorage::', locStorage);
+  const locStorage = getLocalStorage();
   if (!window.location.href.includes('/login.html')) {
     if (window.location.href.includes('/register.html')) {
       return;
-    } else if (!sStorage || !sStorage.isLoggedIn) {
+    } else if (!locStorage || !locStorage.isLoggedIn) {
       window.location.href = '../login.html';
     } else {
-      console.log(`you are already logged in as ${sStorage.name}`);
+      console.log(`you are already logged in as ${locStorage.name}`);
     }
   }
 }
@@ -168,13 +170,13 @@ export function checkIfLoggedIn() {
 export async function updateProfileInfo(name, req) {
   console.log('name::', name);
   console.log('req::', req);
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
   }).then((res) => {
@@ -185,13 +187,13 @@ export async function updateProfileInfo(name, req) {
   });
 }
 export async function followProfile(name) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/follow`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
   }).then((res) => {
@@ -203,13 +205,13 @@ export async function followProfile(name) {
   });
 }
 export async function unfollowProfile(name) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/unfollow`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
   }).then((res) => {
@@ -222,14 +224,14 @@ export async function unfollowProfile(name) {
 
 // react
 export async function reactToPost(id, symbol, allPosts) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   try {
     const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify({
         symbol: symbol,
@@ -246,19 +248,19 @@ export async function reactToPost(id, symbol, allPosts) {
 }
 
 export async function post(req) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   try {
     const res = await fetch(`${baseURL}/posts`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify(req),
     });
     if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     }
   } catch (e) {
     console.log(e, 'error in post()');
@@ -277,18 +279,18 @@ export async function post(req) {
 }
 // post();
 export function editPost(id, req) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
   }).then((res) => {
     if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     }
   });
   // const data = await res.json();
@@ -296,16 +298,16 @@ export function editPost(id, req) {
 
 // deletePost
 export function deletePost(id) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
   }).then((res) => {
     if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     }
   });
 }

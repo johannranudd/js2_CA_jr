@@ -14,7 +14,7 @@ const sortByNewestBtn = document.querySelector('.newest');
 const searchPostsInput = document.querySelector('.search-posts-input');
 const searchFormPosts = document.querySelector('.search-form-posts');
 export const allPosts = document.querySelector('.all-posts');
-const loadMoreBtn = document.querySelector('.load-more-btn');
+export const loadMoreBtn = document.querySelector('.load-more-btn');
 const postTitleInput = document.querySelector('.post-title-input');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
@@ -26,11 +26,11 @@ import {
   adjustForSidebar,
   keepOlyOneSidebarOpen,
   getPosts,
-  getSessionStorage,
+  getLocalStorage,
   getSortedPosts,
   deletePost,
   getUsers,
-  setSessionStorage,
+  setLocalStorage,
   commentOnPost,
   reactToPost,
 } from './utils.mjs';
@@ -42,7 +42,7 @@ let limit = 20;
 export let isEditingPost = false;
 export let editID = '';
 
-const globalSStorage = getSessionStorage();
+const globalLocalStorage = getLocalStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
@@ -51,7 +51,7 @@ window.addEventListener('load', checkIfLoggedIn);
  */
 export async function displayContacts() {
   listOfContacts.innerHTML = '';
-  const user = await getUsers(globalSStorage.name, '');
+  const user = await getUsers(globalLocalStorage.name, '');
   if (user) {
     user.following.map((item) => {
       const { avatar, name } = item;
@@ -78,12 +78,12 @@ function refreshContactsAndProfile(e) {
   const profileName = e.currentTarget.dataset.username;
   contacts.classList.remove('show-contacts');
   adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-  setSessionStorage(
+  setLocalStorage(
     true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
+    globalLocalStorage.token,
+    globalLocalStorage.name,
+    globalLocalStorage.email,
+    globalLocalStorage.avatar,
     profileName
   );
   if (window.location.href.includes('profile.html')) {
@@ -93,10 +93,10 @@ function refreshContactsAndProfile(e) {
   }
 }
 
-if (globalSStorage) {
+if (globalLocalStorage) {
   window.addEventListener('DOMContentLoaded', () => {
-    const sStorage = getSessionStorage();
-    displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    const locStorage = getLocalStorage();
+    displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
@@ -132,13 +132,13 @@ if (globalSStorage) {
 
   profileLink.addEventListener('click', (e) => {
     // console.log('profile-link');
-    setSessionStorage(
+    setLocalStorage(
       true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      globalSStorage.name
+      globalLocalStorage.token,
+      globalLocalStorage.name,
+      globalLocalStorage.email,
+      globalLocalStorage.avatar,
+      globalLocalStorage.name
     );
   });
 
@@ -166,11 +166,11 @@ if (globalSStorage) {
 
   searchFormPosts.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     const searchValue = searchPostsInput.value;
     // const searchValueLowerCase = searchPostsInput.value.toLowerCase();
     if (searchValue) {
-      const data = await getPosts(sStorage.token, '', 99999);
+      const data = await getPosts(locStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
         if (
           item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -186,16 +186,17 @@ if (globalSStorage) {
       });
       if (filteredData.length > 0) {
         // remove load more btn here
-        loadMoreBtn.remove();
+        // loadMoreBtn.remove();
+        loadMoreBtn.style.display = 'none';
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
-        // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
+        // displayAllPosts(allPosts, getPosts(locStorage.token, '', 99999), false);
       }
     } else {
       //**  display a warning here
-      // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
+      // displayAllPosts(allPosts, getPosts(locStorage.token, '', 99999), false);
     }
   });
 
@@ -203,11 +204,11 @@ if (globalSStorage) {
   let isDescending = true;
 
   sortByOldestBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     currentOffset = 0;
     displayAllPosts(
       allPosts,
-      getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
+      getSortedPosts(locStorage.token, 'created', 'asc', currentOffset, limit),
       false
     );
     isDescending = false;
@@ -217,11 +218,11 @@ if (globalSStorage) {
   });
   // sort by descending
   sortByNewestBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     currentOffset = 0;
     displayAllPosts(
       allPosts,
-      getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
+      getSortedPosts(locStorage.token, 'created', 'desc', currentOffset, limit),
       false
     );
     isDescending = true;
@@ -234,15 +235,15 @@ if (globalSStorage) {
   //
   // load more
   loadMoreBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
-    const data = await getPosts(sStorage.token, '', 99999);
+    const locStorage = getLocalStorage();
+    const data = await getPosts(locStorage.token, '', 99999);
     if (currentOffset < data.length) {
       currentOffset += 20;
       if (isDescending) {
         displayAllPosts(
           allPosts,
           getSortedPosts(
-            sStorage.token,
+            locStorage.token,
             'created',
             'desc',
             currentOffset,
@@ -254,7 +255,7 @@ if (globalSStorage) {
         displayAllPosts(
           allPosts,
           getSortedPosts(
-            sStorage.token,
+            locStorage.token,
             'created',
             'asc',
             currentOffset,
@@ -265,7 +266,8 @@ if (globalSStorage) {
       }
     }
     if (currentOffset >= data.length) {
-      loadMoreBtn.remove();
+      // loadMoreBtn.remove();
+      loadMoreBtn.style.display = 'none';
     }
   });
 }
@@ -283,6 +285,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
   list.appendChild(spinner);
+  // loadMoreBtn.add();
 
   if (!isAddingToPrevList) {
     if (list) {
@@ -292,7 +295,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   }
   const data = await fetchMethod;
   // console.log('data in displayPosts', data);
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   if (data) {
     spinner.remove();
     data.map((post) => {
@@ -329,7 +332,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           </div>
           <div class="react-comment-container">
                             ${
-                              sStorage.name === author.name
+                              locStorage.name === author.name
                                 ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
@@ -371,12 +374,12 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         // !RETURN
         author.addEventListener('click', (e) => {
           const profileName = e.target.dataset.name;
-          setSessionStorage(
+          setLocalStorage(
             true,
-            globalSStorage.token,
-            globalSStorage.name,
-            globalSStorage.email,
-            globalSStorage.avatar,
+            globalLocalStorage.token,
+            globalLocalStorage.name,
+            globalLocalStorage.email,
+            globalLocalStorage.avatar,
             profileName
           );
           if (!window.location.href.includes('profile.html')) {
@@ -414,10 +417,10 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 export async function displaySinglePost(postID, list) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   list.innerHTML = '';
   list.appendChild(spinner);
-  const singleData = await getPosts(sStorage.token, postID, '');
+  const singleData = await getPosts(locStorage.token, postID, '');
 
   if (singleData) {
     spinner.remove();
@@ -452,7 +455,7 @@ export async function displaySinglePost(postID, list) {
                           
                           <div class="react-comment-container">
                             ${
-                              sStorage.name === author.name
+                              locStorage.name === author.name
                                 ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
@@ -461,7 +464,7 @@ export async function displaySinglePost(postID, list) {
                     <div class="profile-img-text-input">
                         <img
                         class="profile-image"
-                        src="${globalSStorage.avatar}"
+                        src="${globalLocalStorage.avatar}"
                         alt="Profile image of ${author && author.name}"
                         onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                       />
@@ -549,7 +552,6 @@ export async function displaySinglePost(postID, list) {
         textareaComment.style.height = `${e.target.scrollHeight}px`;
       });
 
-      // loadMoreBtn.remove();
       const deletePostBtn = document.querySelector('.delete-post-btn');
       const editPostBtn = document.querySelector('.edit-post-btn');
       const postAuthor = document.querySelector('.post-author');
@@ -574,12 +576,12 @@ export async function displaySinglePost(postID, list) {
       }
       postAuthor.addEventListener('click', (e) => {
         const profileName = e.target.dataset.name;
-        setSessionStorage(
+        setLocalStorage(
           true,
-          globalSStorage.token,
-          globalSStorage.name,
-          globalSStorage.email,
-          globalSStorage.avatar,
+          globalLocalStorage.token,
+          globalLocalStorage.name,
+          globalLocalStorage.email,
+          globalLocalStorage.avatar,
           profileName
         );
         if (!window.location.href.includes('profile.html')) {
@@ -588,6 +590,8 @@ export async function displaySinglePost(postID, list) {
           displayProfileInfo(profileName);
         }
       });
+      // loadMoreBtn.remove();
+      loadMoreBtn.style.display = 'none';
     }
   }
 }
@@ -660,8 +664,8 @@ export async function displaySinglePost(postID, list) {
                     <form class="comment-form">
                       <img
                           class="profile-image"
-                          src="${globalSStorage.avatar}"
-                          alt="Profile image of ${globalSStorage.name}"
+                          src="${globalLocalStorage.avatar}"
+                          alt="Profile image of ${globalLocalStorage.name}"
                           onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                         />
 

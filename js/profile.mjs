@@ -13,8 +13,8 @@ const profileImagePostComp = document.querySelector(
 const modalBackdrop = document.querySelector('.modal-backdrop');
 
 import {
-  getSessionStorage,
-  setSessionStorage,
+  getLocalStorage,
+  setLocalStorage,
   checkIfLoggedIn,
   getPosts,
   getUsers,
@@ -26,11 +26,11 @@ import {
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 
-const globalSStorage = getSessionStorage();
-// export let profileDisplayed = globalSStorage && globalSStorage.name;
+const globalLocalStorage = getLocalStorage();
+// export let profileDisplayed = globalLocalStorage && globalLocalStorage.name;
 
 export async function getProfileImage() {
-  const user = await getUsers(globalSStorage.name, '');
+  const user = await getUsers(globalLocalStorage.name, '');
   if (user.avatar) {
     profileImagePostComp.src = user.avatar;
   } else {
@@ -40,12 +40,12 @@ export async function getProfileImage() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  if (globalSStorage) {
-    if (globalSStorage.name === globalSStorage.profileDisplayed) {
-      displayProfileInfo(globalSStorage.name);
+  if (globalLocalStorage) {
+    if (globalLocalStorage.name === globalLocalStorage.profileDisplayed) {
+      displayProfileInfo(globalLocalStorage.name);
       getProfileImage();
     } else {
-      displayProfileInfo(globalSStorage.profileDisplayed);
+      displayProfileInfo(globalLocalStorage.profileDisplayed);
     }
   }
 });
@@ -84,7 +84,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
     if (avatarImage) {
       submitObject.avatar = avatarImage.src;
     }
-    updateProfileInfo(globalSStorage.name, submitObject);
+    updateProfileInfo(globalLocalStorage.name, submitObject);
     uploadedBanner.innerHTML = '';
     uploadedAvatar.innerHTML = '';
     editProfileForm.reset();
@@ -94,7 +94,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
 }
 
 export async function displayProfileInfo(
-  username = globalSStorage.profileDisplayed
+  username = globalLocalStorage.profileDisplayed
 ) {
   const data = await getUsers(username, '');
   const { avatar, banner, email, followers, following, name, posts, _count } =
@@ -127,7 +127,7 @@ export async function displayProfileInfo(
                         _count.followers
                       }</strong>Followers</div>
                       ${
-                        name !== globalSStorage.name
+                        name !== globalLocalStorage.name
                           ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
                           : ''
                       }              
@@ -138,7 +138,7 @@ export async function displayProfileInfo(
           <div class="name-and-edit-profile">
               <h2 class="username">${name}</h2>
               ${
-                name === globalSStorage.name
+                name === globalLocalStorage.name
                   ? '<button class="edit-profile-btn">Edit profile</button>'
                   : ''
               }
@@ -148,12 +148,12 @@ export async function displayProfileInfo(
     `;
     // profileDisplayed = name;
 
-    setSessionStorage(
+    setLocalStorage(
       true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
+      globalLocalStorage.token,
+      globalLocalStorage.name,
+      globalLocalStorage.email,
+      globalLocalStorage.avatar,
       name
     );
     // banner
@@ -184,10 +184,10 @@ export async function displayProfileInfo(
     if (followBtn) {
       // followeUnfollowUpdate(followBtn, followers);
       const foundFollower = followers.find(
-        (follower) => follower.name === globalSStorage.name
+        (follower) => follower.name === globalLocalStorage.name
       );
       if (foundFollower) {
-        if (foundFollower.name === globalSStorage.name) {
+        if (foundFollower.name === globalLocalStorage.name) {
           followBtn.textContent = 'Unfollow -';
         }
       }
@@ -205,9 +205,10 @@ export async function getDisplayedUseersPosts(e) {
   allPosts.appendChild(spinner);
   const loadMoreBtn = document.querySelector('.load-more-btn');
   if (loadMoreBtn) {
-    loadMoreBtn.remove();
+    // loadMoreBtn.remove();
+    loadMoreBtn.style.display = 'none';
   }
-  const data = await getPosts(globalSStorage.token, '', 9999);
+  const data = await getPosts(globalLocalStorage.token, '', 9999);
   const allPostsFromUser = data.filter(
     (item) => item.author.name === e.target.dataset.username
   );
@@ -216,12 +217,12 @@ export async function getDisplayedUseersPosts(e) {
 
 function followeUnfollowUpdate(e, followBtn) {
   const profileName = e.target.dataset.username;
-  setSessionStorage(
+  setLocalStorage(
     true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
+    globalLocalStorage.token,
+    globalLocalStorage.name,
+    globalLocalStorage.email,
+    globalLocalStorage.avatar,
     profileName
   );
   if (followBtn.textContent === 'Follow +') {

@@ -3,7 +3,7 @@ const loginForm = document.querySelector('.login-form');
 const registerForm = document.querySelector('.register-form');
 
 const header = document.querySelector('h1');
-import { getSessionStorage, setSessionStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage } from './utils.mjs';
 
 async function registerFn(loginDetails) {
   try {
@@ -23,7 +23,7 @@ async function registerFn(loginDetails) {
       loginFn(email, password);
       // loginFn()
       // const { accessToken, name, email, avatar } = data;
-      // setSessionStorage(true, accessToken, name, email, avatar, name);
+      // setLocalStorage(true, accessToken, name, email, avatar, name);
       // window.location.href = '../index.html';
     } else {
       console.log('res NOT OK', res);
@@ -115,7 +115,7 @@ async function loginFn(email, password) {
     const data = await res.json();
     if (res.ok) {
       const { accessToken, name, email, avatar } = data;
-      setSessionStorage(true, accessToken, name, email, avatar, name);
+      setLocalStorage(true, accessToken, name, email, avatar, name);
       window.location.href = '../index.html';
     }
   } catch (e) {
