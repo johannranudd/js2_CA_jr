@@ -21,8 +21,6 @@ const homeComponentHeading = document.querySelector('.home-component h4');
 const profileLink = document.querySelector('.profile-link');
 const logoutBtn = document.querySelector('.logout');
 
-// const singlePostFeed = document.querySelectorAll('.single-post-feed');
-
 import {
   checkIfLoggedIn,
   adjustForSidebar,
@@ -44,11 +42,13 @@ let limit = 20;
 export let isEditingPost = false;
 export let editID = '';
 
-// All global eventlisteners must be here to allow login
 const globalSStorage = getSessionStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
+/**
+ * displays a users information
+ */
 export async function displayContacts() {
   listOfContacts.innerHTML = '';
   const user = await getUsers(globalSStorage.name, '');

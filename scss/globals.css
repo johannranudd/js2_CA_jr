@@ -255,11 +255,17 @@
   font-size: 1.5rem;
 }
 .feed .all-posts .single-post-feed .list-of-comments li {
+  margin: 1rem 0 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgb(118, 118, 118);
   display: flex;
 }
 .feed .all-posts .single-post-feed .list-of-comments li .profile-image {
   width: 50px;
   height: 50px;
+}
+.feed .all-posts .single-post-feed .list-of-comments li .comment-text p {
+  margin-bottom: 0.5rem;
 }
 .feed .load-more-btn-container {
   display: flex;
