@@ -285,7 +285,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
   list.appendChild(spinner);
-  // loadMoreBtn.add();
 
   if (!isAddingToPrevList) {
     if (list) {

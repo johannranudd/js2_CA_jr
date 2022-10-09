@@ -293,6 +293,7 @@ export function checkIfLoggedIn() {
  */
 export async function updateProfileInfo(name, req) {
   const locStorage = getLocalStorage();
+
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
     headers: {
@@ -301,12 +302,16 @@ export async function updateProfileInfo(name, req) {
       Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo();
-      getProfileImage();
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo();
+        getProfileImage();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in updateProfileInfo()');
+    });
 }
 
 /**
@@ -331,12 +336,16 @@ export async function followProfile(name) {
       Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo(name);
-      displayContacts();
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo(name);
+        displayContacts();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in followProfile()');
+    });
 }
 
 /**
@@ -361,12 +370,16 @@ export async function unfollowProfile(name) {
       Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo(name);
-      displayContacts();
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo(name);
+        displayContacts();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in unfollowProfile()');
+    });
 }
 
 /**
@@ -384,9 +397,6 @@ export async function unfollowProfile(name) {
  */
 export async function reactToPost(id, symbol, allPosts) {
   const locStorage = getLocalStorage();
-  console.log(id);
-  console.log(symbol);
-  console.log(allPosts);
   try {
     const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
       method: 'PUT',
@@ -409,6 +419,23 @@ export async function reactToPost(id, symbol, allPosts) {
   }
 }
 
+/**
+ * create a post
+ * method: POST
+ * @param {object} req object, request object
+ * @example
+ * ```js
+ * // call function
+ * const submitObject = {
+ * "title": "string",  // Required
+ * "body": "string",   // Required
+ * "tags": ["string"], // Optional
+ * "media": "https://url.com/image.jpg"   // Optional
+ * }
+ * post(submitObject);
+ *
+ * ```
+ */
 export async function post(req) {
   const locStorage = getLocalStorage();
   try {
@@ -425,21 +452,28 @@ export async function post(req) {
       displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     }
   } catch (e) {
-    console.log(e, 'error in post()');
+    console.log(e, 'error occured in post()');
   }
-
-  // .then((res) => {
-  //   console.log(req);
-  //   if (res.ok) {
-  //     console.log(req);
-  //
-  //   } else {
-  //     console.log(res);
-  //   }
-  // })
-  // .catch((e) => console.log(e, 'error in post'));
 }
-// post();
+
+/**
+ * edit a post
+ * method: PUT
+ * @param {number} id number, id of the post you want to edit
+ * @param {object} req object, new request object to replace old post
+ * @example
+ * ```js
+ * // call function
+ * const submitObject = {
+ * "title": "string",  // Required
+ * "body": "string",   // Required
+ * "tags": ["string"], // Optional
+ * "media": "https://url.com/image.jpg"   // Optional
+ * }
+ * editPost(336, submitObject);
+ * // expect post with id 336 to be updated
+ * ```
+ */
 export function editPost(id, req) {
   const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
@@ -450,15 +484,28 @@ export function editPost(id, req) {
       Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
-    }
-  });
-  // const data = await res.json();
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in editPost()');
+    });
 }
 
-// deletePost
+/**
+ * delete a post
+ * method: DELETE
+ * @param {number} id number, id of the post you want to edit
+ * @example
+ * ```js
+ * // call function
+ * deletePost(57);
+ * // expect post with id 57 to be deleted
+ * ```
+ */
 export function deletePost(id) {
   const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
@@ -467,13 +514,28 @@ export function deletePost(id) {
       Accept: 'application/json',
       Authorization: `Bearer ${locStorage.token}`,
     },
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in deletePost()');
+    });
 }
 
+/**
+ * positions contacts element on page
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * contactsElementPositioning(contacts, mainContainer)
+ * // contacts will now be positioned relative to mainContainer
+ * ```
+ */
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();
 
@@ -498,6 +560,17 @@ export function contactsElementPositioning(contacts, mainContainer) {
   }
 }
 
+/**
+ * makes room for contacts element
+ * @param {element} feedAndContactsContaier  element, element that contains both feed component and contacts component
+ * @param {element} contacts element, list of contacts in app.
+ * @example
+ * ```js
+ * // call function
+ * adjustForContacts(feedAndContactsContaier, contacts)
+ * // feedAndContactsContaier will now have margin right equal to the width of contacts element
+ * ```
+ */
 export function adjustForContacts(feedAndContactsContaier, contacts) {
   // contacts.className.includes('show-contacts') &&
   const contactWidth = contacts.getBoundingClientRect().width;
@@ -508,6 +581,24 @@ export function adjustForContacts(feedAndContactsContaier, contacts) {
   }
 }
 
+/**
+ * adjusts feed content to have margin right equal to the width of sidebar if width is greater than 500
+ * @param {element} sidebar element, sidebar element.
+ * @param {element} feedAndContactsContaier element, element that contains both feed component and contacts component
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * adjustForSidebar(
+  sidebar,
+  feedAndContactsContaier,
+  contacts,
+  mainContainer
+)
+ * // adjusts feed content to have margin right equal to the width of sidebar if width is greater than 500
+ * ```
+ */
 export function adjustForSidebar(
   sidebar,
   feedAndContactsContaier,
@@ -526,6 +617,19 @@ export function adjustForSidebar(
   contactsElementPositioning(contacts, mainContainer);
 }
 
+/**
+ * keeps only one sidebar open at the time
+ * @param {element} e element, sidebar element.
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} sidebar element, sidebar element.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer)
+ * // when opening a sidebar, this function makes sure to close the other.
+ * ```
+ */
 export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
   if (e.currentTarget.className.includes('contacts-btn')) {
     if (!contacts.className.includes('show-contacts')) {
