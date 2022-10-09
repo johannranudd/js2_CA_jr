@@ -10,7 +10,7 @@ import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
 /**
  * gets local storage
- * @returns {object} current state of localStorage
+ * @returns {object} object, isLoggedIn, current state of localStorage
  */
 export function getLocalStorage() {
   const locStorage = localStorage.getItem('isLoggedIn')
@@ -52,8 +52,8 @@ export function setLocalStorage(
 
 /**
  * used to create a search parameter to fetch limited amounts of data in order to handle loading process.
- * @param {number} limit number
- * @returns {string} string
+ * @param {number} limit number, number of objects you want in return
+ * @returns {string} string, limitQuery
  * @example
  * ```js
  * setFetchLimitURL(20)
@@ -70,23 +70,39 @@ export function setFetchLimitURL(limit) {
 }
 
 /**
- * Adds two numbers together
- * @param {number} a First value
- * @param {number} b Second value
- * @returns {number} Sum of params
+ * Creates a comment on a post.
+ * @param {object} payload object, { postID, body, list }
+ * @returns {function} function, displaySinglePost(postID, list);
  * @example
  * ```js
- * // Add two numbers together
- * const a = 1;
- * const b = 2;
- * const sum = addNumbers(a, b);
- * // expect sum to be 3
+ * // variables in pseudocode
+ * 
+ * // const postID = id of post you want to comment on, used in URL.
+ * // const body =  your comment, gathered from textarea.value
+ * // const list = the <ul> element you want the content to be displayed in
+ * 
+ * // call function like this
+ * commentOnPost({ postID, body, list });
+ * // function will try this
+ *fetch(`${baseURL}/posts/${postID}/comment`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${locStorage.token}`,
+      },
+      body: JSON.stringify({
+        body: body, // Required
+      }),
+    });
+    if (res.ok) {
+      displaySinglePost(postID, list);
+    }
  * ```
  */
 export async function commentOnPost(payload) {
   const locStorage = getLocalStorage();
   const { postID, body, list } = payload;
-  console.log(postID);
   try {
     const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
       method: 'POST',
@@ -105,13 +121,22 @@ export async function commentOnPost(payload) {
   } catch (e) {
     console.log(e, 'error in commentOnPost()');
   }
-  // .then((res) => console.log(res));
 }
-
+/**
+ * displays an image in a container
+ * @param {element} container element, container you want to display image in.
+ * @param {element} input element, input you want to grab the value from
+ * @example
+ * ```js
+ * // call function
+ * uploadImageToContainer(container, input)
+ * // creates and appends an image to container
+ * container.innerHTML = `<img class="uploaded-image-before-post" src="${input.value}" alt="your uploaded image"  />`;
+ * // also displays wwarning if image has error
+ * ```
+ */
 export function uploadImageToContainer(container, input) {
-  // onerror="this.style.display='none'"
   if (input) {
-    console.log(input.value);
     container.innerHTML = `<img class="uploaded-image-before-post" src="${input.value}" alt="your uploaded image"  />`;
     const image = document.querySelector('.uploaded-image-before-post');
     image.addEventListener('error', (e) => {
@@ -122,7 +147,7 @@ export function uploadImageToContainer(container, input) {
       }, 3000);
     });
   }
-  // !base 64
+  // !file upload
   // const reader = new FileReader();
   // reader.onload = function () {
   //   const img = new Image();
@@ -135,24 +160,42 @@ export function uploadImageToContainer(container, input) {
   // reader.readAsDataURL(input.files[0]);
 }
 
+/**
+ * Adds two numbers together
+ * @param {string} userName string, default = "", name of the user you want in return
+ * @param {string} limit string, default = "", how many users you want.
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // for single user call:
+ * getUsers("john_doe", '')
+ * // expect one object with user information
+ * //
+ * // for multiple users call:
+ * getUsers("", 34)
+ * // expect array of 34 users
+ * ```
+ */
 export async function getUsers(userName = '', limit = '') {
   const locStorage = getLocalStorage();
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${locStorage && locStorage.token}`,
-      },
-    }
-  );
-  const data = await res.json();
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${locStorage && locStorage.token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getUsers()');
+  }
 }
-
-// ``${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`
 
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);
