@@ -27,8 +27,16 @@ import {
 import { displayAllPosts } from './layout.mjs';
 
 const globalLocalStorage = getLocalStorage();
-// export let profileDisplayed = globalLocalStorage && globalLocalStorage.name;
 
+/**
+ * displays users profile image or displays default image.
+ * @example
+ * ```js
+ * // call function
+ * getProfileImage()
+ * // function will check for users avatar and display as image, if user doesn't have avatar then a default image will be displayed instead.
+ * ```
+ */
 export async function getProfileImage() {
   const user = await getUsers(globalLocalStorage.name, '');
   if (user.avatar) {
@@ -93,12 +101,22 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
   });
 }
 
+/**
+ * displays a users information in the profile component on profile.html
+ * @param {string} username string, default = globalLocalStorage.profileDisplayed, name of user you want to display.
+ * @returns {string} string, returns a template litteral string and fills tha page with html
+ * @example
+ * ```js
+ * // call function
+ * displayProfileInfo("john_doe")
+ * // will populate the profile component with information about john_doe
+ * ```
+ */
 export async function displayProfileInfo(
   username = globalLocalStorage.profileDisplayed
 ) {
   const data = await getUsers(username, '');
-  const { avatar, banner, email, followers, following, name, posts, _count } =
-    data;
+  const { avatar, banner, followers, name, _count } = data;
 
   if (profileComponent) {
     profileComponent.innerHTML = `
@@ -146,7 +164,6 @@ export async function displayProfileInfo(
           
           
     `;
-    // profileDisplayed = name;
 
     setLocalStorage(
       true,
@@ -198,14 +215,22 @@ export async function displayProfileInfo(
   }
 }
 
+/**
+ * get posts from the selected user
+ * @param {object} e object, event objectwith html
+ * @example
+ * ```js
+ * // call function
+ * getDisplayedUseersPosts(e)
+ * // will populate the feed with only selected users posts, given throught the event object. like: e.target.dataset.username
+ * ```
+ */
 export async function getDisplayedUseersPosts(e) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
   allPosts.innerHTML = '';
   allPosts.appendChild(spinner);
-  const loadMoreBtn = document.querySelector('.load-more-btn');
   if (loadMoreBtn) {
-    // loadMoreBtn.remove();
     loadMoreBtn.style.display = 'none';
   }
   const data = await getPosts(globalLocalStorage.token, '', 9999);

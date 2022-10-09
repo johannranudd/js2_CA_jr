@@ -572,7 +572,6 @@ export function contactsElementPositioning(contacts, mainContainer) {
  * ```
  */
 export function adjustForContacts(feedAndContactsContaier, contacts) {
-  // contacts.className.includes('show-contacts') &&
   const contactWidth = contacts.getBoundingClientRect().width;
   if (window.innerWidth >= 1024) {
     feedAndContactsContaier.style.marginRight = `${contactWidth}px`;
