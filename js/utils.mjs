@@ -21,7 +21,7 @@ export function getLocalStorage() {
 
 /**
  * sets the local stoarage to an object with user information,
- * access token, and other helps view other profiles in the profile.html page.
+ * access token, and helps view other profiles in the profile.html page.
  * @param {boolean} isLoggedIn boolean, check if loged in or not
  * @param {string} token string, JWT access token
  * @param {string} name string, users name
@@ -69,6 +69,20 @@ export function setFetchLimitURL(limit) {
   }
 }
 
+/**
+ * Adds two numbers together
+ * @param {number} a First value
+ * @param {number} b Second value
+ * @returns {number} Sum of params
+ * @example
+ * ```js
+ * // Add two numbers together
+ * const a = 1;
+ * const b = 2;
+ * const sum = addNumbers(a, b);
+ * // expect sum to be 3
+ * ```
+ */
 export async function commentOnPost(payload) {
   const locStorage = getLocalStorage();
   const { postID, body, list } = payload;

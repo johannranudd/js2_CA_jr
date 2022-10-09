@@ -305,7 +305,7 @@
 .contacts::-webkit-scrollbar-thumb {
   width: 10px;
   height: 10px;
-  background: #000000;
+  background: rgb(118, 118, 118);
   border-radius: 100px;
 }
 .contacts h4 {
