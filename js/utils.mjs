@@ -76,28 +76,14 @@ export function setFetchLimitURL(limit) {
  * @example
  * ```js
  * // variables in pseudocode
- * 
+ *
  * // const postID = id of post you want to comment on, used in URL.
  * // const body =  your comment, gathered from textarea.value
  * // const list = the <ul> element you want the content to be displayed in
- * 
+ *
  * // call function like this
  * commentOnPost({ postID, body, list });
- * // function will try this
- *fetch(`${baseURL}/posts/${postID}/comment`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${locStorage.token}`,
-      },
-      body: JSON.stringify({
-        body: body, // Required
-      }),
-    });
-    if (res.ok) {
-      displaySinglePost(postID, list);
-    }
+ * // function will create a post
  * ```
  */
 export async function commentOnPost(payload) {
@@ -122,6 +108,7 @@ export async function commentOnPost(payload) {
     console.log(e, 'error in commentOnPost()');
   }
 }
+
 /**
  * displays an image in a container
  * @param {element} container element, container you want to display image in.
@@ -161,7 +148,7 @@ export function uploadImageToContainer(container, input) {
 }
 
 /**
- * Adds two numbers together
+ * gets users from API
  * @param {string} userName string, default = "", name of the user you want in return
  * @param {string} limit string, default = "", how many users you want.
  * @returns {(object | Array)} object or array, data returned if fetch successfull
@@ -173,7 +160,7 @@ export function uploadImageToContainer(container, input) {
  * //
  * // for multiple users call:
  * getUsers("", 34)
- * // expect array of 34 users
+ * // expect array of 34 objects with users information
  * ```
  */
 export async function getUsers(userName = '', limit = '') {
@@ -197,45 +184,89 @@ export async function getUsers(userName = '', limit = '') {
   }
 }
 
+/**
+ * get one or more posts
+ * @param {string} token string, JWT accessToken
+ * @param {number} searchParams number, default = "", id of spesiffic post
+ * @param {number} limit number, default = "", limit of posts you want to get
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // call funciton :
+ * getPosts(token, searchParams = '', limit = '')
+ * // expect array of all posts / default limit might exist on the API
+ * getPosts(token, searchParams = '', 99999)
+ * // expect array of up to 99999 posts
+ * getPosts(token, 336)
+ * //expect object with the id of 336
+ * ```
+ */
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await res.json();
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getPosts()');
+  }
 }
 
-// `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
-
+/**
+ * get sorted posts
+ * @param {string} token string, JWT accessToken
+ * @param {string} sort string, what you want to sort by, example: "created"
+ * @param {string} sortOrder string, "asc" or "desc"
+ * @param {number} offset number, the offset you want to fetch from.
+ * @param {number} limit number, limit of posts you want in return.
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // call function
+ * getSortedPosts(token, "created", "asc", 40, 20)
+ * // expect array of 20 posts sorted by created in an ascending order with an offset of 40.
+ * ```
+ */
 export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
   loadMoreBtn.style.display = 'block';
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  const data = await res.json();
-  // console.log(data);
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getSortedPosts()');
+  }
 }
 
+/**
+ * check if useer is loged in, redirect if not.
+ * @example
+ * ```js
+ * // call function
+ * checkIfLoggedIn()
+ * // checks the window.location and checks if there is an object in localstorage called isLoggedIn, if not true user will be redirected too login.html
+ * ```
+ */
 export function checkIfLoggedIn() {
-  // console.log('checkIfLoggedIn() locStorage::', locStorage);
   const locStorage = getLocalStorage();
   if (!window.location.href.includes('/login.html')) {
     if (window.location.href.includes('/register.html')) {
@@ -248,9 +279,19 @@ export function checkIfLoggedIn() {
   }
 }
 
+/**
+ * get sorted posts
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @param {object} req object, request object sent in the body
+ * @example
+ * ```js
+ * // call function
+ * updateProfileInfo("john_doe", {avatar: "new_avatar_string", banner: "new_banner_string"});
+ *
+ * ```
+ */
 export async function updateProfileInfo(name, req) {
-  console.log('name::', name);
-  console.log('req::', req);
   const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
@@ -267,6 +308,19 @@ export async function updateProfileInfo(name, req) {
     }
   });
 }
+
+/**
+ * follow a profile
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @example
+ * ```js
+ * // call function
+ * followProfile("john_doe")
+ * // user logged in should expect to follow user named "john_doe"
+ *
+ * ```
+ */
 export async function followProfile(name) {
   const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/follow`, {
@@ -282,9 +336,21 @@ export async function followProfile(name) {
       displayProfileInfo(name);
       displayContacts();
     }
-    // console.log(res);
   });
 }
+
+/**
+ * unfollow a profile
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @example
+ * ```js
+ * // call function
+ * unfollowProfile("john_doe")
+ * // user logged in should expect to unfollow user named "john_doe"
+ *
+ * ```
+ */
 export async function unfollowProfile(name) {
   const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/unfollow`, {
@@ -303,9 +369,24 @@ export async function unfollowProfile(name) {
   });
 }
 
-// react
+/**
+ * react to post
+ * method: PUT
+ * @param {number} id number, id of the post youre reacting to
+ * @param {string} symbol string, your reaction to a post (must be an emoji)
+ * @param {element} allPosts element, element you want to display the post in
+ * @example
+ * ```js
+ * // call function
+ * reactToPost(336, '👍', listElement);
+ * // user should expect to react 👍 to post 336 and listElemnt will update to show the results
+ * ```
+ */
 export async function reactToPost(id, symbol, allPosts) {
   const locStorage = getLocalStorage();
+  console.log(id);
+  console.log(symbol);
+  console.log(allPosts);
   try {
     const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
       method: 'PUT',

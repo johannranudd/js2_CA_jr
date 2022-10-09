@@ -371,7 +371,6 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         });
       }
       postAuthor.forEach((author) => {
-        // !RETURN
         author.addEventListener('click', (e) => {
           const profileName = e.target.dataset.name;
           setLocalStorage(
