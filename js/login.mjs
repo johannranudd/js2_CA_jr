@@ -4,8 +4,8 @@ const registerForm = document.querySelector('.register-form');
 import { setLocalStorage } from './utils.mjs';
 
 /**
- * react to post
- * / method: PUT
+ * Register user
+ * / method: POST
  * @param {object} loginDetails object,
  * @example
  * ```js
@@ -100,6 +100,27 @@ if (loginForm) {
   });
 }
 
+/**
+ * Log inn 
+ * / method: POST
+ * @param {string} email string, users email
+ * @param {string} password string, users password
+ * @example
+ * ```js
+ * loginDetails = {
+ "name": "my_username",                          // Required
+ "email": "first.last@stud.noroff.no",           // Required
+}
+* // call function
+  registerFn(loginDetails)
+ * const data = await res.json();
+    if (res.ok) {
+      const { accessToken, name, email, avatar } = data;
+      setLocalStorage(true, accessToken, name, email, avatar, name);
+      window.location.href = '../index.html';
+    }
+ * ```
+ */
 async function loginFn(email, password) {
   console.log('starting loginFn()');
   try {

@@ -1,8 +1,6 @@
 const feedAndContactsContaier = document.querySelector(
   '.feed-and-contacts-container'
 );
-const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-
 const sidebar = document.querySelector('.sidebar');
 const menuBtn = document.querySelector('.menu-btn');
 const contactBtns = document.querySelectorAll('.contacts-btn');
@@ -47,7 +45,24 @@ const globalLocalStorage = getLocalStorage();
 window.addEventListener('load', checkIfLoggedIn);
 
 /**
- * displays a users information
+ * displays all contacts in contacts sidebar
+ * @return {TemplateLiteralString} string, template literal string.
+ * @example
+ * ```js
+ * loginDetails = {
+ "name": "my_username",                          // Required
+ "email": "first.last@stud.noroff.no",           // Required
+}
+ * // call function
+ * displayContacts()
+ * const user = await getUsers(globalLocalStorage.name, '');
+ * if (user) {
+ * user.following.map((item) => {
+      const { avatar, name } = item;
+      listOfContacts.innerHTML += `template literal string with ${values} rom api`});
+
+ }
+ * ```
  */
 export async function displayContacts() {
   listOfContacts.innerHTML = '';
@@ -62,7 +77,6 @@ export async function displayContacts() {
         <p>${name}</p>
       </li>`;
       const contactsListItem = document.querySelectorAll('.contact-list-item');
-      // console.log(contactsListItem);
       contactsListItem.forEach((contact) => {
         contact.addEventListener('click', (e) => {
           refreshContactsAndProfile(e);
@@ -74,6 +88,27 @@ export async function displayContacts() {
   }
 }
 
+/**
+ * refreshes/updates contacts and profile information after an action has been taken on the page
+ * @param {object} e object, event object
+ * @example
+ * ```js
+ * // call function:
+ * refreshContactsAndProfile(e)
+ * //takes event object and gets username
+ * const profileName = e.currentTarget.dataset.username;
+ * // sets to localStorage
+ * setLocalStorage(...,
+    profileName
+  );
+  * // redirects if not on profile page
+  if (window.location.href.includes('profile.html')) {
+    displayProfileInfo(profileName);
+  } else {
+    window.location.href = `../profile.html`;
+  }
+ * ```
+ */
 function refreshContactsAndProfile(e) {
   const profileName = e.currentTarget.dataset.username;
   contacts.classList.remove('show-contacts');
@@ -281,6 +316,22 @@ if (globalLocalStorage) {
 //
 // displayAllPosts
 
+/**
+ * displays all posts on the page
+ * @param {element} list element. list element you want to display posts in
+ * @param {(Function | Array)} fetchMethod function or array. this can be either an array or a fetch method: GET, which returns an array
+ * @param {boolean} isAddingToPrevList boolean. if false, the inneHTML of the list will be set to "" before loading content. if true, the previous content will remain and new content will be fetched and added to the list.
+ * @example
+ * ```js
+ * // call function:
+ * displayAllPosts(listElement, getPosts(locStorage.token, '', 500), false)
+ * // this will clear the content of listElement, fetch 500 posts and populate listElement
+ * //
+ * // call function:
+ * displayAllPosts(listElement, filteredData, false);
+ * // you can also use an array as the second parameter
+ * ```
+ */
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
@@ -293,16 +344,12 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
     }
   }
   const data = await fetchMethod;
-  // console.log('data in displayPosts', data);
   const locStorage = getLocalStorage();
   if (data) {
     spinner.remove();
     data.map((post) => {
       const { id, title, body, media, author } = post;
-      // console.log(author.avatar && author.avatar );
-
-      const listItem = `
-      
+      const listItem = `      
     <li class="single-post-feed" data-id="${id}" data-user="${
         author && author.name
       }">
@@ -411,7 +458,16 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
-// let commentingOnID;
+
+/**
+ * display a single post in feed component
+ * @param {number} postID number, id of the post you want to display
+ * @param {Element} list element, list element you want to display content in
+ * @example
+ * ```js
+ *
+ * ```
+ */
 export async function displaySinglePost(postID, list) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
