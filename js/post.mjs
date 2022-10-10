@@ -1,29 +1,26 @@
-import {
-  post,
-  getPosts,
-  getLocalStorage,
-  editPost,
-  uploadImageToContainer,
-} from './utils.mjs';
-import { displayAllPosts, isEditingPost, editID } from './layout.mjs';
+import { post, editPost, uploadImageToContainer } from './utils.mjs';
+import { isEditingPost, editID } from './layout.mjs';
 
 const postForm = document.querySelector('.post-form');
-
 const postTitleInput = document.querySelector('.post-title-input');
 const textareaPost = document.querySelector('.post-textarea');
 const displayImageContainer = document.querySelector(
   '.display-image-container'
 );
 const uploadImgeInput = document.querySelector('.upload-img-input');
-
 const homeComponent = document.querySelector('.home-component');
 const feedContainer = document.querySelector('.feed');
-
-const allPosts = document.querySelector('.all-posts');
 const submitPostBtn = document.querySelector('.submit-post-btn');
-const postImage = document.querySelector('.post-image');
-// const dropBox = document.querySelector('#div1');
 
+/**
+ * adjusts home component to be the same with as feed
+ * @example
+ * ```js
+ * // call function
+ * adjustHomeComponent()
+ *  homeComponent.style.width = `${feedRect.width}px`;
+ * ```
+ */
 function adjustHomeComponent() {
   const feedRect = feedContainer.getBoundingClientRect();
   homeComponent.style.width = `${feedRect.width}px`;
@@ -59,20 +56,6 @@ if (uploadImgeInput) {
     }, 100);
   });
 }
-
-// !moved to utils
-// export function uploadImageToContainer(container) {
-//   const reader = new FileReader();
-//   reader.onload = function () {
-//     const img = new Image();
-//     img.src = reader.result;
-//     const alt = document.createAttribute('alt');
-//     alt.value = 'Your uploaded image';
-//     img.setAttributeNode(alt);
-//     container.appendChild(img);
-//   };
-//   reader.readAsDataURL(uploadImgeInput.files[0]);
-// }
 
 // postForm
 if (postForm) {
@@ -111,13 +94,3 @@ if (postForm) {
     }
   });
 }
-
-//
-//
-//
-
-// {
-//       title: 'njbr test_3 title',
-//       body: 'njbr test_body_3',
-//       tags: ['test2'],
-//     }

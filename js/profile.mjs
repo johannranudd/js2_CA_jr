@@ -1,4 +1,3 @@
-const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const allPosts = document.querySelector('.all-posts');
 const profileComponent = document.querySelector('.profile-component');
 const editProfileForm = document.querySelector('.edit-profile-modal');
@@ -15,14 +14,12 @@ const modalBackdrop = document.querySelector('.modal-backdrop');
 import {
   getLocalStorage,
   setLocalStorage,
-  checkIfLoggedIn,
   getPosts,
   getUsers,
   uploadImageToContainer,
   updateProfileInfo,
   followProfile,
   unfollowProfile,
-  setFetchLimitURL,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 
@@ -58,7 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// uploadImageToContainer(container, input);
 if (newBannerInput && newAvatarInput && editProfileForm) {
   newBannerInput.addEventListener('keyup', () => {
     setTimeout(() => {
@@ -199,7 +195,6 @@ export async function displayProfileInfo(
     // follow / unfollow
     const followBtn = document.querySelector('.follow-btn');
     if (followBtn) {
-      // followeUnfollowUpdate(followBtn, followers);
       const foundFollower = followers.find(
         (follower) => follower.name === globalLocalStorage.name
       );
@@ -216,8 +211,8 @@ export async function displayProfileInfo(
 }
 
 /**
- * get posts from the selected user
- * @param {object} e object, event objectwith html
+ * get posts from the selected user displayed in profile component
+ * @param {object} e object, event object
  * @example
  * ```js
  * // call function
@@ -240,6 +235,20 @@ export async function getDisplayedUseersPosts(e) {
   displayAllPosts(allPosts, allPostsFromUser, false);
 }
 
+/**
+ * lets user follow or unfollow another user and updates profile component.
+ * @param {object} e object, event object 
+ * @param {element} followBtn element, button with eventlistener 
+ * @example
+ * ```js
+ * // call function
+ * followeUnfollowUpdate(e, followBtn)
+ *  const profileName = e.target.dataset.username;
+ * if (followBtn.textContent === 'Follow +') {
+    followProfile(profileName);
+  } 
+ * ```
+ */
 function followeUnfollowUpdate(e, followBtn) {
   const profileName = e.target.dataset.username;
   setLocalStorage(

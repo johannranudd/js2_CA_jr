@@ -1,10 +1,27 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const loginForm = document.querySelector('.login-form');
 const registerForm = document.querySelector('.register-form');
+import { setLocalStorage } from './utils.mjs';
 
-const header = document.querySelector('h1');
-import { getLocalStorage, setLocalStorage } from './utils.mjs';
-
+/**
+ * react to post
+ * / method: PUT
+ * @param {object} loginDetails object,
+ * @example
+ * ```js
+ * loginDetails = {
+ "name": "my_username",                          // Required
+ "email": "first.last@stud.noroff.no",           // Required
+ "password": "UzI1NiIsInR5cCI",                  // Required
+}
+* // call function
+  registerFn(loginDetails)
+ * if (res.ok) {
+      const { email, password } = loginDetails;
+      loginFn(email, password);
+    }
+ * ```
+ */
 async function registerFn(loginDetails) {
   try {
     const res = await fetch(`${baseURL}/auth/register`, {
@@ -15,26 +32,16 @@ async function registerFn(loginDetails) {
       },
       body: JSON.stringify(loginDetails),
     });
-    const data = await res.json();
     if (res.ok) {
-      // console.log('res OK', res);
-      // console.log('data::', data);
       const { email, password } = loginDetails;
       loginFn(email, password);
-      // loginFn()
-      // const { accessToken, name, email, avatar } = data;
-      // setLocalStorage(true, accessToken, name, email, avatar, name);
-      // window.location.href = '../index.html';
     } else {
       console.log('res NOT OK', res);
     }
   } catch (e) {
     console.log(e, 'error happened in registerFn()');
   }
-  // .then((res) => res.json())
-  // .then((data) => console.log(data));
 }
-// registerFn(reg);
 
 if (registerForm) {
   registerForm.addEventListener('submit', (e) => {
@@ -92,11 +99,6 @@ if (loginForm) {
     }
   });
 }
-
-// function loginForm() {
-
-// }
-// loginForm();
 
 async function loginFn(email, password) {
   console.log('starting loginFn()');
