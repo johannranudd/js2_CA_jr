@@ -35,12 +35,13 @@ const globalLocalStorage = getLocalStorage();
  * ```
  */
 export async function getProfileImage() {
-  const user = await getUsers(globalLocalStorage.name, '');
-  if (user.avatar) {
-    profileImagePostComp.src = user.avatar;
+  // const user = await getUsers(globalLocalStorage.name, '');
+  if (globalLocalStorage) {
+    profileImagePostComp.src = globalLocalStorage.avatar;
   } else {
-    profileImagePostComp.src =
-      'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+    profileImagePostComp.src = '../images/profile_placeholder.png';
+    // profileImagePostComp.src =
+    //   'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
   }
 }
 
@@ -51,6 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
       getProfileImage();
     } else {
       displayProfileInfo(globalLocalStorage.profileDisplayed);
+      getProfileImage();
     }
   }
 });

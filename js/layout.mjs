@@ -16,7 +16,7 @@ export const loadMoreBtn = document.querySelector('.load-more-btn');
 const postTitleInput = document.querySelector('.post-title-input');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
-const profileLink = document.querySelector('.profile-link');
+const profileLink = document.querySelectorAll('.profile-link');
 const logoutBtn = document.querySelector('.logout');
 
 import {
@@ -165,16 +165,19 @@ if (globalLocalStorage) {
     });
   }
 
-  profileLink.addEventListener('click', (e) => {
-    // console.log('profile-link');
-    setLocalStorage(
-      true,
-      globalLocalStorage.token,
-      globalLocalStorage.name,
-      globalLocalStorage.email,
-      globalLocalStorage.avatar,
-      globalLocalStorage.name
-    );
+  profileLink.forEach((link) => {
+    link.addEventListener('click', () => {
+      console.log('profile-link');
+
+      setLocalStorage(
+        true,
+        globalLocalStorage.token,
+        globalLocalStorage.name,
+        globalLocalStorage.email,
+        globalLocalStorage.avatar,
+        globalLocalStorage.name
+      );
+    });
   });
 
   menuBtn.addEventListener('click', (e) => {
@@ -203,7 +206,6 @@ if (globalLocalStorage) {
     e.preventDefault();
     const locStorage = getLocalStorage();
     const searchValue = searchPostsInput.value;
-    // const searchValueLowerCase = searchPostsInput.value.toLowerCase();
     if (searchValue) {
       const data = await getPosts(locStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
@@ -217,6 +219,7 @@ if (globalLocalStorage) {
             )
         ) {
           return item;
+        } else {
         }
       });
       if (filteredData.length > 0) {
@@ -227,11 +230,17 @@ if (globalLocalStorage) {
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
+        searchPostsInput.style.border = '1px solid red';
+        setTimeout(() => {
+          searchPostsInput.style.border = 'none';
+        }, 3000);
         // displayAllPosts(allPosts, getPosts(locStorage.token, '', 99999), false);
       }
     } else {
-      //**  display a warning here
-      // displayAllPosts(allPosts, getPosts(locStorage.token, '', 99999), false);
+      searchPostsInput.style.border = '1px solid red';
+      setTimeout(() => {
+        searchPostsInput.style.border = 'none';
+      }, 3000);
     }
   });
 
