@@ -35,8 +35,7 @@ const globalLocalStorage = getLocalStorage();
  * ```
  */
 export async function getProfileImage() {
-  // const user = await getUsers(globalLocalStorage.name, '');
-  if (globalLocalStorage) {
+  if (globalLocalStorage.avatar) {
     profileImagePostComp.src = globalLocalStorage.avatar;
   } else {
     profileImagePostComp.src = '../images/profile_placeholder.png';
@@ -126,7 +125,7 @@ export async function displayProfileInfo(
               class="profile-image"
               src="${avatar}"
               alt="Profile image of ${name}"
-              onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+              onerror="this.src='../images/profile_placeholder.png';"
             />
             
                     <div class="follow-statistics-contianer">

@@ -16,8 +16,8 @@ export const loadMoreBtn = document.querySelector('.load-more-btn');
 const postTitleInput = document.querySelector('.post-title-input');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
-const profileLink = document.querySelectorAll('.profile-link');
 const logoutBtn = document.querySelector('.logout');
+const profileLink = document.querySelectorAll('.profile-link');
 
 import {
   checkIfLoggedIn,
@@ -73,7 +73,7 @@ export async function displayContacts() {
       listOfContacts.innerHTML += `<li class="contact-list-item hoverAnimation" data-username="${name}">
         <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
                 alt="Profile image ${name}"
-                onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
+                onerror="this.src='../images/profile_placeholder.png';" />
         <p>${name}</p>
       </li>`;
       const contactsListItem = document.querySelectorAll('.contact-list-item');
@@ -158,17 +158,8 @@ if (globalLocalStorage) {
     }, 300);
   });
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.clear();
-      checkIfLoggedIn();
-    });
-  }
-
   profileLink.forEach((link) => {
     link.addEventListener('click', () => {
-      console.log('profile-link');
-
       setLocalStorage(
         true,
         globalLocalStorage.token,
@@ -179,6 +170,13 @@ if (globalLocalStorage) {
       );
     });
   });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.clear();
+      checkIfLoggedIn();
+    });
+  }
 
   menuBtn.addEventListener('click', (e) => {
     keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
@@ -367,7 +365,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                       class="profile-image"
                       src="${author.avatar}"
                       alt="Profile image of ${author && author.name}"
-                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      onerror="this.src='../images/profile_placeholder.png';"
                     />
       
 
@@ -496,7 +494,7 @@ export async function displaySinglePost(postID, list) {
                       class="profile-image"
                       src="${author.avatar}"
                       alt="Profile image of ${author && author.name}"
-                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      onerror="this.src='../images/profile_placeholder.png';"
                     />
                 <div class="title-body-image">
                          <p class="post-author" data-name="${
@@ -529,7 +527,7 @@ export async function displaySinglePost(postID, list) {
                         class="profile-image"
                         src="${globalLocalStorage.avatar}"
                         alt="Profile image of ${author && author.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        onerror="this.src='../images/profile_placeholder.png';"
                       />
                       <form class="comment-form" data-id="${id}">
                         <textarea
@@ -583,7 +581,7 @@ export async function displaySinglePost(postID, list) {
                         class="profile-image"
                         src="${ownerData.avatar && ownerData.avatar}"
                         alt="Profile image of ${ownerData && ownerData.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        onerror="this.src='../images/profile_placeholder.png';"
                       />
                       <div class="comment-text">
                         <p><strong>${owner}</strong></p>
