@@ -36,12 +36,11 @@ const globalLocalStorage = getLocalStorage();
  */
 export async function getProfileImage() {
   const user = await getUsers(globalLocalStorage.name, '');
-  if (user) {
-    profileImagePostComp.src = user.avatar;
-  } else {
+
+  if (!user.avatar) {
     profileImagePostComp.src = '../images/profile_placeholder.png';
-    // profileImagePostComp.src =
-    //   'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+  } else if (user) {
+    profileImagePostComp.src = user.avatar;
   }
 }
 
