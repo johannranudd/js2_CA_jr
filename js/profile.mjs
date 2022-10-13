@@ -1,4 +1,3 @@
-const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const allPosts = document.querySelector('.all-posts');
 const profileComponent = document.querySelector('.profile-component');
 const editProfileForm = document.querySelector('.edit-profile-modal');
@@ -13,44 +12,50 @@ const profileImagePostComp = document.querySelector(
 const modalBackdrop = document.querySelector('.modal-backdrop');
 
 import {
-  getSessionStorage,
-  setSessionStorage,
-  checkIfLoggedIn,
+  getLocalStorage,
+  setLocalStorage,
   getPosts,
   getUsers,
   uploadImageToContainer,
   updateProfileInfo,
   followProfile,
   unfollowProfile,
-  setFetchLimitURL,
 } from './utils.mjs';
 import { displayAllPosts } from './layout.mjs';
 
-const globalSStorage = getSessionStorage();
-// export let profileDisplayed = globalSStorage && globalSStorage.name;
+const globalLocalStorage = getLocalStorage();
 
+/**
+ * displays users profile image or displays default image.
+ * @example
+ * ```js
+ * // call function
+ * getProfileImage()
+ * // function will check for users avatar and display as image, if user doesn't have avatar then a default image will be displayed instead.
+ * ```
+ */
 export async function getProfileImage() {
-  const user = await getUsers(globalSStorage.name, '');
-  if (user.avatar) {
-    profileImagePostComp.src = user.avatar;
+  if (globalLocalStorage.avatar) {
+    profileImagePostComp.src = globalLocalStorage.avatar;
   } else {
-    profileImagePostComp.src =
-      'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+    profileImagePostComp.src = '../images/profile_placeholder.png';
+    // profileImagePostComp.src =
+    //   'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
   }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  if (globalSStorage) {
-    if (globalSStorage.name === globalSStorage.profileDisplayed) {
-      displayProfileInfo(globalSStorage.name);
+  if (globalLocalStorage) {
+    if (globalLocalStorage.name === globalLocalStorage.profileDisplayed) {
+      displayProfileInfo(globalLocalStorage.name);
       getProfileImage();
     } else {
-      displayProfileInfo(globalSStorage.profileDisplayed);
+      displayProfileInfo(globalLocalStorage.profileDisplayed);
+      getProfileImage();
     }
   }
 });
 
-// uploadImageToContainer(container, input);
 if (newBannerInput && newAvatarInput && editProfileForm) {
   newBannerInput.addEventListener('keyup', () => {
     setTimeout(() => {
@@ -84,7 +89,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
     if (avatarImage) {
       submitObject.avatar = avatarImage.src;
     }
-    updateProfileInfo(globalSStorage.name, submitObject);
+    updateProfileInfo(globalLocalStorage.name, submitObject);
     uploadedBanner.innerHTML = '';
     uploadedAvatar.innerHTML = '';
     editProfileForm.reset();
@@ -93,12 +98,22 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
   });
 }
 
+/**
+ * displays a users information in the profile component on profile.html
+ * @param {string} username string, default = globalLocalStorage.profileDisplayed, name of user you want to display.
+ * @returns {string} string, returns a template litteral string and fills tha page with html
+ * @example
+ * ```js
+ * // call function
+ * displayProfileInfo("john_doe")
+ * // will populate the profile component with information about john_doe
+ * ```
+ */
 export async function displayProfileInfo(
-  username = globalSStorage.profileDisplayed
+  username = globalLocalStorage.profileDisplayed
 ) {
   const data = await getUsers(username, '');
-  const { avatar, banner, email, followers, following, name, posts, _count } =
-    data;
+  const { avatar, banner, followers, name, _count } = data;
 
   if (profileComponent) {
     profileComponent.innerHTML = `
@@ -110,7 +125,7 @@ export async function displayProfileInfo(
               class="profile-image"
               src="${avatar}"
               alt="Profile image of ${name}"
-              onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+              onerror="this.src='../images/profile_placeholder.png';"
             />
             
                     <div class="follow-statistics-contianer">
@@ -127,7 +142,7 @@ export async function displayProfileInfo(
                         _count.followers
                       }</strong>Followers</div>
                       ${
-                        name !== globalSStorage.name
+                        name !== globalLocalStorage.name
                           ? `<button class="follow-btn" data-username="${name}">Follow +</button>`
                           : ''
                       }              
@@ -138,7 +153,7 @@ export async function displayProfileInfo(
           <div class="name-and-edit-profile">
               <h2 class="username">${name}</h2>
               ${
-                name === globalSStorage.name
+                name === globalLocalStorage.name
                   ? '<button class="edit-profile-btn">Edit profile</button>'
                   : ''
               }
@@ -146,14 +161,13 @@ export async function displayProfileInfo(
           
           
     `;
-    // profileDisplayed = name;
 
-    setSessionStorage(
+    setLocalStorage(
       true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
+      globalLocalStorage.token,
+      globalLocalStorage.name,
+      globalLocalStorage.email,
+      globalLocalStorage.avatar,
       name
     );
     // banner
@@ -182,12 +196,11 @@ export async function displayProfileInfo(
     // follow / unfollow
     const followBtn = document.querySelector('.follow-btn');
     if (followBtn) {
-      // followeUnfollowUpdate(followBtn, followers);
       const foundFollower = followers.find(
-        (follower) => follower.name === globalSStorage.name
+        (follower) => follower.name === globalLocalStorage.name
       );
       if (foundFollower) {
-        if (foundFollower.name === globalSStorage.name) {
+        if (foundFollower.name === globalLocalStorage.name) {
           followBtn.textContent = 'Unfollow -';
         }
       }
@@ -198,30 +211,53 @@ export async function displayProfileInfo(
   }
 }
 
+/**
+ * get posts from the selected user displayed in profile component
+ * @param {object} e object, event object
+ * @example
+ * ```js
+ * // call function
+ * getDisplayedUseersPosts(e)
+ * // will populate the feed with only selected users posts, given throught the event object. like: e.target.dataset.username
+ * ```
+ */
 export async function getDisplayedUseersPosts(e) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
   allPosts.innerHTML = '';
   allPosts.appendChild(spinner);
-  const loadMoreBtn = document.querySelector('.load-more-btn');
   if (loadMoreBtn) {
-    loadMoreBtn.remove();
+    loadMoreBtn.style.display = 'none';
   }
-  const data = await getPosts(globalSStorage.token, '', 9999);
+  const data = await getPosts(globalLocalStorage.token, '', 9999);
   const allPostsFromUser = data.filter(
     (item) => item.author.name === e.target.dataset.username
   );
   displayAllPosts(allPosts, allPostsFromUser, false);
 }
 
+/**
+ * lets user follow or unfollow another user and updates profile component.
+ * @param {object} e object, event object 
+ * @param {element} followBtn element, button with eventlistener 
+ * @example
+ * ```js
+ * // call function
+ * followeUnfollowUpdate(e, followBtn)
+ *  const profileName = e.target.dataset.username;
+ * if (followBtn.textContent === 'Follow +') {
+    followProfile(profileName);
+  } 
+ * ```
+ */
 function followeUnfollowUpdate(e, followBtn) {
   const profileName = e.target.dataset.username;
-  setSessionStorage(
+  setLocalStorage(
     true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
+    globalLocalStorage.token,
+    globalLocalStorage.name,
+    globalLocalStorage.email,
+    globalLocalStorage.avatar,
     profileName
   );
   if (followBtn.textContent === 'Follow +') {

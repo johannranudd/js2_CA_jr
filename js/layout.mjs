@@ -1,8 +1,6 @@
 const feedAndContactsContaier = document.querySelector(
   '.feed-and-contacts-container'
 );
-const baseURL = 'https://nf-api.onrender.com/api/v1/social';
-
 const sidebar = document.querySelector('.sidebar');
 const menuBtn = document.querySelector('.menu-btn');
 const contactBtns = document.querySelectorAll('.contacts-btn');
@@ -14,23 +12,23 @@ const sortByNewestBtn = document.querySelector('.newest');
 const searchPostsInput = document.querySelector('.search-posts-input');
 const searchFormPosts = document.querySelector('.search-form-posts');
 export const allPosts = document.querySelector('.all-posts');
-const loadMoreBtn = document.querySelector('.load-more-btn');
+export const loadMoreBtn = document.querySelector('.load-more-btn');
 const postTitleInput = document.querySelector('.post-title-input');
 const submitPostBtn = document.querySelector('.submit-post-btn');
 const homeComponentHeading = document.querySelector('.home-component h4');
-const profileLink = document.querySelector('.profile-link');
 const logoutBtn = document.querySelector('.logout');
+const profileLink = document.querySelectorAll('.profile-link');
 
 import {
   checkIfLoggedIn,
   adjustForSidebar,
   keepOlyOneSidebarOpen,
   getPosts,
-  getSessionStorage,
+  getLocalStorage,
   getSortedPosts,
   deletePost,
   getUsers,
-  setSessionStorage,
+  setLocalStorage,
   commentOnPost,
   reactToPost,
 } from './utils.mjs';
@@ -42,27 +40,43 @@ let limit = 20;
 export let isEditingPost = false;
 export let editID = '';
 
-const globalSStorage = getSessionStorage();
+const globalLocalStorage = getLocalStorage();
 
 window.addEventListener('load', checkIfLoggedIn);
 
 /**
- * displays a users information
+ * displays all contacts in contacts sidebar
+ * @return {TemplateLiteralString} string, template literal string.
+ * @example
+ * ```js
+ * loginDetails = {
+ "name": "my_username",                          // Required
+ "email": "first.last@stud.noroff.no",           // Required
+}
+ * // call function
+ * displayContacts()
+ * const user = await getUsers(globalLocalStorage.name, '');
+ * if (user) {
+ * user.following.map((item) => {
+      const { avatar, name } = item;
+      listOfContacts.innerHTML += `template literal string with ${values} rom api`});
+
+ }
+ * ```
  */
 export async function displayContacts() {
   listOfContacts.innerHTML = '';
-  const user = await getUsers(globalSStorage.name, '');
+  const user = await getUsers(globalLocalStorage.name, '');
   if (user) {
     user.following.map((item) => {
       const { avatar, name } = item;
       listOfContacts.innerHTML += `<li class="contact-list-item hoverAnimation" data-username="${name}">
         <img class="profile-image-contacts" src="${avatar}" src="${avatar}"
                 alt="Profile image ${name}"
-                onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';" />
+                onerror="this.src='../images/profile_placeholder.png';" />
         <p>${name}</p>
       </li>`;
       const contactsListItem = document.querySelectorAll('.contact-list-item');
-      // console.log(contactsListItem);
       contactsListItem.forEach((contact) => {
         contact.addEventListener('click', (e) => {
           refreshContactsAndProfile(e);
@@ -74,16 +88,37 @@ export async function displayContacts() {
   }
 }
 
+/**
+ * refreshes/updates contacts and profile information after an action has been taken on the page
+ * @param {object} e object, event object
+ * @example
+ * ```js
+ * // call function:
+ * refreshContactsAndProfile(e)
+ * //takes event object and gets username
+ * const profileName = e.currentTarget.dataset.username;
+ * // sets to localStorage
+ * setLocalStorage(...,
+    profileName
+  );
+  * // redirects if not on profile page
+  if (window.location.href.includes('profile.html')) {
+    displayProfileInfo(profileName);
+  } else {
+    window.location.href = `../profile.html`;
+  }
+ * ```
+ */
 function refreshContactsAndProfile(e) {
   const profileName = e.currentTarget.dataset.username;
   contacts.classList.remove('show-contacts');
   adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
-  setSessionStorage(
+  setLocalStorage(
     true,
-    globalSStorage.token,
-    globalSStorage.name,
-    globalSStorage.email,
-    globalSStorage.avatar,
+    globalLocalStorage.token,
+    globalLocalStorage.name,
+    globalLocalStorage.email,
+    globalLocalStorage.avatar,
     profileName
   );
   if (window.location.href.includes('profile.html')) {
@@ -93,10 +128,10 @@ function refreshContactsAndProfile(e) {
   }
 }
 
-if (globalSStorage) {
+if (globalLocalStorage) {
   window.addEventListener('DOMContentLoaded', () => {
-    const sStorage = getSessionStorage();
-    displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+    const locStorage = getLocalStorage();
+    displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     adjustForSidebar(sidebar, feedAndContactsContaier, contacts, mainContainer);
     const onPageText = homeComponentHeading.textContent.split('/')[0];
     homeComponentHeading.innerHTML = `${onPageText}<span> / Newest posts</span>`;
@@ -123,24 +158,25 @@ if (globalSStorage) {
     }, 300);
   });
 
+  profileLink.forEach((link) => {
+    link.addEventListener('click', () => {
+      setLocalStorage(
+        true,
+        globalLocalStorage.token,
+        globalLocalStorage.name,
+        globalLocalStorage.email,
+        globalLocalStorage.avatar,
+        globalLocalStorage.name
+      );
+    });
+  });
+
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      sessionStorage.clear();
+      localStorage.clear();
       checkIfLoggedIn();
     });
   }
-
-  profileLink.addEventListener('click', (e) => {
-    // console.log('profile-link');
-    setSessionStorage(
-      true,
-      globalSStorage.token,
-      globalSStorage.name,
-      globalSStorage.email,
-      globalSStorage.avatar,
-      globalSStorage.name
-    );
-  });
 
   menuBtn.addEventListener('click', (e) => {
     keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer);
@@ -166,11 +202,10 @@ if (globalSStorage) {
 
   searchFormPosts.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     const searchValue = searchPostsInput.value;
-    // const searchValueLowerCase = searchPostsInput.value.toLowerCase();
     if (searchValue) {
-      const data = await getPosts(sStorage.token, '', 99999);
+      const data = await getPosts(locStorage.token, '', 99999);
       const filteredData = data.filter((item) => {
         if (
           item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -182,20 +217,28 @@ if (globalSStorage) {
             )
         ) {
           return item;
+        } else {
         }
       });
       if (filteredData.length > 0) {
         // remove load more btn here
-        loadMoreBtn.remove();
+        // loadMoreBtn.remove();
+        loadMoreBtn.style.display = 'none';
         // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
-        // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
+        searchPostsInput.style.border = '1px solid red';
+        setTimeout(() => {
+          searchPostsInput.style.border = 'none';
+        }, 3000);
+        // displayAllPosts(allPosts, getPosts(locStorage.token, '', 99999), false);
       }
     } else {
-      //**  display a warning here
-      // displayAllPosts(allPosts, getPosts(sStorage.token, '', 99999), false);
+      searchPostsInput.style.border = '1px solid red';
+      setTimeout(() => {
+        searchPostsInput.style.border = 'none';
+      }, 3000);
     }
   });
 
@@ -203,11 +246,11 @@ if (globalSStorage) {
   let isDescending = true;
 
   sortByOldestBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     currentOffset = 0;
     displayAllPosts(
       allPosts,
-      getSortedPosts(sStorage.token, 'created', 'asc', currentOffset, limit),
+      getSortedPosts(locStorage.token, 'created', 'asc', currentOffset, limit),
       false
     );
     isDescending = false;
@@ -217,11 +260,11 @@ if (globalSStorage) {
   });
   // sort by descending
   sortByNewestBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
+    const locStorage = getLocalStorage();
     currentOffset = 0;
     displayAllPosts(
       allPosts,
-      getSortedPosts(sStorage.token, 'created', 'desc', currentOffset, limit),
+      getSortedPosts(locStorage.token, 'created', 'desc', currentOffset, limit),
       false
     );
     isDescending = true;
@@ -234,15 +277,15 @@ if (globalSStorage) {
   //
   // load more
   loadMoreBtn.addEventListener('click', async () => {
-    const sStorage = getSessionStorage();
-    const data = await getPosts(sStorage.token, '', 99999);
+    const locStorage = getLocalStorage();
+    const data = await getPosts(locStorage.token, '', 99999);
     if (currentOffset < data.length) {
       currentOffset += 20;
       if (isDescending) {
         displayAllPosts(
           allPosts,
           getSortedPosts(
-            sStorage.token,
+            locStorage.token,
             'created',
             'desc',
             currentOffset,
@@ -254,7 +297,7 @@ if (globalSStorage) {
         displayAllPosts(
           allPosts,
           getSortedPosts(
-            sStorage.token,
+            locStorage.token,
             'created',
             'asc',
             currentOffset,
@@ -265,7 +308,8 @@ if (globalSStorage) {
       }
     }
     if (currentOffset >= data.length) {
-      loadMoreBtn.remove();
+      // loadMoreBtn.remove();
+      loadMoreBtn.style.display = 'none';
     }
   });
 }
@@ -279,6 +323,22 @@ if (globalSStorage) {
 //
 // displayAllPosts
 
+/**
+ * displays all posts on the page
+ * @param {element} list element. list element you want to display posts in
+ * @param {(Function | Array)} fetchMethod function or array. this can be either an array or a fetch method: GET, which returns an array
+ * @param {boolean} isAddingToPrevList boolean. if false, the inneHTML of the list will be set to "" before loading content. if true, the previous content will remain and new content will be fetched and added to the list.
+ * @example
+ * ```js
+ * // call function:
+ * displayAllPosts(listElement, getPosts(locStorage.token, '', 500), false)
+ * // this will clear the content of listElement, fetch 500 posts and populate listElement
+ * //
+ * // call function:
+ * displayAllPosts(listElement, filteredData, false);
+ * // you can also use an array as the second parameter
+ * ```
+ */
 export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
@@ -291,16 +351,12 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
     }
   }
   const data = await fetchMethod;
-  // console.log('data in displayPosts', data);
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   if (data) {
     spinner.remove();
     data.map((post) => {
       const { id, title, body, media, author } = post;
-      // console.log(author.avatar && author.avatar );
-
-      const listItem = `
-      
+      const listItem = `      
     <li class="single-post-feed" data-id="${id}" data-user="${
         author && author.name
       }">
@@ -309,7 +365,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
                       class="profile-image"
                       src="${author.avatar}"
                       alt="Profile image of ${author && author.name}"
-                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      onerror="this.src='../images/profile_placeholder.png';"
                     />
       
 
@@ -329,7 +385,7 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
           </div>
           <div class="react-comment-container">
                             ${
-                              sStorage.name === author.name
+                              locStorage.name === author.name
                                 ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
@@ -368,15 +424,14 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
         });
       }
       postAuthor.forEach((author) => {
-        // !RETURN
         author.addEventListener('click', (e) => {
           const profileName = e.target.dataset.name;
-          setSessionStorage(
+          setLocalStorage(
             true,
-            globalSStorage.token,
-            globalSStorage.name,
-            globalSStorage.email,
-            globalSStorage.avatar,
+            globalLocalStorage.token,
+            globalLocalStorage.name,
+            globalLocalStorage.email,
+            globalLocalStorage.avatar,
             profileName
           );
           if (!window.location.href.includes('profile.html')) {
@@ -410,14 +465,23 @@ export async function displayAllPosts(list, fetchMethod, isAddingToPrevList) {
 //
 //
 //
-// let commentingOnID;
+
+/**
+ * display a single post in feed component
+ * @param {number} postID number, id of the post you want to display
+ * @param {Element} list element, list element you want to display content in
+ * @example
+ * ```js
+ *
+ * ```
+ */
 export async function displaySinglePost(postID, list) {
   const spinner = document.createElement('div');
   spinner.classList.add('spinner');
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   list.innerHTML = '';
   list.appendChild(spinner);
-  const singleData = await getPosts(sStorage.token, postID, '');
+  const singleData = await getPosts(locStorage.token, postID, '');
 
   if (singleData) {
     spinner.remove();
@@ -430,7 +494,7 @@ export async function displaySinglePost(postID, list) {
                       class="profile-image"
                       src="${author.avatar}"
                       alt="Profile image of ${author && author.name}"
-                      onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                      onerror="this.src='../images/profile_placeholder.png';"
                     />
                 <div class="title-body-image">
                          <p class="post-author" data-name="${
@@ -452,7 +516,7 @@ export async function displaySinglePost(postID, list) {
                           
                           <div class="react-comment-container">
                             ${
-                              sStorage.name === author.name
+                              locStorage.name === author.name
                                 ? '<button class="delete-post-btn" type="button" data-hoverMessage="Delete"><i class="fa-solid fa-trash"></i></button><button class="edit-post-btn" type="button" data-hoverMessage="Edit"><i class="fa-regular fa-pen-to-square"></i></button>'
                                 : ''
                             }
@@ -461,9 +525,9 @@ export async function displaySinglePost(postID, list) {
                     <div class="profile-img-text-input">
                         <img
                         class="profile-image"
-                        src="${globalSStorage.avatar}"
+                        src="${globalLocalStorage.avatar}"
                         alt="Profile image of ${author && author.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        onerror="this.src='../images/profile_placeholder.png';"
                       />
                       <form class="comment-form" data-id="${id}">
                         <textarea
@@ -517,7 +581,7 @@ export async function displaySinglePost(postID, list) {
                         class="profile-image"
                         src="${ownerData.avatar && ownerData.avatar}"
                         alt="Profile image of ${ownerData && ownerData.name}"
-                        onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
+                        onerror="this.src='../images/profile_placeholder.png';"
                       />
                       <div class="comment-text">
                         <p><strong>${owner}</strong></p>
@@ -549,7 +613,6 @@ export async function displaySinglePost(postID, list) {
         textareaComment.style.height = `${e.target.scrollHeight}px`;
       });
 
-      // loadMoreBtn.remove();
       const deletePostBtn = document.querySelector('.delete-post-btn');
       const editPostBtn = document.querySelector('.edit-post-btn');
       const postAuthor = document.querySelector('.post-author');
@@ -574,12 +637,12 @@ export async function displaySinglePost(postID, list) {
       }
       postAuthor.addEventListener('click', (e) => {
         const profileName = e.target.dataset.name;
-        setSessionStorage(
+        setLocalStorage(
           true,
-          globalSStorage.token,
-          globalSStorage.name,
-          globalSStorage.email,
-          globalSStorage.avatar,
+          globalLocalStorage.token,
+          globalLocalStorage.name,
+          globalLocalStorage.email,
+          globalLocalStorage.avatar,
           profileName
         );
         if (!window.location.href.includes('profile.html')) {
@@ -588,6 +651,8 @@ export async function displaySinglePost(postID, list) {
           displayProfileInfo(profileName);
         }
       });
+      // loadMoreBtn.remove();
+      loadMoreBtn.style.display = 'none';
     }
   }
 }
@@ -660,8 +725,8 @@ export async function displaySinglePost(postID, list) {
                     <form class="comment-form">
                       <img
                           class="profile-image"
-                          src="${globalSStorage.avatar}"
-                          alt="Profile image of ${globalSStorage.name}"
+                          src="${globalLocalStorage.avatar}"
+                          alt="Profile image of ${globalLocalStorage.name}"
                           onerror="this.src='https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';"
                         />
 

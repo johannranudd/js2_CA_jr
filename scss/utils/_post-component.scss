@@ -71,16 +71,23 @@
     // display: grid;
     // grid-template-columns: 24.5% 75.5%;
     .profile-image {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border-radius: 50%;
-      margin-right: 20px;
+      margin-right: 30px;
       border: 2px solid $primary-color;
       box-shadow: $box-shadow-2;
-      @media (min-width: $mobile-500) {
-        margin-right: 30px;
+      @media (min-width: $mobile-m) {
+        // margin-right: 30px;
+        // width: 100px;
+        // height: 100px;
       }
+      // @media (min-width: $mobile-500) {
+      //   margin-right: 30px;
+      //   width: 100px;
+      //   height: 100px;
+      // }
     }
     .post-form {
       flex: 1 1 0;
@@ -130,21 +137,25 @@
         }
       }
       .add-items-and-submit-btn-contianer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         // max-width: 400px;
+        @media (min-width: $mobile-500) {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
         .add-items-btns {
           width: 100%;
           .upload-img-input {
-            width: 70%;
+            width: 100%;
             border: 1.5px dotted $black;
             height: 50px;
             background: transparent;
             min-width: 50px;
-          }
-          .fa-image {
-            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            @media (min-width: $mobile-500) {
+              margin: 0;
+              width: 90%;
+            }
           }
         }
 

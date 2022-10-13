@@ -4,17 +4,32 @@ import {
   displayAllPosts,
   displayContacts,
   displaySinglePost,
+  loadMoreBtn,
 } from './layout.mjs';
 import { displayProfileInfo, getProfileImage } from './profile.mjs';
 
-export function getSessionStorage() {
-  const sStorage = sessionStorage.getItem('isLoggedIn')
-    ? JSON.parse(sessionStorage.getItem('isLoggedIn'))
+/**
+ * gets local storage
+ * @returns {object} object, isLoggedIn, current state of localStorage
+ */
+export function getLocalStorage() {
+  const locStorage = localStorage.getItem('isLoggedIn')
+    ? JSON.parse(localStorage.getItem('isLoggedIn'))
     : null;
-  return sStorage;
+  return locStorage;
 }
 
-export function setSessionStorage(
+/**
+ * sets the local stoarage to an object with user information,
+ * access token, and helps view other profiles in the profile.html page.
+ * @param {boolean} isLoggedIn boolean, check if loged in or not
+ * @param {string} token string, JWT access token
+ * @param {string} name string, users name
+ * @param {string} email string, users email
+ * @param {string} avatar string, users avatar
+ * @param {string} profileDisplayed string, profile displayed on profile.html page
+ */
+export function setLocalStorage(
   isLoggedIn,
   token,
   name,
@@ -22,7 +37,7 @@ export function setSessionStorage(
   avatar,
   profileDisplayed
 ) {
-  sessionStorage.setItem(
+  localStorage.setItem(
     'isLoggedIn',
     JSON.stringify({
       isLoggedIn: isLoggedIn,
@@ -35,6 +50,16 @@ export function setSessionStorage(
   );
 }
 
+/**
+ * used to create a search parameter to fetch limited amounts of data in order to handle loading process.
+ * @param {number} limit number, number of objects you want in return
+ * @returns {string} string, limitQuery
+ * @example
+ * ```js
+ * setFetchLimitURL(20)
+ * // expect return: "&limit=20"
+ * ```
+ */
 export function setFetchLimitURL(limit) {
   if (!limit) {
     return '';
@@ -44,17 +69,33 @@ export function setFetchLimitURL(limit) {
   }
 }
 
+/**
+ * Creates a comment on a post.
+ * @param {object} payload object, { postID, body, list }
+ * @returns {function} function, displaySinglePost(postID, list);
+ * @example
+ * ```js
+ * // variables in pseudocode
+ *
+ * // const postID = id of post you want to comment on, used in URL.
+ * // const body =  your comment, gathered from textarea.value
+ * // const list = the <ul> element you want the content to be displayed in
+ *
+ * // call function like this
+ * commentOnPost({ postID, body, list });
+ * // function will create a post
+ * ```
+ */
 export async function commentOnPost(payload) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   const { postID, body, list } = payload;
-  console.log(postID);
   try {
     const res = await fetch(`${baseURL}/posts/${postID}/comment`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify({
         body: body, // Required
@@ -66,13 +107,23 @@ export async function commentOnPost(payload) {
   } catch (e) {
     console.log(e, 'error in commentOnPost()');
   }
-  // .then((res) => console.log(res));
 }
 
+/**
+ * displays an image in a container
+ * @param {element} container element, container you want to display image in.
+ * @param {element} input element, input you want to grab the value from
+ * @example
+ * ```js
+ * // call function
+ * uploadImageToContainer(container, input)
+ * // creates and appends an image to container
+ * container.innerHTML = `<img class="uploaded-image-before-post" src="${input.value}" alt="your uploaded image"  />`;
+ * // also displays wwarning if image has error
+ * ```
+ */
 export function uploadImageToContainer(container, input) {
-  // onerror="this.style.display='none'"
   if (input) {
-    console.log(input.value);
     container.innerHTML = `<img class="uploaded-image-before-post" src="${input.value}" alt="your uploaded image"  />`;
     const image = document.querySelector('.uploaded-image-before-post');
     image.addEventListener('error', (e) => {
@@ -83,7 +134,7 @@ export function uploadImageToContainer(container, input) {
       }, 3000);
     });
   }
-  // !base 64
+  // !file upload
   // const reader = new FileReader();
   // reader.onload = function () {
   //   const img = new Image();
@@ -96,140 +147,263 @@ export function uploadImageToContainer(container, input) {
   // reader.readAsDataURL(input.files[0]);
 }
 
+/**
+ * gets users from API
+ * @param {string} userName string, default = "", name of the user you want in return
+ * @param {string} limit string, default = "", how many users you want.
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // for single user call:
+ * getUsers("john_doe", '')
+ * // expect one object with user information
+ * //
+ * // for multiple users call:
+ * getUsers("", 34)
+ * // expect array of 34 objects with users information
+ * ```
+ */
 export async function getUsers(userName = '', limit = '') {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage && sStorage.token}`,
-      },
-    }
-  );
-  const data = await res.json();
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/profiles/${userName}?_posts=true&_following=true&_followers=true${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${locStorage && locStorage.token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getUsers()');
+  }
 }
 
-// ``${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`
-
+/**
+ * get one or more posts
+ * @param {string} token string, JWT accessToken
+ * @param {number} searchParams number, default = "", id of spesiffic post
+ * @param {number} limit number, default = "", limit of posts you want to get
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // call funciton :
+ * getPosts(token, searchParams = '', limit = '')
+ * // expect array of all posts / default limit might exist on the API
+ * getPosts(token, searchParams = '', 99999)
+ * // expect array of up to 99999 posts
+ * getPosts(token, 336)
+ * //expect object with the id of 336
+ * ```
+ */
 export async function getPosts(token, searchParams = '', limit = '') {
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
-  const data = await res.json();
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/posts/${searchParams}?_author=true&_comments=true&reactions=true${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getPosts()');
+  }
 }
 
-// `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}`,
-
+/**
+ * get sorted posts
+ * @param {string} token string, JWT accessToken
+ * @param {string} sort string, what you want to sort by, example: "created"
+ * @param {string} sortOrder string, "asc" or "desc"
+ * @param {number} offset number, the offset you want to fetch from.
+ * @param {number} limit number, limit of posts you want in return.
+ * @returns {(object | Array)} object or array, data returned if fetch successfull
+ * @example
+ * ```js
+ * // call function
+ * getSortedPosts(token, "created", "asc", 40, 20)
+ * // expect array of 20 posts sorted by created in an ascending order with an offset of 40.
+ * ```
+ */
 export async function getSortedPosts(token, sort, sortOrder, offset, limit) {
+  loadMoreBtn.style.display = 'block';
   const limitQuery = setFetchLimitURL(limit);
-  const res = await fetch(
-    `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  const data = await res.json();
-  // console.log(data);
-  return data;
+  try {
+    const res = await fetch(
+      `${baseURL}/posts?sort=${sort}&sortOrder=${sortOrder}&_author=true&_comments=true&reactions=true&offset=${offset}${limitQuery}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e, 'error occured in getSortedPosts()');
+  }
 }
 
+/**
+ * check if useer is loged in, redirect if not.
+ * @example
+ * ```js
+ * // call function
+ * checkIfLoggedIn()
+ * // checks the window.location and checks if there is an object in localstorage called isLoggedIn, if not true user will be redirected too login.html
+ * ```
+ */
 export function checkIfLoggedIn() {
-  // console.log('checkIfLoggedIn() sStorage::', sStorage);
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   if (!window.location.href.includes('/login.html')) {
     if (window.location.href.includes('/register.html')) {
       return;
-    } else if (!sStorage || !sStorage.isLoggedIn) {
+    } else if (!locStorage || !locStorage.isLoggedIn) {
       window.location.href = '../login.html';
     } else {
-      console.log(`you are already logged in as ${sStorage.name}`);
+      console.log(`you are already logged in as ${locStorage.name}`);
     }
   }
 }
 
+/**
+ * get sorted posts
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @param {object} req object, request object sent in the body
+ * @example
+ * ```js
+ * // call function
+ * updateProfileInfo("john_doe", {avatar: "new_avatar_string", banner: "new_banner_string"});
+ *
+ * ```
+ */
 export async function updateProfileInfo(name, req) {
-  console.log('name::', name);
-  console.log('req::', req);
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
+
   fetch(`${baseURL}/profiles/${name}/media`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo();
-      getProfileImage();
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo();
+        getProfileImage();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in updateProfileInfo()');
+    });
 }
+
+/**
+ * follow a profile
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @example
+ * ```js
+ * // call function
+ * followProfile("john_doe")
+ * // user logged in should expect to follow user named "john_doe"
+ *
+ * ```
+ */
 export async function followProfile(name) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/follow`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo(name);
-      displayContacts();
-    }
-    // console.log(res);
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo(name);
+        displayContacts();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in followProfile()');
+    });
 }
+
+/**
+ * unfollow a profile
+ * method: PUT
+ * @param {string} name string, name of the profile you want to update
+ * @example
+ * ```js
+ * // call function
+ * unfollowProfile("john_doe")
+ * // user logged in should expect to unfollow user named "john_doe"
+ *
+ * ```
+ */
 export async function unfollowProfile(name) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/profiles/${name}/unfollow`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify({}),
-  }).then((res) => {
-    if (res.ok) {
-      displayProfileInfo(name);
-      displayContacts();
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayProfileInfo(name);
+        displayContacts();
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in unfollowProfile()');
+    });
 }
 
-// react
+/**
+ * react to post
+ * method: PUT
+ * @param {number} id number, id of the post youre reacting to
+ * @param {string} symbol string, your reaction to a post (must be an emoji)
+ * @param {element} allPosts element, element you want to display the post in
+ * @example
+ * ```js
+ * // call function
+ * reactToPost(336, '👍', listElement);
+ * // user should expect to react 👍 to post 336 and listElemnt will update to show the results
+ * ```
+ */
 export async function reactToPost(id, symbol, allPosts) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   try {
     const res = await fetch(`${baseURL}/posts/${id}/react/${symbol}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify({
         symbol: symbol,
@@ -245,71 +419,123 @@ export async function reactToPost(id, symbol, allPosts) {
   }
 }
 
+/**
+ * create a post
+ * method: POST
+ * @param {object} req object, request object
+ * @example
+ * ```js
+ * // call function
+ * const submitObject = {
+ * "title": "string",  // Required
+ * "body": "string",   // Required
+ * "tags": ["string"], // Optional
+ * "media": "https://url.com/image.jpg"   // Optional
+ * }
+ * post(submitObject);
+ *
+ * ```
+ */
 export async function post(req) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   try {
     const res = await fetch(`${baseURL}/posts`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${sStorage.token}`,
+        Authorization: `Bearer ${locStorage.token}`,
       },
       body: JSON.stringify(req),
     });
     if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
+      displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
     }
   } catch (e) {
-    console.log(e, 'error in post()');
+    console.log(e, 'error occured in post()');
   }
-
-  // .then((res) => {
-  //   console.log(req);
-  //   if (res.ok) {
-  //     console.log(req);
-  //
-  //   } else {
-  //     console.log(res);
-  //   }
-  // })
-  // .catch((e) => console.log(e, 'error in post'));
 }
-// post();
+
+/**
+ * edit a post
+ * method: PUT
+ * @param {number} id number, id of the post you want to edit
+ * @param {object} req object, new request object to replace old post
+ * @example
+ * ```js
+ * // call function
+ * const submitObject = {
+ * "title": "string",  // Required
+ * "body": "string",   // Required
+ * "tags": ["string"], // Optional
+ * "media": "https://url.com/image.jpg"   // Optional
+ * }
+ * editPost(336, submitObject);
+ * // expect post with id 336 to be updated
+ * ```
+ */
 export function editPost(id, req) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
     body: JSON.stringify(req),
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-    }
-  });
-  // const data = await res.json();
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in editPost()');
+    });
 }
 
-// deletePost
+/**
+ * delete a post
+ * method: DELETE
+ * @param {number} id number, id of the post you want to edit
+ * @example
+ * ```js
+ * // call function
+ * deletePost(57);
+ * // expect post with id 57 to be deleted
+ * ```
+ */
 export function deletePost(id) {
-  const sStorage = getSessionStorage();
+  const locStorage = getLocalStorage();
   fetch(`${baseURL}/posts/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${sStorage.token}`,
+      Authorization: `Bearer ${locStorage.token}`,
     },
-  }).then((res) => {
-    if (res.ok) {
-      displayAllPosts(allPosts, getPosts(sStorage.token, '', 20), false);
-    }
-  });
+  })
+    .then((res) => {
+      if (res.ok) {
+        displayAllPosts(allPosts, getPosts(locStorage.token, '', 20), false);
+      }
+    })
+    .catch((e) => {
+      console.log(e, 'error occured in deletePost()');
+    });
 }
 
+/**
+ * positions contacts element on page
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * contactsElementPositioning(contacts, mainContainer)
+ * // contacts will now be positioned relative to mainContainer
+ * ```
+ */
 export function contactsElementPositioning(contacts, mainContainer) {
   const mainContainerRect = mainContainer.getBoundingClientRect();
 
@@ -334,8 +560,18 @@ export function contactsElementPositioning(contacts, mainContainer) {
   }
 }
 
+/**
+ * makes room for contacts element
+ * @param {element} feedAndContactsContaier  element, element that contains both feed component and contacts component
+ * @param {element} contacts element, list of contacts in app.
+ * @example
+ * ```js
+ * // call function
+ * adjustForContacts(feedAndContactsContaier, contacts)
+ * // feedAndContactsContaier will now have margin right equal to the width of contacts element
+ * ```
+ */
 export function adjustForContacts(feedAndContactsContaier, contacts) {
-  // contacts.className.includes('show-contacts') &&
   const contactWidth = contacts.getBoundingClientRect().width;
   if (window.innerWidth >= 1024) {
     feedAndContactsContaier.style.marginRight = `${contactWidth}px`;
@@ -344,6 +580,24 @@ export function adjustForContacts(feedAndContactsContaier, contacts) {
   }
 }
 
+/**
+ * adjusts feed content to have margin right equal to the width of sidebar if width is greater than 500
+ * @param {element} sidebar element, sidebar element.
+ * @param {element} feedAndContactsContaier element, element that contains both feed component and contacts component
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * adjustForSidebar(
+  sidebar,
+  feedAndContactsContaier,
+  contacts,
+  mainContainer
+)
+ * // adjusts feed content to have margin right equal to the width of sidebar if width is greater than 500
+ * ```
+ */
 export function adjustForSidebar(
   sidebar,
   feedAndContactsContaier,
@@ -362,6 +616,19 @@ export function adjustForSidebar(
   contactsElementPositioning(contacts, mainContainer);
 }
 
+/**
+ * keeps only one sidebar open at the time
+ * @param {element} e element, sidebar element.
+ * @param {element} contacts element, list of contacts in app.
+ * @param {element} sidebar element, sidebar element.
+ * @param {element} mainContainer  element, widest container in app
+ * @example
+ * ```js
+ * // call function
+ * keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer)
+ * // when opening a sidebar, this function makes sure to close the other.
+ * ```
+ */
 export function keepOlyOneSidebarOpen(e, contacts, sidebar, mainContainer) {
   if (e.currentTarget.className.includes('contacts-btn')) {
     if (!contacts.className.includes('show-contacts')) {
