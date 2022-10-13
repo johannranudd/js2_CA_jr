@@ -223,7 +223,6 @@ if (globalLocalStorage) {
       if (filteredData.length > 0) {
         // remove load more btn here
         loadMoreBtn.style.display = 'none';
-        // console.log(filteredData);
         currentOffset = 0;
         displayAllPosts(allPosts, filteredData, false);
       } else {
