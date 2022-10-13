@@ -544,7 +544,6 @@ export async function displaySinglePost(postID, list) {
               </li>`;
 
     list.innerHTML = singleListItem;
-    // <div class="edit-delete-btn-container"></div>
     const listOfComments = document.querySelector('.list-of-comments');
     const reactOrCommentComponent = document.querySelector(
       '.react-comment-container'

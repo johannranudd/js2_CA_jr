@@ -35,8 +35,9 @@ const globalLocalStorage = getLocalStorage();
  * ```
  */
 export async function getProfileImage() {
-  if (globalLocalStorage.avatar) {
-    profileImagePostComp.src = globalLocalStorage.avatar;
+  const user = await getUsers(globalLocalStorage.name, '');
+  if (user) {
+    profileImagePostComp.src = user.avatar;
   } else {
     profileImagePostComp.src = '../images/profile_placeholder.png';
     // profileImagePostComp.src =
@@ -78,7 +79,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
     }, 100);
   });
 
-  editProfileForm.addEventListener('submit', (e) => {
+  editProfileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const bannerImage = uploadedBanner.querySelector('img');
     const avatarImage = uploadedAvatar.querySelector('img');
@@ -90,6 +91,7 @@ if (newBannerInput && newAvatarInput && editProfileForm) {
       submitObject.avatar = avatarImage.src;
     }
     updateProfileInfo(globalLocalStorage.name, submitObject);
+
     uploadedBanner.innerHTML = '';
     uploadedAvatar.innerHTML = '';
     editProfileForm.reset();
