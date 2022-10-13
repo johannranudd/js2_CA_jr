@@ -1,6 +1,7 @@
 const baseURL = 'https://nf-api.onrender.com/api/v1/social';
 const loginForm = document.querySelector('.login-form');
 const registerForm = document.querySelector('.register-form');
+const logingWarning = document.querySelector('.login-wanring');
 import { setLocalStorage } from './utils.mjs';
 
 /**
@@ -63,9 +64,8 @@ if (registerForm) {
         registerFn(registerDetails);
       }
     } else {
-      // **display alarm here
-      console.log('Email must include @noroff.no or @stud.noroff.no');
-      console.log('Password must be atleast 6 characters');
+      logingWarning.innerHTML =
+        'Email must include @noroff.no or @stud.noroff.no and password must be at least 6 characters';
     }
   });
 }
@@ -87,15 +87,12 @@ if (loginForm) {
         console.log('does include, continue login');
         loginFn(emailValue, passwordValue);
       } else {
-        // missing @noroff.no or @stud.noroff.no
-        console.log(
-          'warning: Email must include @noroff.no or @stud.noroff.no'
-        );
+        logingWarning.innerHTML =
+          'Email must include @noroff.no or @stud.noroff.no and password must be at least 6 characters';
       }
     } else {
-      // wrongly typed input error here
-      console.log('Email must include @noroff.no or @stud.noroff.no');
-      console.log('Password must be atleast 6 characters');
+      logingWarning.innerHTML =
+        'Email must include @noroff.no or @stud.noroff.no and password must be at least 6 characters';
     }
   });
 }
